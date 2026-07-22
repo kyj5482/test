@@ -1,10 +1,27 @@
 /* SPA for GitHub Pages personal branding site.
  * Routes: #/ (독자 선택) · #/t/<audience> (트랙) · #/c/<contentId> (글)
- * 독자 프로필(레벨/단계/관심사)은 localStorage에 저장되어 맞춤 정렬에 사용된다. */
+ * 독자 프로필(레벨/단계/관심사)은 localStorage에 저장되어 맞춤 정렬에 사용된다.
+ * 테마 파라미터: ?theme=swim (수영: swimmer·parent·dreamer) / ?theme=dev (개발자: builder·dreamer).
+ * 파라미터 없으면 전체 노출. dreamer는 두 주제를 잇는 브릿지라 양쪽 모두 포함. */
 
 const app = document.getElementById('app');
 let DB = null;      // contents.json
 let LEVELS = null;  // levels.json
+
+/* ---------- 테마(주제) 필터 ---------- */
+const THEMES = {
+  swim: { audiences: ['swimmer', 'parent', 'dreamer'], label: '🏊 수영' },
+  dev:  { audiences: ['builder', 'dreamer'], label: '💻 개발자' },
+};
+const themeKey = () => {
+  const t = new URLSearchParams(location.search).get('theme');
+  return THEMES[t] ? t : null;
+};
+const allowedAudiences = () => {
+  const t = themeKey();
+  return t ? THEMES[t].audiences : DB.audiences.map(a => a.key);
+};
+const isAllowed = (audKey) => allowedAudiences().includes(audKey);
 
 const PROFILE_KEY = 'pb-profile';
 const getProfile = () => JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}');
@@ -29,13 +46,19 @@ const contentOf = (id) => DB.contents.find(c => c.id === id);
 
 /* ---------- 홈: 1단계 독자 선택 ---------- */
 function renderHome() {
+  const t = themeKey();
+  const heroTitle = t === 'swim'
+    ? '두 수영 선수를 키우는 아빠의<br/>물살 위 성장 기록.'
+    : t === 'dev'
+    ? '차량 데이터 플랫폼을 만들어온<br/>20년차 엔지니어의 기록.'
+    : '차량 데이터 플랫폼을 만드는 엔지니어,<br/>두 수영 선수를 키우는 아빠.';
   app.innerHTML = `
     <section class="hero">
-      <h1>차량 데이터 플랫폼을 만드는 엔지니어,<br/>두 수영 선수를 키우는 아빠.</h1>
+      <h1>${heroTitle}</h1>
       <p>모든 이야기는 질문에서 출발합니다. 당신은 어떤 질문을 갖고 오셨나요?<br/>아래에서 자신과 가장 가까운 모습을 골라주세요.</p>
     </section>
     <div class="audience-grid">
-      ${DB.audiences.map(a => `
+      ${DB.audiences.filter(a => isAllowed(a.key)).map(a => `
         <button class="audience-card" data-key="${a.key}">
           <span class="emoji">${a.emoji}</span>
           <h2>${esc(a.name)}</h2>
@@ -175,7 +198,7 @@ function levelResultHTML(p) {
 /* ---------- 트랙 페이지: 온보딩 + 맞춤 목록 + 교차 추천 ---------- */
 function renderTrack(key) {
   const aud = audienceOf(key);
-  if (!aud) { location.hash = '#/'; return; }
+  if (!aud || !isAllowed(key)) { location.hash = '#/'; return; }
   const profile = getProfile();
 
   const mine = DB.contents.filter(c => c.audience === key);
@@ -202,8 +225,9 @@ function renderTrack(key) {
   const sorted = [...mine].sort((a, b) => (isMatch(a) ? 0 : 1) - (isMatch(b) ? 0 : 1));
 
   // 교차 추천: 이 트랙 글들의 related 중 다른 트랙 글 (아마존식 "함께 본 콘텐츠")
+  // 테마 필터가 켜져 있으면 테마 밖 트랙의 글은 추천에서도 제외
   const recoIds = [...new Set(mine.flatMap(c => c.related || []))]
-    .filter(id => { const c = contentOf(id); return c && c.audience !== key; });
+    .filter(id => { const c = contentOf(id); return c && c.audience !== key && isAllowed(c.audience); });
 
   app.innerHTML = `
     <div class="track-head">
@@ -308,7 +332,7 @@ function contentItemHTML(c, opts = {}) {
 /* ---------- 글 페이지: md 로드 + 퍼즐 렌더링 ---------- */
 async function renderArticle(id) {
   const c = contentOf(id);
-  if (!c) { location.hash = '#/'; return; }
+  if (!c || !isAllowed(c.audience)) { location.hash = '#/'; return; }
   const aud = audienceOf(c.audience);
 
   app.innerHTML = `
@@ -330,14 +354,22 @@ async function renderArticle(id) {
         const slug = href.replace(/^(\.\.\/)+/, '').replace(/^\.\//, '');
         return x.file.endsWith(slug) || x.file.endsWith('/' + slug.split('/').pop());
       });
-      if (target) { a.setAttribute('href', `#/c/${target.id}`); }
+      if (target && isAllowed(target.audience)) {
+        a.setAttribute('href', `#/c/${target.id}`);
+      } else if (target) {
+        // 테마 필터 밖의 글: 링크 대신 일반 텍스트로
+        const span = document.createElement('span');
+        span.textContent = a.textContent;
+        a.replaceWith(span);
+      }
     });
   } catch (e) {
     articleEl.innerHTML = `<p>이 글은 아직 준비 중입니다. (${esc(c.title)})</p>`;
   }
 
-  // 하단 교차 추천
-  const related = (c.related || []).map(contentOf).filter(Boolean);
+  // 하단 교차 추천 (테마 필터가 켜져 있으면 테마 밖 트랙 글은 제외)
+  const related = (c.related || []).map(contentOf).filter(Boolean)
+    .filter(r => isAllowed(r.audience));
   if (related.length) {
     const div = document.createElement('div');
     div.innerHTML = `

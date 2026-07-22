@@ -42,6 +42,18 @@
   ],
   "contents": [
     {
+      "id": "swimmer-restart-form",
+      "audience": "swimmer",
+      "tag": "PRE_B–B",
+      "levels": ["PRE_B", "B"],
+      "ages": ["10U", "11-12", "13-14"],
+      "sex": "all",
+      "title": "잘못 배운 폼, 다 무너뜨리고 다시 시작해야 할까?",
+      "file": "content/swimmer/restart-form.md",
+      "pieces": 3,
+      "related": ["parent-athlete-registration"]
+    },
+    {
       "id": "swimmer-first-race-9th",
       "audience": "swimmer",
       "tag": "B–BB",
@@ -78,6 +90,15 @@
       "related": ["dreamer-kids-adaptation", "parent-moving-abroad"]
     },
     {
+      "id": "parent-kids-sports-start",
+      "audience": "parent",
+      "tag": "S1",
+      "title": "영어유치원 대신 운동을 시키면 뒤처지는 걸까?",
+      "file": "content/parent/kids-sports-start.md",
+      "pieces": 3,
+      "related": ["swimmer-restart-form"]
+    },
+    {
       "id": "parent-athlete-registration",
       "audience": "parent",
       "tag": "S2",
@@ -103,6 +124,15 @@
       "file": "content/parent/moving-abroad.md",
       "pieces": 3,
       "related": ["dreamer-visa-vs-expat", "swimmer-us-training"]
+    },
+    {
+      "id": "builder-one-account",
+      "audience": "builder",
+      "tag": "platform",
+      "title": "3개 브랜드의 계정을 6개월 만에 통합할 수 있을까?",
+      "file": "content/builder/one-account.md",
+      "pieces": 3,
+      "related": ["builder-three-devs-platform"]
     },
     {
       "id": "builder-three-devs-platform",
@@ -138,7 +168,16 @@
       "title": "2006년, 지도 없이 미국 20일을 어떻게 여행했나?",
       "file": "content/dreamer/us-trip-2006.md",
       "pieces": 3,
-      "related": ["dreamer-visa-vs-expat"]
+      "related": ["dreamer-silicon-valley"]
+    },
+    {
+      "id": "dreamer-silicon-valley",
+      "audience": "dreamer",
+      "tag": "해외 근무",
+      "title": "실리콘밸리 파견 6개월은 무엇을 남겼나?",
+      "file": "content/dreamer/silicon-valley.md",
+      "pieces": 3,
+      "related": ["builder-vehicle-twin", "dreamer-visa-vs-expat"]
     },
     {
       "id": "dreamer-visa-vs-expat",

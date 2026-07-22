@@ -33,11 +33,23 @@ tools/
 
 다른 트랙의 글은 숨기지 않고 "함께 보면 좋은 콘텐츠"로만 교차 추천된다 (아마존식).
 
+## 테마 파라미터 (주제별 노출)
+
+수영 독자와 개발자 독자는 층이 완전히 달라서, URL 파라미터로 한 주제만 노출할 수 있다.
+
+| URL | 노출 트랙 |
+|---|---|
+| `/` (기본) | 전체 (swimmer·parent·builder·dreamer) |
+| `/?theme=swim` | 🏊 수영: swimmer·parent·dreamer |
+| `/?theme=dev` | 💻 개발자: builder·dreamer |
+
+dreamer(해외살이)는 두 주제를 잇는 브릿지라 양쪽 모두에 포함된다.
+테마가 켜지면 홈 히어로 문구, 트랙 목록, 교차 추천, 글 안의 md 링크까지 해당 주제로 필터링된다.
+
 ## GitHub Pages 배포
 
-1. GitHub 저장소 → **Settings → Pages**
-2. Source: **Deploy from a branch**, Branch: `main`, Folder: **`/docs`**
-3. 저장하면 `https://<username>.github.io/<repo>/`에서 사이트가 열린다.
+`main`에 푸시하면 GitHub Actions(`.github/workflows/deploy-pages.yml`)가 `docs/`를 자동 배포한다.
+사이트: `https://<username>.github.io/<repo>/`
 
 ## 수영 레벨 체계 (USA Swimming 공식)
 
