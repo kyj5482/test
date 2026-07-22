@@ -48,7 +48,7 @@
       "levels": ["PRE_B", "B", "BB"],
       "ages": ["10U", "11-12", "13-14"],
       "sex": "all",
-      "title": "첫 대회에서 9위를 하면 실패일까?",
+      "title": "대회에서 결승에 못 가면 실패일까?",
       "file": "content/swimmer/first-race-9th.md",
       "pieces": 3,
       "related": ["parent-athlete-registration"]
