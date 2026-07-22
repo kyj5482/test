@@ -31,11 +31,16 @@ const setProfile = (patch) => {
   return p;
 };
 
+/* 캐시 버스팅: 배포 워크플로우가 index.html의 __BUILD_VERSION__을 커밋 해시로 치환.
+ * 모든 데이터·글 요청에 ?v=<버전>을 붙여, 새 배포가 즉시 반영되게 한다. */
+const VER = (window.BUILD_VERSION && !window.BUILD_VERSION.startsWith('__')) ? window.BUILD_VERSION : 'dev';
+const withVer = (url) => `${url}${url.includes('?') ? '&' : '?'}v=${VER}`;
+
 async function loadData() {
   if (DB && LEVELS) return;
   const [c, l] = await Promise.all([
-    fetch('data/contents.json').then(r => r.json()),
-    fetch('data/levels.json').then(r => r.json()),
+    fetch(withVer('data/contents.json')).then(r => r.json()),
+    fetch(withVer('data/levels.json')).then(r => r.json()),
   ]);
   DB = c; LEVELS = l;
 }
@@ -345,7 +350,7 @@ async function renderArticle(id) {
 
   const articleEl = app.querySelector('.article');
   try {
-    const md = await fetch(c.file).then(r => { if (!r.ok) throw new Error(r.status); return r.text(); });
+    const md = await fetch(withVer(c.file)).then(r => { if (!r.ok) throw new Error(r.status); return r.text(); });
     // 글 안의 상대 md 링크를 SPA 라우트로 변환
     articleEl.innerHTML = marked.parse(md);
     articleEl.querySelectorAll('a[href$=".md"]').forEach(a => {

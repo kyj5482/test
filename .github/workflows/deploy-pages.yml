@@ -24,6 +24,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Stamp build version (cache busting)
+        run: |
+          VERSION="${GITHUB_SHA::7}"
+          sed -i "s/__BUILD_VERSION__/${VERSION}/g" docs/index.html
+          echo "Stamped version: ${VERSION}"
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:

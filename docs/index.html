@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>데이터를 만들고, 선수를 키웁니다</title>
   <meta name="description" content="차량 데이터 플랫폼을 만들어온 엔지니어이자 두 수영 선수를 키우는 아빠. 질문에서 출발해 퍼즐처럼 맞춰가는 콘텐츠." />
-  <link rel="stylesheet" href="assets/style.css" />
+  <!-- __BUILD_VERSION__은 배포 워크플로우가 커밋 해시로 치환 (캐시 버스팅) -->
+  <script>window.BUILD_VERSION = '__BUILD_VERSION__';</script>
+  <link rel="stylesheet" href="assets/style.css?v=__BUILD_VERSION__" />
   <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
 </head>
 <body>
@@ -27,6 +29,6 @@
     <p>모든 콘텐츠는 질문에서 출발하고, 퍼즐처럼 한 조각씩 맞춰집니다.</p>
   </footer>
 
-  <script src="assets/app.js"></script>
+  <script src="assets/app.js?v=__BUILD_VERSION__"></script>
 </body>
 </html>

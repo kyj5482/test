@@ -51,6 +51,17 @@ dreamer(해외살이)는 두 주제를 잇는 브릿지라 양쪽 모두에 포�
 `main`에 푸시하면 GitHub Actions(`.github/workflows/deploy-pages.yml`)가 `docs/`를 자동 배포한다.
 사이트: `https://<username>.github.io/<repo>/`
 
+### 캐시 버스팅 (새 버전 즉시 반영)
+
+GitHub Pages는 모든 파일을 10분간 캐시(`max-age=600`)하므로, 배포 시 워크플로우가
+`index.html`의 `__BUILD_VERSION__` 플레이스홀더를 **커밋 해시로 치환**한다.
+
+- `style.css` / `app.js`는 `?v=<해시>`로 로드 → 새 배포마다 URL이 바뀌어 즉시 새로 받음
+- `app.js`는 `contents.json` / `levels.json` / 글 md도 같은 버전으로 fetch
+- 남는 것은 `index.html` 자체의 캐시(최대 10분)뿐이며, 이것이 갱신되는 순간 모든 리소스가 새 버전으로 일괄 전환된다 (버전 불일치 없음)
+
+로컬 미리보기에서는 플레이스홀더가 치환되지 않아 `v=dev`로 동작한다.
+
 ## 수영 레벨 체계 (USA Swimming 공식)
 
 `docs/data/levels.json`은 **USA Swimming 2024–2028 Motivational Time Standards (Age Group)** 공식 PDF에서 추출했다.
