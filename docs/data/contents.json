@@ -1,0 +1,162 @@
+{
+  "audiences": [
+    {
+      "key": "swimmer",
+      "emoji": "🏊",
+      "name": "물살을 가르는 선수",
+      "tagline": "내 기록은 어떻게 다음 단계로 갈 수 있을까?",
+      "onboarding": "level"
+    },
+    {
+      "key": "parent",
+      "emoji": "👨‍👩‍👧‍👦",
+      "name": "선수 뒤의 부모",
+      "tagline": "아이를 선수로 키운다는 건 무엇을 결정하는 일일까?",
+      "onboarding": "stage",
+      "stages": [
+        { "key": "S1", "name": "시작 전", "hint": "운동을 시켜볼까 고민 중" },
+        { "key": "S2", "name": "선수 등록 결정", "hint": "취미에서 선수로 갈림길" },
+        { "key": "S3", "name": "대회의 시간", "hint": "대회 원정이 일상이 된 시기" },
+        { "key": "S4", "name": "해외 도전", "hint": "더 큰 무대를 고민 중" }
+      ]
+    },
+    {
+      "key": "builder",
+      "emoji": "💻",
+      "name": "만드는 사람",
+      "tagline": "작은 팀이 어떻게 대기업 스케일의 플랫폼을 만들까?",
+      "onboarding": "interest",
+      "interests": [
+        { "key": "platform", "name": "플랫폼" },
+        { "key": "data", "name": "데이터" },
+        { "key": "ai", "name": "AI" }
+      ]
+    },
+    {
+      "key": "dreamer",
+      "emoji": "🌎",
+      "name": "바다 건너를 꿈꾸는 사람",
+      "tagline": "해외에서 사는 삶은 어떻게 시작되는가?",
+      "onboarding": "none"
+    }
+  ],
+  "contents": [
+    {
+      "id": "swimmer-first-race-9th",
+      "audience": "swimmer",
+      "tag": "B–BB",
+      "levels": ["PRE_B", "B", "BB"],
+      "ages": ["10U", "11-12", "13-14"],
+      "sex": "all",
+      "title": "첫 대회에서 9위를 하면 실패일까?",
+      "file": "content/swimmer/first-race-9th.md",
+      "pieces": 3,
+      "related": ["parent-athlete-registration"]
+    },
+    {
+      "id": "swimmer-second-stroke",
+      "audience": "swimmer",
+      "tag": "A–AA",
+      "levels": ["A", "AA"],
+      "ages": ["10U", "11-12", "13-14", "15-16", "17-18"],
+      "sex": "all",
+      "title": "주종목이 아닌 종목으로 입상할 수 있을까?",
+      "file": "content/swimmer/second-stroke.md",
+      "pieces": 3,
+      "related": ["parent-race-trip-gift"]
+    },
+    {
+      "id": "swimmer-us-training",
+      "audience": "swimmer",
+      "tag": "AAA–AAAA",
+      "levels": ["AAA", "AAAA", "AAAA_PLUS"],
+      "ages": ["11-12", "13-14", "15-16", "17-18"],
+      "sex": "all",
+      "title": "한국 훈련과 미국 훈련은 무엇이 다를까?",
+      "file": "content/swimmer/us-training.md",
+      "pieces": 3,
+      "related": ["dreamer-kids-adaptation", "parent-moving-abroad"]
+    },
+    {
+      "id": "parent-athlete-registration",
+      "audience": "parent",
+      "tag": "S2",
+      "title": "선수 등록, 언제 어떻게 결정해야 할까?",
+      "file": "content/parent/athlete-registration.md",
+      "pieces": 3,
+      "related": ["swimmer-first-race-9th"]
+    },
+    {
+      "id": "parent-race-trip-gift",
+      "audience": "parent",
+      "tag": "S3",
+      "title": "대회 원정을 아이의 선물로 만들 수 있을까?",
+      "file": "content/parent/race-trip-gift.md",
+      "pieces": 3,
+      "related": ["swimmer-second-stroke", "dreamer-us-trip-2006"]
+    },
+    {
+      "id": "parent-moving-abroad",
+      "audience": "parent",
+      "tag": "S4",
+      "title": "아이의 수영을 위해 나라를 옮긴다는 것은?",
+      "file": "content/parent/moving-abroad.md",
+      "pieces": 3,
+      "related": ["dreamer-visa-vs-expat", "swimmer-us-training"]
+    },
+    {
+      "id": "builder-three-devs-platform",
+      "audience": "builder",
+      "tag": "platform",
+      "title": "3명이 어떻게 글로벌 커넥티드카 플랫폼을 만들었나?",
+      "file": "content/builder/three-devs-global-platform.md",
+      "pieces": 4,
+      "related": ["builder-vehicle-twin", "dreamer-visa-vs-expat"]
+    },
+    {
+      "id": "builder-vehicle-twin",
+      "audience": "builder",
+      "tag": "data",
+      "title": "매일 100만 대에서 수집하는데 왜 하루 1대도 분석 못할까?",
+      "file": "content/builder/vehicle-twin.md",
+      "pieces": 4,
+      "related": ["builder-three-devs-platform", "builder-one-day-one-app"]
+    },
+    {
+      "id": "builder-one-day-one-app",
+      "audience": "builder",
+      "tag": "ai",
+      "title": "1일 1앱은 어떻게 가능한가?",
+      "file": "content/builder/one-day-one-app.md",
+      "pieces": 3,
+      "related": ["builder-vehicle-twin"]
+    },
+    {
+      "id": "dreamer-us-trip-2006",
+      "audience": "dreamer",
+      "tag": "여행",
+      "title": "2006년, 지도 없이 미국 20일을 어떻게 여행했나?",
+      "file": "content/dreamer/us-trip-2006.md",
+      "pieces": 3,
+      "related": ["dreamer-visa-vs-expat"]
+    },
+    {
+      "id": "dreamer-visa-vs-expat",
+      "audience": "dreamer",
+      "tag": "해외 근무",
+      "title": "스타트업비자 vs 주재원, 무엇을 선택해야 할까?",
+      "file": "content/dreamer/visa-vs-expat.md",
+      "pieces": 3,
+      "related": ["builder-three-devs-platform", "parent-moving-abroad"]
+    },
+    {
+      "id": "dreamer-kids-adaptation",
+      "audience": "dreamer",
+      "tag": "가족과 정착",
+      "title": "아이들은 미국 훈련에 어떻게 적응했나?",
+      "file": "content/dreamer/kids-adaptation.md",
+      "pieces": 3,
+      "related": ["swimmer-us-training", "parent-moving-abroad"]
+    }
+  ]
+}
