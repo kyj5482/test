@@ -3,6 +3,10 @@ id: builder-email-to-api
 tag: data
 pieces: 3
 related: [builder-cutting-2m-cost]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 이메일로 주던 데이터를 24/7 API로 바꾸면 무슨 일이 생길까?

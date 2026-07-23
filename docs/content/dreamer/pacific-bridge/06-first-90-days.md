@@ -3,6 +3,10 @@ id: dreamer-first-90-days
 tag: 가족과 정착
 pieces: 3
 related: [parent-moving-abroad]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 주재원 정착 첫 90일, 무엇부터 해야 할까?

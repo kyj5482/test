@@ -13,6 +13,7 @@
   // 커버 사진 URL: series.coverBase(예: content/swimmer/olympic-ladder/cover)에
   // 성별 변형이면 _M/_F를, 아니면 그대로 .jpg를 붙인다.
   const imgUrl = (series, sex) => {
+    if (series.hasCover === false) return null; // 커버 사진 없음 → 플레이스홀더 렌더
     const suffix = series.sexed ? `_${sex === 'F' ? 'F' : 'M'}` : '';
     return `${series.coverBase}${suffix}.jpg`;
   };
@@ -76,6 +77,10 @@
     const { cols, rows } = gridFor(n);
     const uid = `pz-${series.id}${opts.uid || ''}`;
     const href = imgUrl(series, opts.sex);
+    const photoDef = href
+      ? `<image id="${uid}-photo" href="${href}" x="0" y="0" width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice"/>`
+      // 커버 없음: 사진 대신 은은한 그라디언트로 대체 → 조각 실루엣만 보인다.
+      : `<linearGradient id="${uid}-photo-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a2740"/><stop offset="1" stop-color="#0a101c"/></linearGradient><rect id="${uid}-photo" x="0" y="0" width="${W}" height="${H}" fill="url(#${uid}-photo-g)"/>`;
     let defs = '', pieces = '';
     for (let i = 0; i < n; i++) {
       const col = i % cols, row = Math.floor(i / cols);
@@ -90,8 +95,8 @@
       } else {
         pieces += `
         <g class="pz-piece pz-off" clip-path="url(#${uid}-c${i})">
-          <use href="#${uid}-photo" opacity="0.22" filter="url(#${uid}-hide)"/>
-          <path d="${d}" fill="rgba(8,13,24,0.55)"/>
+          <use href="#${uid}-photo" opacity="0.55" filter="url(#${uid}-hide)"/>
+          <path d="${d}" fill="rgba(8,13,24,0.28)"/>
         </g>
         <path d="${d}" fill="none" stroke="rgba(127,212,255,0.4)" stroke-width="1.2" stroke-dasharray="4 4"/>`;
       }
@@ -101,8 +106,8 @@
     <svg class="puzzle-svg${lockedCls}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${series.title} 퍼즐 진행도 ${revealedSet.size}/${n}">
       <defs>
         ${defs}
-        <filter id="${uid}-hide"><feColorMatrix type="saturate" values="0.1"/><feGaussianBlur stdDeviation="2.2"/></filter>
-        <image id="${uid}-photo" href="${href}" x="0" y="0" width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice"/>
+        <filter id="${uid}-hide"><feColorMatrix type="saturate" values="0.45"/><feGaussianBlur stdDeviation="1.1"/></filter>
+        ${photoDef}
       </defs>
       <rect width="${W}" height="${H}" fill="#0a101c"/>
       ${pieces}
@@ -121,18 +126,20 @@
     const vb = `${col * pw - pad} ${row * ph - pad} ${pw + pad * 2} ${ph + pad * 2}`;
     const uid = `pp-${series.id}-${idx}${opts.uid || ''}`;
     const href = imgUrl(series, opts.sex);
-    const photo = `<image href="${href}" x="0" y="0" width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice"/>`;
+    const photo = href
+      ? `<image href="${href}" x="0" y="0" width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice"/>`
+      : `<rect x="0" y="0" width="${W}" height="${H}" fill="#16233c"/>`;
     return `
     <svg class="piece-thumb-svg ${revealed ? 'on' : 'off'}" viewBox="${vb}" role="img" aria-label="퍼즐 조각 ${idx + 1}${revealed ? ' (완성)' : ''}">
       <defs>
         <clipPath id="${uid}"><path d="${d}"/></clipPath>
-        <filter id="${uid}-h"><feColorMatrix type="saturate" values="0.1"/><feGaussianBlur stdDeviation="2.4"/></filter>
+        <filter id="${uid}-h"><feColorMatrix type="saturate" values="0.45"/><feGaussianBlur stdDeviation="1.2"/></filter>
       </defs>
       ${revealed
         ? `<g clip-path="url(#${uid})">${photo}</g>
            <path d="${d}" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>`
-        : `<g clip-path="url(#${uid})"><g filter="url(#${uid}-h)" opacity="0.3">${photo}</g>
-           <path d="${d}" fill="rgba(8,13,24,0.5)"/></g>
+        : `<g clip-path="url(#${uid})"><g filter="url(#${uid}-h)" opacity="0.62">${photo}</g>
+           <path d="${d}" fill="rgba(8,13,24,0.26)"/></g>
            <path d="${d}" fill="none" stroke="rgba(127,212,255,0.45)" stroke-width="1.4" stroke-dasharray="4 4"/>`}
     </svg>`;
   }

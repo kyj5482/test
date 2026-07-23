@@ -3,6 +3,10 @@ id: builder-ai-suite
 tag: ai
 pieces: 3
 related: [builder-one-day-one-app]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 부서마다 AI 앱을 하나씩 주면 무슨 일이 생길까?

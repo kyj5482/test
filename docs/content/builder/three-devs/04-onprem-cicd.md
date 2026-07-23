@@ -3,6 +3,10 @@ id: builder-onprem-cicd
 tag: platform
 pieces: 3
 related: [builder-global-oncall]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 온프레미스에서도 하루 10번 배포할 수 있을까?

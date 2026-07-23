@@ -1,0 +1,11 @@
+{
+  "order": 10,
+  "emoji": "🏊‍♂️",
+  "title": "선수 성장 데이터 플랫폼",
+  "question": "수영하는 내 아이의 성장을, 데이터로 기록하고 코칭할 수 있을까?",
+  "unlock": {
+    "interests": ["data", "ai"]
+  },
+  "unlockLabel": "데이터·AI 관심사에서 활성화",
+  "credit": {}
+}

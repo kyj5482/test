@@ -3,6 +3,10 @@ id: parent-race-day-food
 tag: S3
 pieces: 3
 related: [swimmer-taper-week]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 대회 날 아침, 무엇을 먹여야 할까?

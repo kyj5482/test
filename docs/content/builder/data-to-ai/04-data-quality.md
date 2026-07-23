@@ -3,6 +3,10 @@ id: builder-data-quality
 tag: data
 pieces: 3
 related: [builder-email-to-api]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 데이터가 많은데 왜 믿을 수 있는 숫자는 없을까?

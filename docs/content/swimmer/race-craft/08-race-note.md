@@ -6,6 +6,10 @@ levels: [B, BB, A, AA]
 ages: [11-12, 13-14, 15-16, 17-18]
 sex: all
 related: [builder-vehicle-twin]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 레이스 노트 한 줄이 기록을 바꿀 수 있을까?

@@ -6,6 +6,10 @@ levels: [B, BB, A, AA]
 ages: [11-12, 13-14, 15-16]
 sex: all
 related: [swimmer-start-tenth]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 턴과 잠영, 물속에서 이기는 법은?

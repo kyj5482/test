@@ -3,6 +3,10 @@ id: parent-why-swimming
 tag: S1
 pieces: 3
 related: [swimmer-when-to-start]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 왜 하필 수영일까? 첫 운동을 고르는 기준

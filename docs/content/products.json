@@ -1,0 +1,124 @@
+[
+  {
+    "key": "swimvault",
+    "name": "SwimVault",
+    "emoji": "🗄️",
+    "tagline": "흩어진 대회 기록을, 아이의 평생 기록부로.",
+    "status": "building",
+    "repo": "https://github.com/kyj5482/swim.meet.portfolio",
+    "site": null,
+    "links": [
+      { "label": "타임캡슐 프로토타입 — swim.capsule", "url": "https://kyj5482.github.io/swim.capsule/" }
+    ],
+    "problem": "여름 리그, YMCA, 학교 대회, 그리고 한국에서의 기록 — USA Swimming 중앙 기록에 실리지 않는 기록이 너무 많다. 결과지는 휴대폰 사진첩 속에서 사라지고, 아이의 성장 곡선은 나라와 리그를 건널 때마다 끊긴다.",
+    "origin": "한국 과천에서 미국 어바인까지, 두 아이의 기록이 흩어지는 걸 지켜본 아빠가 시작했다. 처음에는 기록을 원본 그대로 보관하는 타임캡슐(swim.capsule)이었고, 지금은 결과지 사진 한 장이면 우리 아이 기록만 추출해 평생 기록부로 쌓아주는 서비스로 키우고 있다.",
+    "forWho": [
+      "여러 리그·나라를 오가며 뛰는 선수의 가정",
+      "아이의 기록을 대회 앱이 아니라 '우리 데이터'로 남기고 싶은 부모",
+      "성장 곡선(진척·스플릿)을 근거로 다음 목표를 정하고 싶은 선수"
+    ],
+    "series": ["athlete-data-platform"],
+    "features": [
+      {
+        "name": "사진 한 장 기록 추출",
+        "desc": "어느 대회든 결과지를 찍어 올리면, 비전+LLM이 우리 아이 기록만 골라 구조화된 데이터로 만든다.",
+        "stories": ["builder-athlete-messy-data"]
+      },
+      {
+        "name": "평생 기록부 · 성장 대시보드",
+        "desc": "리그와 나라가 바뀌어도 끊기지 않는 하나의 성장 곡선. 종목별 베스트와 향상폭을 한눈에 본다.",
+        "stories": ["builder-athlete-why-log", "builder-athlete-dashboard", "swimmer-record-updown"]
+      },
+      {
+        "name": "표준기록 비교",
+        "desc": "USA Swimming 기준(B→AAAA)과 대회 커트 대비 지금 어디쯤인지, 다음 등급까지 몇 초인지 보여준다.",
+        "stories": ["swimmer-read-time-standards", "swimmer-ladder-overview"]
+      },
+      {
+        "name": "AI 성장 코칭",
+        "desc": "쌓인 기록 데이터에서 정체 구간과 강점 종목을 찾아, 다음 시즌의 포커스를 제안한다.",
+        "stories": ["builder-athlete-ai-coach", "builder-athlete-productize"]
+      }
+    ]
+  },
+  {
+    "key": "splitlane",
+    "name": "SplitLane",
+    "emoji": "⏱️",
+    "tagline": "1/100초 훈련 타이머 위에, AI 코치를 얹다.",
+    "status": "building",
+    "repo": "https://github.com/kyj5482/swim.meet.timer",
+    "site": null,
+    "links": [],
+    "problem": "대회 결과는 앱이 알려주지만, 매일의 훈련은 어디에도 남지 않는다. 0.1초를 줄이는 일은 대회장이 아니라 연습 레인에서 일어나는데, 그 과정을 기록하는 도구가 없다.",
+    "origin": "스타트의 0.1초, 턴과 잠영, 후반 페이스 — 관중석에서 초시계를 누르며 레이스 노트를 적던 아빠가, 그 디테일을 1/100초 단위로 기록하는 타이머를 만들었다. 그 위에 타겟 표준기록 대비 진행률과 향상 가속도를 읽어주는 AI 코치를 얹는 중이다.",
+    "forWho": [
+      "연습에서 구간 기록을 직접 재고 싶은 선수와 코치",
+      "타겟 기록(B→AAAA·Futures·Sectionals)까지의 거리를 과정으로 추적하고 싶은 가정",
+      "정체가 왔을 때 데이터로 원인을 찾고 싶은 선수"
+    ],
+    "series": ["race-craft", "champion-code"],
+    "features": [
+      {
+        "name": "1/100초 정밀 타이머",
+        "desc": "스타트·턴·잠영 — 승부가 갈리는 디테일을 잴 수 있는 훈련용 정밀 타이머. 무료.",
+        "stories": ["swimmer-start-tenth", "swimmer-turn-underwater"]
+      },
+      {
+        "name": "구간(랩) 페이스 분석",
+        "desc": "전반·후반 스플릿과 페이스 일관성을 기록해, '후반에 더 빨라지는 레이스'를 설계한다.",
+        "stories": ["swimmer-pacing"]
+      },
+      {
+        "name": "타겟 표준기록 진행률",
+        "desc": "목표 기준기록을 고르면 현재 기록 대비 달성률과 남은 시간을 보여준다. 오르락내리락하는 기록을 추세로 읽는다.",
+        "stories": ["swimmer-record-updown", "swimmer-read-time-standards"]
+      },
+      {
+        "name": "AI 코치 — 향상 가속도와 다음 훈련 포커스",
+        "desc": "레이스 노트와 훈련 기록에서 개선 기울기의 변화를 읽고, 다음 연습에서 집중할 한 가지를 제안한다.",
+        "stories": ["swimmer-race-note", "swimmer-coach-partnership", "swimmer-season-design"]
+      }
+    ]
+  },
+  {
+    "key": "swim-meets",
+    "name": "swim.meets",
+    "emoji": "📋",
+    "tagline": "경기 3분, 대기 5시간 — 대회 날을 데이터로 정리하다.",
+    "status": "live",
+    "repo": "https://github.com/kyj5482/swim.meets",
+    "site": "https://kyj5482.github.io/swim.meets/",
+    "links": [],
+    "problem": "수천 명이 출전하는 대회에서 내 아이의 이벤트·조·레인·예상 출발시각을 psych sheet PDF에서 눈으로 찾아야 한다. 부모의 대회 날은 검색으로 시작해 하염없는 대기로 끝난다.",
+    "origin": "대회장에서 5시간을 기다리며 종이 psych sheet에 형광펜을 긋던 아빠가 만들었다. 관심 선수를 등록해 두면 대회마다 PDF만 올려도 그 선수의 일정·시드기록·표준기록 통과 여부를 뽑아 MeetMobile처럼 조회할 수 있다.",
+    "forWho": [
+      "대회마다 psych sheet에서 아이를 찾아 헤매는 부모",
+      "예상 출발시각에 맞춰 식사·워밍업 타이밍을 잡아야 하는 가정",
+      "팀 아이들의 출전 일정을 한 번에 보고 싶은 코치·매니저"
+    ],
+    "series": ["away-meets"],
+    "features": [
+      {
+        "name": "관심 선수 자동 추출",
+        "desc": "수천 명의 psych sheet에서 등록한 선수만 골라낸다. 나이·팀 가중 매칭으로 동명이인도 구분.",
+        "stories": ["parent-waiting-hours"]
+      },
+      {
+        "name": "예상 출발시각 타임라인",
+        "desc": "Session Report에서 이벤트별 예상 출발시각을 뽑아, 대기 5시간을 계획 가능한 시간으로 바꾼다.",
+        "stories": ["parent-waiting-hours", "parent-race-day-food"]
+      },
+      {
+        "name": "표준기록 통과 여부",
+        "desc": "psych sheet에 인쇄된 급별 cut time을 자동 추출해, 어느 기준을 통과했고 몇 초 부족한지 보여준다.",
+        "stories": ["swimmer-read-time-standards"]
+      },
+      {
+        "name": "대회를 거듭한 기록 진척도",
+        "desc": "대회마다 JSON으로 쌓인 결과에서 종목별 최고기록과 직전 대비 향상폭을 계산한다.",
+        "stories": ["swimmer-record-updown", "swimmer-first-us-meet"]
+      }
+    ]
+  }
+]

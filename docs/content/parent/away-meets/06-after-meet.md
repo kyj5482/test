@@ -3,6 +3,10 @@ id: parent-after-meet
 tag: S3
 pieces: 3
 related: [swimmer-first-race-9th]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 대회가 끝난 저녁, 아이에게 무슨 말을 해줘야 할까?

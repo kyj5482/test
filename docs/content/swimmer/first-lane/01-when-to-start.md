@@ -6,6 +6,10 @@ levels: [PRE_B, B]
 ages: [10U, 11-12]
 sex: all
 related: [parent-kids-sports-start]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 수영은 언제 시작해야 늦지 않을까?

@@ -86,6 +86,7 @@
       "unlockLabel": "PRE_B–BB 레벨에서 활성화",
       "coverBase": "content/swimmer/first-lane/cover",
       "sexed": false,
+      "hasCover": true,
       "credit": {
         "file": "World's Largest Swimming Lesson 2014 (14542831582).jpg",
         "artist": "PoolSafely",
@@ -119,6 +120,7 @@
       "unlockLabel": "B–AA 레벨에서 활성화",
       "coverBase": "content/swimmer/race-craft/cover",
       "sexed": false,
+      "hasCover": true,
       "credit": {
         "file": "Swimmer Diving Off a Block.jpg",
         "artist": "Alex Kushell",
@@ -155,6 +157,7 @@
       "unlockLabel": "A 레벨 이상에서 활성화",
       "coverBase": "content/swimmer/american-lanes/cover",
       "sexed": false,
+      "hasCover": true,
       "credit": {
         "file": "RIMPAC 2012 international swim meet 120706-F-MQ656-198.jpg",
         "artist": "Tech. Sgt. Michael Holzworth",
@@ -187,6 +190,7 @@
       "unlockLabel": "AAA 레벨 이상에서 활성화",
       "coverBase": "content/swimmer/olympic-ladder/cover",
       "sexed": true,
+      "hasCover": true,
       "credit": {
         "M": {
           "file": "Michael Phelps winning 100 butterfly (18791979248).jpg",
@@ -228,6 +232,7 @@
       "unlockLabel": "AAA 레벨 이상에서 활성화",
       "coverBase": "content/swimmer/champion-code/cover",
       "sexed": true,
+      "hasCover": true,
       "credit": {
         "M": {
           "file": "Phelps in butterfly (3651951961).jpg",
@@ -270,6 +275,7 @@
       "unlockLabel": "자녀 단계를 고르면 활성화",
       "coverBase": "content/parent/parent-seasons/cover",
       "sexed": false,
+      "hasCover": true,
       "credit": {
         "file": "Father with Babygirl in a swimming pool.jpg",
         "artist": "U.S. Navy photo by Mass Communication Specialist 3rd Class Angela Grube",
@@ -303,6 +309,7 @@
       "unlockLabel": "대회의 시간(S3) 단계에서 활성화",
       "coverBase": "content/parent/away-meets/cover",
       "sexed": false,
+      "hasCover": true,
       "credit": {
         "file": "Flushing Meadows-Corona Park Aquatic Center Pano-FMCPAq-002 (6446891517).jpg",
         "artist": "Charles Smith from New York, United States",
@@ -333,6 +340,7 @@
       "unlockLabel": "관심사 '플랫폼'에서 활성화",
       "coverBase": "content/builder/three-devs/cover",
       "sexed": false,
+      "hasCover": true,
       "credit": {
         "file": "Berlin Hackathon 2012-48.jpg",
         "artist": "Victorgrigas",
@@ -364,6 +372,7 @@
       "unlockLabel": "관심사 '데이터/AI'에서 활성화",
       "coverBase": "content/builder/data-to-ai/cover",
       "sexed": false,
+      "hasCover": true,
       "credit": {
         "file": "BalticServers data center.jpg",
         "artist": "BalticServers.com",
@@ -398,6 +407,7 @@
       "unlockLabel": "관심사 '커리어 스토리'에서 활성화",
       "coverBase": "content/builder/builder-origin/cover",
       "sexed": false,
+      "hasCover": true,
       "credit": {
         "file": "Commodore-64-Computer-FL.jpg",
         "artist": "Evan-Amos",
@@ -415,6 +425,32 @@
       ]
     },
     {
+      "id": "athlete-data-platform",
+      "audience": "builder",
+      "emoji": "🏊‍♂️",
+      "title": "선수 성장 데이터 플랫폼",
+      "question": "수영하는 내 아이의 성장을, 데이터로 기록하고 코칭할 수 있을까?",
+      "unlock": {
+        "interests": [
+          "data",
+          "ai"
+        ]
+      },
+      "unlockLabel": "데이터·AI 관심사에서 활성화",
+      "coverBase": "content/builder/athlete-data-platform/cover",
+      "sexed": false,
+      "hasCover": false,
+      "credit": {},
+      "articles": [
+        "builder-athlete-why-log",
+        "builder-athlete-messy-data",
+        "builder-athlete-dashboard",
+        "builder-athlete-ai-coach",
+        "builder-athlete-work-to-side",
+        "builder-athlete-productize"
+      ]
+    },
+    {
       "id": "pacific-bridge",
       "audience": "dreamer",
       "emoji": "🌉",
@@ -424,6 +460,7 @@
       "unlockLabel": "항상 열려 있는 퍼즐",
       "coverBase": "content/dreamer/pacific-bridge/cover",
       "sexed": false,
+      "hasCover": true,
       "credit": {
         "file": "Golden Gate Fog - Flickr - romainguy.jpg",
         "artist": "Romain Guy from San Francisco, USA",
@@ -451,6 +488,7 @@
       "title": "수영은 언제 시작해야 늦지 않을까?",
       "file": "content/swimmer/first-lane/01-when-to-start.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "PRE_B",
         "B"
@@ -471,6 +509,7 @@
       "title": "잘못 배운 폼, 다 무너뜨리고 다시 시작해야 할까?",
       "file": "content/swimmer/first-lane/02-restart-form.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "PRE_B",
         "B"
@@ -492,6 +531,7 @@
       "title": "발차기부터 다시? 기본기 재적응은 시간 낭비일까?",
       "file": "content/swimmer/first-lane/03-sibling-restart.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "PRE_B",
         "B"
@@ -512,6 +552,7 @@
       "title": "대회에서 결승에 못 가면 실패일까?",
       "file": "content/swimmer/first-lane/04-first-race-9th.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "PRE_B",
         "B",
@@ -534,6 +575,7 @@
       "title": "기록이 오르락내리락하면 정체된 걸까?",
       "file": "content/swimmer/first-lane/05-record-updown.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "B",
         "BB"
@@ -555,6 +597,7 @@
       "title": "취미반에서 선수 무대로, 무엇이 달라질까?",
       "file": "content/swimmer/first-lane/06-masters-to-athlete.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "PRE_B",
         "B",
@@ -577,6 +620,7 @@
       "title": "미국 수영 클럽은 어떻게 굴러갈까?",
       "file": "content/swimmer/american-lanes/01-us-club-system.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "A",
         "AA",
@@ -602,6 +646,7 @@
       "title": "B부터 AAAA까지, 미국 기준 기록표는 어떻게 읽을까?",
       "file": "content/swimmer/american-lanes/02-read-time-standards.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "A",
         "AA",
@@ -627,6 +672,7 @@
       "title": "야드 풀 기록과 미터 풀 기록, 어떻게 비교할까?",
       "file": "content/swimmer/american-lanes/03-scy-vs-lcm.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "A",
         "AA",
@@ -652,6 +698,7 @@
       "title": "첫 미국 대회, 한국과 무엇이 다를까?",
       "file": "content/swimmer/american-lanes/04-first-us-meet.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "A",
         "AA",
@@ -677,6 +724,7 @@
       "title": "한국 훈련과 미국 훈련은 무엇이 다를까?",
       "file": "content/swimmer/american-lanes/05-us-training.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAA",
         "AAAA",
@@ -701,6 +749,7 @@
       "title": "미국 전국 8위는 어떻게 만들어졌을까?",
       "file": "content/swimmer/american-lanes/06-us-top8.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AA",
         "AAA",
@@ -725,6 +774,7 @@
       "title": "새벽 훈련은 왜 최상위 선수의 기본값일까?",
       "file": "content/swimmer/champion-code/01-double-practice.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAA",
         "AAAA",
@@ -747,6 +797,7 @@
       "title": "물 밖 훈련이 물속 기록을 바꿀 수 있을까?",
       "file": "content/swimmer/champion-code/02-dryland.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAA",
         "AAAA",
@@ -769,6 +820,7 @@
       "title": "자는 것도 훈련일까? 회복의 과학",
       "file": "content/swimmer/champion-code/03-recovery-sleep.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAA",
         "AAAA",
@@ -791,6 +843,7 @@
       "title": "레이스 전 머릿속에서는 무슨 일이 일어날까?",
       "file": "content/swimmer/champion-code/04-mental-race.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAA",
         "AAAA",
@@ -813,6 +866,7 @@
       "title": "1년에 피크는 2~3번뿐 — 시즌은 어떻게 설계할까?",
       "file": "content/swimmer/champion-code/05-season-design.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAA",
         "AAAA",
@@ -835,6 +889,7 @@
       "title": "코치와 선수는 어떻게 한 팀이 될까?",
       "file": "content/swimmer/champion-code/06-coach-partnership.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAA",
         "AAAA",
@@ -857,6 +912,7 @@
       "title": "AAAA 다음은? 챔피언십 사다리 전체 지도",
       "file": "content/swimmer/olympic-ladder/01-ladder-overview.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAA",
         "AAAA",
@@ -879,6 +935,7 @@
       "title": "Sectionals, 첫 챔피언십 커트는 어떻게 통과할까?",
       "file": "content/swimmer/olympic-ladder/02-sectionals.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAA",
         "AAAA",
@@ -901,6 +958,7 @@
       "title": "Futures는 왜 '진짜 시작'이라고 불릴까?",
       "file": "content/swimmer/olympic-ladder/03-futures.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAA",
         "AAAA",
@@ -923,6 +981,7 @@
       "title": "Junior Nationals, 전국급 선수의 조건은?",
       "file": "content/swimmer/olympic-ladder/04-junior-nationals.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAAA",
         "AAAA_PLUS"
@@ -944,6 +1003,7 @@
       "title": "올림픽 트라이얼 출전 기준 기록은 어떻게 정해질까?",
       "file": "content/swimmer/olympic-ladder/05-olympic-trials-cut.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAAA",
         "AAAA_PLUS"
@@ -964,6 +1024,7 @@
       "title": "올림픽 대표는 어떻게 선발될까? 트라이얼 1·2위의 법칙",
       "file": "content/swimmer/olympic-ladder/06-team-selection.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "AAAA",
         "AAAA_PLUS"
@@ -984,6 +1045,7 @@
       "title": "스타트의 0.1초는 어디서 나올까?",
       "file": "content/swimmer/race-craft/01-start-tenth.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "B",
         "BB",
@@ -1007,6 +1069,7 @@
       "title": "턴과 잠영, 물속에서 이기는 법은?",
       "file": "content/swimmer/race-craft/02-turn-underwater.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "B",
         "BB",
@@ -1030,6 +1093,7 @@
       "title": "후반에 더 빨라질 수 있을까? 페이스 배분의 비밀",
       "file": "content/swimmer/race-craft/03-pacing.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "BB",
         "A",
@@ -1053,6 +1117,7 @@
       "title": "내 몸에 맞는 종목은 어떻게 찾을까?",
       "file": "content/swimmer/race-craft/04-event-choice.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "B",
         "BB",
@@ -1076,6 +1141,7 @@
       "title": "계영은 왜 개인 종목보다 빠를까?",
       "file": "content/swimmer/race-craft/05-relay-strategy.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "B",
         "BB",
@@ -1100,6 +1166,7 @@
       "title": "대회 전 일주일, 훈련을 줄여도 될까?",
       "file": "content/swimmer/race-craft/06-taper-week.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "BB",
         "A",
@@ -1123,6 +1190,7 @@
       "title": "주종목이 아닌 종목으로 입상할 수 있을까?",
       "file": "content/swimmer/race-craft/07-second-stroke.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "A",
         "AA"
@@ -1146,6 +1214,7 @@
       "title": "레이스 노트 한 줄이 기록을 바꿀 수 있을까?",
       "file": "content/swimmer/race-craft/08-race-note.md",
       "pieces": 3,
+      "status": "published",
       "levels": [
         "B",
         "BB",
@@ -1170,6 +1239,7 @@
       "title": "대회 원정 가방, 무엇을 챙겨야 할까?",
       "file": "content/parent/away-meets/01-packing-checklist.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "parent-race-day-food"
       ]
@@ -1181,6 +1251,7 @@
       "title": "대회 날 아침, 무엇을 먹여야 할까?",
       "file": "content/parent/away-meets/02-race-day-food.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "swimmer-taper-week"
       ]
@@ -1192,6 +1263,7 @@
       "title": "경기 3분, 대기 5시간을 어떻게 보낼까?",
       "file": "content/parent/away-meets/03-waiting-hours.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "parent-race-trip-gift"
       ]
@@ -1203,6 +1275,7 @@
       "title": "관중석의 부모는 무엇을 해야 할까?",
       "file": "content/parent/away-meets/04-stands-manner.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "parent-after-meet"
       ]
@@ -1214,6 +1287,7 @@
       "title": "대회 원정을 아이의 선물로 만들 수 있을까?",
       "file": "content/parent/away-meets/05-race-trip-gift.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "swimmer-second-stroke",
         "dreamer-us-trip-2006"
@@ -1226,6 +1300,7 @@
       "title": "대회가 끝난 저녁, 아이에게 무슨 말을 해줘야 할까?",
       "file": "content/parent/away-meets/06-after-meet.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "swimmer-first-race-9th"
       ]
@@ -1237,6 +1312,7 @@
       "title": "영어유치원 대신 운동을 시키면 뒤처지는 걸까?",
       "file": "content/parent/parent-seasons/01-kids-sports-start.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "swimmer-restart-form"
       ]
@@ -1248,6 +1324,7 @@
       "title": "왜 하필 수영일까? 첫 운동을 고르는 기준",
       "file": "content/parent/parent-seasons/02-why-swimming.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "swimmer-when-to-start"
       ]
@@ -1259,6 +1336,7 @@
       "title": "선수 등록, 언제 어떻게 결정해야 할까?",
       "file": "content/parent/parent-seasons/03-athlete-registration.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "swimmer-first-race-9th"
       ]
@@ -1270,6 +1348,7 @@
       "title": "선수 가정의 가계부는 어떻게 다를까?",
       "file": "content/parent/parent-seasons/04-sports-budget.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "parent-athlete-registration"
       ]
@@ -1281,6 +1360,7 @@
       "title": "훈련과 학업, 둘 다 잡을 수 있을까?",
       "file": "content/parent/parent-seasons/05-study-and-training.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "swimmer-masters-to-athlete"
       ]
@@ -1292,6 +1372,7 @@
       "title": "아이가 수영장에 가기 싫다고 할 때",
       "file": "content/parent/parent-seasons/06-slump-season.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "swimmer-record-updown"
       ]
@@ -1303,6 +1384,7 @@
       "title": "형제가 같은 운동을 하면 비교를 피할 수 있을까?",
       "file": "content/parent/parent-seasons/07-two-athletes.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "swimmer-event-choice"
       ]
@@ -1314,6 +1396,7 @@
       "title": "아이의 수영을 위해 나라를 옮긴다는 것은?",
       "file": "content/parent/parent-seasons/08-moving-abroad.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "dreamer-visa-vs-expat",
         "swimmer-us-training"
@@ -1326,6 +1409,7 @@
       "title": "초등학생의 첫 코딩은 무엇을 남겼을까?",
       "file": "content/builder/builder-origin/01-first-code.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-robot-soccer"
       ]
@@ -1337,6 +1421,7 @@
       "title": "로봇축구 세계대회는 무엇을 가르쳐줬을까?",
       "file": "content/builder/builder-origin/02-robot-soccer.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-samsung-membership"
       ]
@@ -1348,6 +1433,7 @@
       "title": "삼성소프트웨어멤버십 4년, RTOS가 준 기본기는?",
       "file": "content/builder/builder-origin/03-samsung-membership.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-tizen-convergence"
       ]
@@ -1359,6 +1445,7 @@
       "title": "오픈소스 커뮤니티 리뷰어로 산다는 것은?",
       "file": "content/builder/builder-origin/04-tizen-convergence.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-paper-per-year"
       ]
@@ -1370,6 +1457,7 @@
       "title": "매년 논문 한 편, 엔지니어에게 왜 필요할까?",
       "file": "content/builder/builder-origin/05-paper-per-year.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-to-carmaker"
       ]
@@ -1381,8 +1469,90 @@
       "title": "연구소에서 자동차 회사로, 왜 옮겼을까?",
       "file": "content/builder/builder-origin/06-to-carmaker.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-one-account"
+      ]
+    },
+    {
+      "id": "builder-athlete-why-log",
+      "audience": "builder",
+      "tag": "data",
+      "title": "내 아이의 기록을, 왜 직접 데이터로 남기기 시작했나?",
+      "file": "content/builder/athlete-data-platform/01-why-log-my-kid.md",
+      "pieces": 3,
+      "status": "planned",
+      "publish": "2026-08-06",
+      "related": [
+        "swimmer-record-updown",
+        "swimmer-read-time-standards"
+      ]
+    },
+    {
+      "id": "builder-athlete-messy-data",
+      "audience": "builder",
+      "tag": "data",
+      "title": "흩어진 대회 기록을 어떻게 하나의 데이터로 모을까?",
+      "file": "content/builder/athlete-data-platform/02-messy-meet-data.md",
+      "pieces": 3,
+      "status": "planned",
+      "publish": "2026-08-20",
+      "related": [
+        "builder-data-quality"
+      ]
+    },
+    {
+      "id": "builder-athlete-dashboard",
+      "audience": "builder",
+      "tag": "data",
+      "title": "성장 곡선을 한눈에 보는 대시보드는 어떻게 설계할까?",
+      "file": "content/builder/athlete-data-platform/03-growth-dashboard.md",
+      "pieces": 3,
+      "status": "planned",
+      "publish": "2026-09-03",
+      "related": [
+        "builder-vehicle-twin"
+      ]
+    },
+    {
+      "id": "builder-athlete-ai-coach",
+      "audience": "builder",
+      "tag": "ai",
+      "title": "AI는 기록 데이터에서 어떤 코칭을 뽑아낼 수 있을까?",
+      "file": "content/builder/athlete-data-platform/04-ai-coach.md",
+      "pieces": 3,
+      "status": "planned",
+      "publish": "2026-09-17",
+      "related": [
+        "builder-ai-suite",
+        "swimmer-mental-race"
+      ]
+    },
+    {
+      "id": "builder-athlete-work-to-side",
+      "audience": "builder",
+      "tag": "career",
+      "title": "회사에서 만든 데이터 플랫폼 경험을, 개인 프로젝트로 옮길 수 있을까?",
+      "file": "content/builder/athlete-data-platform/05-from-work-to-side.md",
+      "pieces": 3,
+      "status": "planned",
+      "publish": "2026-10-01",
+      "related": [
+        "builder-one-day-one-app",
+        "dreamer-silicon-valley"
+      ]
+    },
+    {
+      "id": "builder-athlete-productize",
+      "audience": "builder",
+      "tag": "career",
+      "title": "내 아이를 위한 도구를, 다른 선수 가정도 쓰는 서비스로 만들 수 있을까?",
+      "file": "content/builder/athlete-data-platform/06-productize.md",
+      "pieces": 3,
+      "status": "planned",
+      "publish": "2026-10-15",
+      "related": [
+        "builder-data-appmarket"
       ]
     },
     {
@@ -1392,6 +1562,7 @@
       "title": "문서 없는 시스템은 어떻게 인수할까?",
       "file": "content/builder/three-devs/01-inheriting-no-docs.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-three-devs-platform"
       ]
@@ -1403,6 +1574,7 @@
       "title": "3개 브랜드의 계정을 6개월 만에 통합할 수 있을까?",
       "file": "content/builder/three-devs/02-one-account.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-three-devs-platform"
       ]
@@ -1414,6 +1586,7 @@
       "title": "글로벌 차량 API 인증은 어떻게 설계할까?",
       "file": "content/builder/three-devs/03-oauth-jwt-design.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-one-account"
       ]
@@ -1425,6 +1598,7 @@
       "title": "온프레미스에서도 하루 10번 배포할 수 있을까?",
       "file": "content/builder/three-devs/04-onprem-cicd.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-global-oncall"
       ]
@@ -1436,6 +1610,7 @@
       "title": "3명이 어떻게 글로벌 커넥티드카 플랫폼을 만들었나?",
       "file": "content/builder/three-devs/05-three-devs-global-platform.md",
       "pieces": 4,
+      "status": "published",
       "related": [
         "builder-vehicle-twin",
         "dreamer-visa-vs-expat"
@@ -1448,6 +1623,7 @@
       "title": "3명이 4개 대륙을 운영하는 게 가능할까?",
       "file": "content/builder/three-devs/06-global-oncall.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "dreamer-silicon-valley"
       ]
@@ -1459,6 +1635,7 @@
       "title": "매일 100만 대에서 수집하는데 왜 하루 1대도 분석 못할까?",
       "file": "content/builder/data-to-ai/01-vehicle-twin.md",
       "pieces": 4,
+      "status": "published",
       "related": [
         "builder-three-devs-platform",
         "builder-one-day-one-app"
@@ -1471,6 +1648,7 @@
       "title": "연 $2M 데이터 수집 비용은 어떻게 줄일까?",
       "file": "content/builder/data-to-ai/02-cutting-2m-cost.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-vehicle-twin"
       ]
@@ -1482,6 +1660,7 @@
       "title": "이메일로 주던 데이터를 24/7 API로 바꾸면 무슨 일이 생길까?",
       "file": "content/builder/data-to-ai/03-email-to-api.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-cutting-2m-cost"
       ]
@@ -1493,6 +1672,7 @@
       "title": "데이터가 많은데 왜 믿을 수 있는 숫자는 없을까?",
       "file": "content/builder/data-to-ai/04-data-quality.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-email-to-api"
       ]
@@ -1504,6 +1684,7 @@
       "title": "12V 배터리 암전류는 어떻게 데이터로 잡을까?",
       "file": "content/builder/data-to-ai/05-dark-current-mart.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-email-to-api"
       ]
@@ -1515,6 +1696,7 @@
       "title": "원격진단은 어떻게 스트림 위에서 돌아갈까?",
       "file": "content/builder/data-to-ai/06-remote-diagnostics.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-vehicle-twin"
       ]
@@ -1526,6 +1708,7 @@
       "title": "1일 1앱은 어떻게 가능한가?",
       "file": "content/builder/data-to-ai/07-one-day-one-app.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-vehicle-twin"
       ]
@@ -1537,6 +1720,7 @@
       "title": "부서마다 AI 앱을 하나씩 주면 무슨 일이 생길까?",
       "file": "content/builder/data-to-ai/08-ai-suite.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-one-day-one-app"
       ]
@@ -1548,6 +1732,7 @@
       "title": "2주 안에 가치를 증명 못하면 접어야 할까?",
       "file": "content/builder/data-to-ai/09-quickwin-scale.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-ai-suite"
       ]
@@ -1559,6 +1744,7 @@
       "title": "누구나 데이터 앱을 배포하는 앱마켓은 어떻게 만들까?",
       "file": "content/builder/data-to-ai/10-data-appmarket.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-one-day-one-app"
       ]
@@ -1570,6 +1756,7 @@
       "title": "2006년, 지도 없이 미국 20일을 어떻게 여행했나?",
       "file": "content/dreamer/pacific-bridge/01-us-trip-2006.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "dreamer-silicon-valley"
       ]
@@ -1581,6 +1768,7 @@
       "title": "밴쿠버 2개월, 여행과 살아보기는 무엇이 다를까?",
       "file": "content/dreamer/pacific-bridge/02-vancouver-two-months.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "dreamer-us-trip-2006"
       ]
@@ -1592,6 +1780,7 @@
       "title": "실리콘밸리 파견 2년은 무엇을 남겼나?",
       "file": "content/dreamer/pacific-bridge/03-silicon-valley.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-vehicle-twin",
         "dreamer-visa-vs-expat"
@@ -1604,6 +1793,7 @@
       "title": "영어는 얼마나 해야 미국에서 일할 수 있을까?",
       "file": "content/dreamer/pacific-bridge/04-english-reality.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "dreamer-silicon-valley"
       ]
@@ -1615,6 +1805,7 @@
       "title": "스타트업비자 vs 주재원, 무엇을 선택해야 할까?",
       "file": "content/dreamer/pacific-bridge/05-visa-vs-expat.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "builder-three-devs-platform",
         "parent-moving-abroad"
@@ -1627,6 +1818,7 @@
       "title": "주재원 정착 첫 90일, 무엇부터 해야 할까?",
       "file": "content/dreamer/pacific-bridge/06-first-90-days.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "parent-moving-abroad"
       ]
@@ -1638,6 +1830,7 @@
       "title": "아이들은 미국 훈련에 어떻게 적응했나?",
       "file": "content/dreamer/pacific-bridge/07-kids-adaptation.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "swimmer-us-training",
         "parent-moving-abroad"
@@ -1650,9 +1843,194 @@
       "title": "미국에서 아이는 한국인으로 자랄 수 있을까?",
       "file": "content/dreamer/pacific-bridge/08-korean-identity.md",
       "pieces": 3,
+      "status": "published",
       "related": [
         "dreamer-kids-adaptation"
       ]
+    }
+  ],
+  "products": [
+    {
+      "key": "swimvault",
+      "name": "SwimVault",
+      "emoji": "🗄️",
+      "tagline": "흩어진 대회 기록을, 아이의 평생 기록부로.",
+      "status": "building",
+      "repo": "https://github.com/kyj5482/swim.meet.portfolio",
+      "site": null,
+      "links": [
+        {
+          "label": "타임캡슐 프로토타입 — swim.capsule",
+          "url": "https://kyj5482.github.io/swim.capsule/"
+        }
+      ],
+      "problem": "여름 리그, YMCA, 학교 대회, 그리고 한국에서의 기록 — USA Swimming 중앙 기록에 실리지 않는 기록이 너무 많다. 결과지는 휴대폰 사진첩 속에서 사라지고, 아이의 성장 곡선은 나라와 리그를 건널 때마다 끊긴다.",
+      "origin": "한국 과천에서 미국 어바인까지, 두 아이의 기록이 흩어지는 걸 지켜본 아빠가 시작했다. 처음에는 기록을 원본 그대로 보관하는 타임캡슐(swim.capsule)이었고, 지금은 결과지 사진 한 장이면 우리 아이 기록만 추출해 평생 기록부로 쌓아주는 서비스로 키우고 있다.",
+      "forWho": [
+        "여러 리그·나라를 오가며 뛰는 선수의 가정",
+        "아이의 기록을 대회 앱이 아니라 '우리 데이터'로 남기고 싶은 부모",
+        "성장 곡선(진척·스플릿)을 근거로 다음 목표를 정하고 싶은 선수"
+      ],
+      "series": [
+        "athlete-data-platform"
+      ],
+      "features": [
+        {
+          "name": "사진 한 장 기록 추출",
+          "desc": "어느 대회든 결과지를 찍어 올리면, 비전+LLM이 우리 아이 기록만 골라 구조화된 데이터로 만든다.",
+          "stories": [
+            "builder-athlete-messy-data"
+          ]
+        },
+        {
+          "name": "평생 기록부 · 성장 대시보드",
+          "desc": "리그와 나라가 바뀌어도 끊기지 않는 하나의 성장 곡선. 종목별 베스트와 향상폭을 한눈에 본다.",
+          "stories": [
+            "builder-athlete-why-log",
+            "builder-athlete-dashboard",
+            "swimmer-record-updown"
+          ]
+        },
+        {
+          "name": "표준기록 비교",
+          "desc": "USA Swimming 기준(B→AAAA)과 대회 커트 대비 지금 어디쯤인지, 다음 등급까지 몇 초인지 보여준다.",
+          "stories": [
+            "swimmer-read-time-standards",
+            "swimmer-ladder-overview"
+          ]
+        },
+        {
+          "name": "AI 성장 코칭",
+          "desc": "쌓인 기록 데이터에서 정체 구간과 강점 종목을 찾아, 다음 시즌의 포커스를 제안한다.",
+          "stories": [
+            "builder-athlete-ai-coach",
+            "builder-athlete-productize"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "splitlane",
+      "name": "SplitLane",
+      "emoji": "⏱️",
+      "tagline": "1/100초 훈련 타이머 위에, AI 코치를 얹다.",
+      "status": "building",
+      "repo": "https://github.com/kyj5482/swim.meet.timer",
+      "site": null,
+      "links": [],
+      "problem": "대회 결과는 앱이 알려주지만, 매일의 훈련은 어디에도 남지 않는다. 0.1초를 줄이는 일은 대회장이 아니라 연습 레인에서 일어나는데, 그 과정을 기록하는 도구가 없다.",
+      "origin": "스타트의 0.1초, 턴과 잠영, 후반 페이스 — 관중석에서 초시계를 누르며 레이스 노트를 적던 아빠가, 그 디테일을 1/100초 단위로 기록하는 타이머를 만들었다. 그 위에 타겟 표준기록 대비 진행률과 향상 가속도를 읽어주는 AI 코치를 얹는 중이다.",
+      "forWho": [
+        "연습에서 구간 기록을 직접 재고 싶은 선수와 코치",
+        "타겟 기록(B→AAAA·Futures·Sectionals)까지의 거리를 과정으로 추적하고 싶은 가정",
+        "정체가 왔을 때 데이터로 원인을 찾고 싶은 선수"
+      ],
+      "series": [
+        "race-craft",
+        "champion-code"
+      ],
+      "features": [
+        {
+          "name": "1/100초 정밀 타이머",
+          "desc": "스타트·턴·잠영 — 승부가 갈리는 디테일을 잴 수 있는 훈련용 정밀 타이머. 무료.",
+          "stories": [
+            "swimmer-start-tenth",
+            "swimmer-turn-underwater"
+          ]
+        },
+        {
+          "name": "구간(랩) 페이스 분석",
+          "desc": "전반·후반 스플릿과 페이스 일관성을 기록해, '후반에 더 빨라지는 레이스'를 설계한다.",
+          "stories": [
+            "swimmer-pacing"
+          ]
+        },
+        {
+          "name": "타겟 표준기록 진행률",
+          "desc": "목표 기준기록을 고르면 현재 기록 대비 달성률과 남은 시간을 보여준다. 오르락내리락하는 기록을 추세로 읽는다.",
+          "stories": [
+            "swimmer-record-updown",
+            "swimmer-read-time-standards"
+          ]
+        },
+        {
+          "name": "AI 코치 — 향상 가속도와 다음 훈련 포커스",
+          "desc": "레이스 노트와 훈련 기록에서 개선 기울기의 변화를 읽고, 다음 연습에서 집중할 한 가지를 제안한다.",
+          "stories": [
+            "swimmer-race-note",
+            "swimmer-coach-partnership",
+            "swimmer-season-design"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "swim-meets",
+      "name": "swim.meets",
+      "emoji": "📋",
+      "tagline": "경기 3분, 대기 5시간 — 대회 날을 데이터로 정리하다.",
+      "status": "live",
+      "repo": "https://github.com/kyj5482/swim.meets",
+      "site": "https://kyj5482.github.io/swim.meets/",
+      "links": [],
+      "problem": "수천 명이 출전하는 대회에서 내 아이의 이벤트·조·레인·예상 출발시각을 psych sheet PDF에서 눈으로 찾아야 한다. 부모의 대회 날은 검색으로 시작해 하염없는 대기로 끝난다.",
+      "origin": "대회장에서 5시간을 기다리며 종이 psych sheet에 형광펜을 긋던 아빠가 만들었다. 관심 선수를 등록해 두면 대회마다 PDF만 올려도 그 선수의 일정·시드기록·표준기록 통과 여부를 뽑아 MeetMobile처럼 조회할 수 있다.",
+      "forWho": [
+        "대회마다 psych sheet에서 아이를 찾아 헤매는 부모",
+        "예상 출발시각에 맞춰 식사·워밍업 타이밍을 잡아야 하는 가정",
+        "팀 아이들의 출전 일정을 한 번에 보고 싶은 코치·매니저"
+      ],
+      "series": [
+        "away-meets"
+      ],
+      "features": [
+        {
+          "name": "관심 선수 자동 추출",
+          "desc": "수천 명의 psych sheet에서 등록한 선수만 골라낸다. 나이·팀 가중 매칭으로 동명이인도 구분.",
+          "stories": [
+            "parent-waiting-hours"
+          ]
+        },
+        {
+          "name": "예상 출발시각 타임라인",
+          "desc": "Session Report에서 이벤트별 예상 출발시각을 뽑아, 대기 5시간을 계획 가능한 시간으로 바꾼다.",
+          "stories": [
+            "parent-waiting-hours",
+            "parent-race-day-food"
+          ]
+        },
+        {
+          "name": "표준기록 통과 여부",
+          "desc": "psych sheet에 인쇄된 급별 cut time을 자동 추출해, 어느 기준을 통과했고 몇 초 부족한지 보여준다.",
+          "stories": [
+            "swimmer-read-time-standards"
+          ]
+        },
+        {
+          "name": "대회를 거듭한 기록 진척도",
+          "desc": "대회마다 JSON으로 쌓인 결과에서 종목별 최고기록과 직전 대비 향상폭을 계산한다.",
+          "stories": [
+            "swimmer-record-updown",
+            "swimmer-first-us-meet"
+          ]
+        }
+      ]
+    }
+  ],
+  "newsletters": [
+    {
+      "id": "nl-2026-07-swim-meets",
+      "title": "📮 창간호 — 경기 3분, 대기 5시간에서 태어난 swim.meets",
+      "date": "2026-07-23",
+      "product": "swim-meets",
+      "version": "v0.1",
+      "stories": [
+        "parent-waiting-hours",
+        "parent-race-day-food",
+        "swimmer-read-time-standards",
+        "swimmer-record-updown"
+      ],
+      "file": "content/newsletters/2026-07-23-swim-meets-first-issue.md"
     }
   ]
 }

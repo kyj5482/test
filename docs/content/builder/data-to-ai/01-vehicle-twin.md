@@ -3,6 +3,10 @@ id: builder-vehicle-twin
 tag: data
 pieces: 4
 related: [builder-three-devs-platform, builder-one-day-one-app]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 매일 100만 대에서 수집하는데 왜 하루 1대도 분석 못할까?

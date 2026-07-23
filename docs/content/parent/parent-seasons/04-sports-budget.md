@@ -3,6 +3,10 @@ id: parent-sports-budget
 tag: S2
 pieces: 3
 related: [parent-athlete-registration]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 선수 가정의 가계부는 어떻게 다를까?

@@ -6,6 +6,10 @@ levels: [AAAA, AAAA_PLUS]
 ages: [15-16, 17-18]
 sex: all
 related: [swimmer-olympic-trials-cut]
+status: published
+prompt: |
+  (원본 프롬프트 미기록 — 프롬프트 기록 규칙 도입 전 작성된 글.
+   재작성/보강 시 이 자리에 실제 프롬프트를 채운다.)
 ---
 
 # 올림픽 대표는 어떻게 선발될까? 트라이얼 1·2위의 법칙
