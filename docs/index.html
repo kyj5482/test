@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>데이터를 만들고, 선수를 키웁니다 — AI로 유스 스포츠 성장을 기록·분석하는 아빠 개발자</title>
-  <meta name="description" content="AI와 데이터로 유스 스포츠(수영) 성장을 기록·분석하는 아빠 개발자. 관중석의 질문이 이야기가 되고, 그 이야기가 SwimVault·SplitLane·swim.meets의 기능이 됩니다." />
+  <title>AI · Data · Youth Sports — a dad engineer recording and analyzing young athletes' growth</title>
+  <meta name="description" content="A dad engineer who records and analyzes youth sports (swimming) growth with AI and data. Questions from the stands become stories, and the stories become features of SwimVault, SplitLane, and swim.meets." />
   <!-- __BUILD_VERSION__은 배포 워크플로우가 커밋 해시로 치환 (캐시 버스팅) -->
   <script>window.BUILD_VERSION = '__BUILD_VERSION__';</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,640&family=Inter:wght@400;500;600;700;800&family=Noto+Serif+KR:wght@600;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/style.css?v=__BUILD_VERSION__" />
   <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
 </head>
@@ -20,27 +20,31 @@
   </div>
 
   <!-- HUD: 캔버스 위에 고정되는 UI -->
-  <header class="hud hud-brand" id="hud-brand" title="처음으로">
+  <header class="hud hud-brand" id="hud-brand" title="Home">
     <span class="brand-mark">〰️</span>
     <span class="brand-text">
-      <strong>데이터를 만들고, 선수를 키웁니다</strong>
-      <small>Engineering Data, Raising Athletes.</small>
+      <strong>AI · DATA · YOUTH SPORTS</strong>
+      <small>Engineering data, raising athletes.</small>
     </span>
   </header>
 
   <nav class="hud hud-nav" id="hud-nav">
-    <button id="nav-back" class="hud-btn" hidden>← 돌아가기</button>
+    <button id="nav-back" class="hud-btn" hidden>← Back</button>
+    <button id="lang-toggle" class="hud-btn lang" aria-label="Toggle language">한국어</button>
   </nav>
 
-  <!-- 우측 대시 레일: 이동한 만큼 - 가 쌓이고, 호버하면 목차가 열려 점프한다 -->
+  <!-- 우측 대시 레일: 장면 수만큼 - 가 쌓이고, 호버하면 목차가 열려 점프한다 -->
   <aside id="rail" class="hud">
     <div id="rail-dashes"></div>
     <div id="rail-panel" hidden></div>
   </aside>
 
   <div class="hud hud-loc" id="hud-loc"></div>
-  <div class="hud hud-hint" id="hud-hint">스크롤로 다음 장면 ↓ · 클릭하면 오른쪽으로 깊이 들어갑니다 →</div>
+  <div class="hud hud-hint" id="hud-hint"></div>
 
+  <!-- 사진 경로(교체는 art.js에서) · 다국어 사전 -->
+  <script src="assets/art.js?v=__BUILD_VERSION__"></script>
+  <script src="assets/i18n.js?v=__BUILD_VERSION__"></script>
   <script src="assets/app.js?v=__BUILD_VERSION__"></script>
 </body>
 </html>

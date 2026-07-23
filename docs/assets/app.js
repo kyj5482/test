@@ -1,15 +1,15 @@
-/* 프레지(Prezi)식 무한 캔버스 SPA.
+/* 프레지식 무한 캔버스 SPA — AI · DATA · YOUTH SPORTS.
  *
- * 모든 화면은 거대한 캔버스(#canvas) 위의 '장면(.scene)'이고, 카메라(transform)가
- * 줌아웃→이동→줌인으로 날아다닌다. 구조는 트랙(track) = 세로 장면 시퀀스:
+ * 모든 화면은 거대한 캔버스(#canvas) 위의 '장면(.scene)'이고, 카메라가
+ * 줌아웃→비행→줌인으로 이동한다. 트랙(track) = 세로 장면 시퀀스:
  *
- *   홈 트랙(col 0)      : 인트로 → 서비스 홍보 ×3 → 이야기 허브 → 뉴스레터   (스크롤 ↓)
- *   서비스 트랙(col 1)   : 히어로 → 문제 → 기원 → 기능 ×N → CTA              (클릭 시 → 오른쪽)
- *   글/시리즈 트랙(col 2): 더 깊은 관심 — 기능이 태어난 이야기(md)             (더 오른쪽)
+ *   홈 트랙(col 0)   : 인트로 → 서비스 ×3 → 이야기 허브 → 뉴스레터      (↓ 스크롤)
+ *   서비스 트랙(col 1): 히어로 → 문제 → 기원 → 기능 ×N → 함께하기        (→ 클릭/오른쪽 키)
+ *   글 트랙(col 2+)  : 기능이 태어난 이야기 — 같은 무대 위 장면으로 이어짐 (→ 더 깊이)
  *
- * 세로 = 서사의 진행, 가로(오른쪽) = 관심의 깊이. 뒤로가기는 왼쪽으로 돌아온다.
- * 우측 대시 레일: 현재 트랙의 장면 수만큼 -가 쌓이고, 호버하면 목차가 열려 점프한다.
- * 데이터 원천은 data/contents.json (tools/build_contents.py 산출물) 하나다. */
+ * 입력 규칙(모든 장면 동일): ↓/↑ = 서사 이동 · → = 이 장면의 대표 행동(더 깊이)
+ * · ← / Esc = 왼쪽(이전 깊이)으로. 우측 대시 레일 호버 = 목차 → 클릭 점프.
+ * 언어: 영어 기본(en), 한국어 토글(ko) — 사전은 assets/i18n.js, 사진은 assets/art.js. */
 
 const stage = document.getElementById('stage');
 const canvas = document.getElementById('canvas');
@@ -19,13 +19,20 @@ const railPanel = document.getElementById('rail-panel');
 const hudLoc = document.getElementById('hud-loc');
 const hudHint = document.getElementById('hud-hint');
 const backBtn = document.getElementById('nav-back');
+const langBtn = document.getElementById('lang-toggle');
 
 let DB = null;
+
+/* ---------- 언어 ---------- */
+const LANG_KEY = 'site-lang';
+let LANG = localStorage.getItem(LANG_KEY) === 'ko' ? 'ko' : 'en'; // 영어가 기본
+const t = (key) => (window.I18N.ui[key] || {})[LANG] || (window.I18N.ui[key] || {}).en || key;
 
 const VER = (window.BUILD_VERSION && !window.BUILD_VERSION.startsWith('__')) ? window.BUILD_VERSION : 'dev';
 const withVer = (url) => `${url}${url.includes('?') ? '&' : '?'}v=${VER}`;
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 
+/* ---------- 데이터 접근 (+ 영어 오버레이) ---------- */
 const contentOf = (id) => DB.contents.find(c => c.id === id);
 const seriesOf = (id) => DB.series.find(s => s.id === id);
 const seriesOfContent = (cid) => DB.series.find(s => s.articles.includes(cid));
@@ -34,39 +41,57 @@ const productsOfStory = (cid) => (DB.products || [])
   .map(p => ({ p, feats: (p.features || []).filter(f => (f.stories || []).includes(cid)) }))
   .filter(x => x.feats.length);
 const isPlanned = (c) => !!c && c.status === 'planned';
+
+/* 콘텐츠 제목·서비스 문구·시리즈 문구의 현재 언어 버전 */
+const cTitle = (c) => (LANG === 'en' && window.I18N.titles[c.id]) || c.title;
+const sTr = (s) => {
+  const tr = LANG === 'en' && window.I18N.series[s.id];
+  return { title: tr ? tr.title : s.title, question: tr ? tr.question : s.question };
+};
+const pTr = (p) => {
+  if (LANG !== 'en') return p;
+  const tr = window.I18N.products[p.key];
+  if (!tr) return p;
+  return {
+    ...p,
+    tagline: tr.tagline || p.tagline,
+    problem: tr.problem || p.problem,
+    origin: tr.origin || p.origin,
+    forWho: tr.forWho || p.forWho,
+    features: p.features.map((f, i) => ({ ...f, ...(tr.features && tr.features[i] || {}) })),
+    links: (p.links || []).map(l => ({ ...l, label: (tr.links || {})[l.label.includes('swim.capsule') ? 'swim.capsule' : l.label] || l.label })),
+  };
+};
+
 const fmtDate = (s) => {
   const m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(String(s || ''));
-  return m ? `${m[1]}년 ${+m[2]}월 ${+m[3]}일` : String(s || '');
+  if (!m) return String(s || '');
+  return LANG === 'en' ? `${window.I18N.months[+m[2] - 1]} ${+m[3]}, ${m[1]}` : `${m[1]}년 ${+m[2]}월 ${+m[3]}일`;
 };
-const publishLabel = (c) => (c && c.publish) ? `${fmtDate(c.publish)} 공개 예정` : '작성 중 · 공개 예정';
+const publishLabel = (c) => (c && c.publish) ? `${t('coming')} · ${fmtDate(c.publish)}` : t('comingSoon');
 const coverUrl = (s) => (s && s.hasCover !== false) ? `${s.coverBase}${s.sexed ? '_M' : ''}.jpg` : null;
 
-/* 서비스별 장면 배경 아트 — 퍼즐 커버 사진을 재사용한다 */
-const ART = {
-  home: 'content/swimmer/first-lane/cover.jpg',
-  stories: 'content/builder/data-to-ai/cover.jpg',
-  swimvault: { hero: 'content/swimmer/american-lanes/cover.jpg', problem: 'content/swimmer/first-lane/cover.jpg', origin: 'content/dreamer/pacific-bridge/cover.jpg' },
-  splitlane: { hero: 'content/swimmer/race-craft/cover.jpg', problem: 'content/swimmer/champion-code/cover_M.jpg', origin: 'content/builder/builder-origin/cover.jpg' },
-  'swim-meets': { hero: 'content/parent/away-meets/cover.jpg', problem: 'content/parent/parent-seasons/cover.jpg', origin: 'content/builder/data-to-ai/cover.jpg' },
+/* 사진: assets/art.js(window.SITE_ART)에서 — 교체는 그 파일에서 */
+const artOf = (key, kind) => {
+  const A = window.SITE_ART;
+  return (A.products[key] && A.products[key][kind]) || A.home;
 };
-const artOf = (key, kind) => (ART[key] && ART[key][kind]) || ART.home;
 
-/* ---------- 캔버스 좌표계 ----------
- * 장면 크기 = 뷰포트. 가로 간격 GX(관심의 깊이), 세로 간격 GY(서사의 진행). */
+/* ---------- 캔버스 좌표계 ---------- */
 let VW = window.innerWidth, VH = window.innerHeight;
-const GX = () => VW * 1.3;
-const GY = () => VH * 1.22;
+const GX = () => VW * 1.35;
+const GY = () => VH * 1.25;
 
-const tracks = new Map(); // key → track
-let navStack = [];        // [{track, row}] — 마지막이 현재 위치
+const tracks = new Map();
+let navStack = [];
 
-function trackBaseY(t) { return t.parent ? trackBaseY(t.parent) + t.entryRow * GY() : 0; }
-function scenePos(t, row) { return { x: t.col * GX(), y: trackBaseY(t) + row * GY() }; }
+function trackBaseY(tr) { return tr.parent ? trackBaseY(tr.parent) + tr.entryRow * GY() : 0; }
+function scenePos(tr, row) { return { x: tr.col * GX(), y: trackBaseY(tr) + row * GY() }; }
 
 function getTrack(key, builder) {
   if (tracks.has(key)) return tracks.get(key);
   const cur = navStack[navStack.length - 1];
-  const t = {
+  const tr = {
     key,
     col: cur ? cur.track.col + 1 : 0,
     parent: cur ? cur.track : null,
@@ -74,24 +99,25 @@ function getTrack(key, builder) {
     scenes: [],
     visited: new Set(),
   };
-  tracks.set(key, t);
-  builder(t);
-  layoutTrack(t);
-  return t;
+  tracks.set(key, tr);
+  builder(tr);
+  layoutTrack(tr);
+  return tr;
 }
 
-function addScene(t, title, cls, html) {
+/* primary: 이 장면의 → (오른쪽 키) 대표 행동. 없으면 →는 다음 장면으로 진행 */
+function addScene(tr, title, cls, html, primary) {
   const el = document.createElement('section');
   el.className = `scene ${cls}`;
   el.innerHTML = html;
   canvas.appendChild(el);
-  t.scenes.push({ title, el, row: t.scenes.length });
+  tr.scenes.push({ title, el, row: tr.scenes.length, primary: primary || null });
   return el;
 }
 
-function layoutTrack(t) {
-  t.scenes.forEach(sc => {
-    const p = scenePos(t, sc.row);
+function layoutTrack(tr) {
+  tr.scenes.forEach(sc => {
+    const p = scenePos(tr, sc.row);
     sc.el.style.left = p.x + 'px';
     sc.el.style.top = p.y + 'px';
     sc.el.style.width = VW + 'px';
@@ -104,7 +130,9 @@ function layoutAll() {
   tracks.forEach(layoutTrack);
 }
 
-/* ---------- 카메라 ---------- */
+/* ---------- 카메라 ----------
+ * 표준 3키프레임 비행: 출발 → (중간 줌아웃) → 도착. 거리 비례 시간,
+ * 양 끝을 길게 무는 easing으로 '떠올랐다 내려앉는' 부드러움을 만든다. */
 let cam = { x: 0, y: 0 };
 let flying = null;
 const tf = (c, s = 1) => `scale(${s}) translate(${-c.x}px, ${-c.y}px)`;
@@ -116,15 +144,16 @@ function flyTo(x, y, opts = {}) {
   canvas.style.transform = tf(cam);
   if (opts.instant) return;
   const dist = Math.hypot(x - from.x, y - from.y);
-  const dur = Math.min(1500, 550 + dist * 0.18);
-  // 먼 비행일수록 중간에 줌아웃해 '캔버스 위를 난다'는 감각을 준다
-  const midS = dist > VW * 0.7 ? 0.45 : dist > VW * 0.25 ? 0.8 : 0.96;
+  if (dist < 1) return;
+  const dur = Math.min(2000, 800 + dist * 0.22);
+  const far = dist > VW * 0.9;
+  const midS = far ? 0.5 : dist > VW * 0.35 ? 0.82 : 0.95;
   const mid = { x: (from.x + x) / 2, y: (from.y + y) / 2 };
   flying = canvas.animate([
-    { transform: tf(from) },
-    { transform: tf(mid, midS), offset: 0.5 },
+    { transform: tf(from), easing: 'cubic-bezier(.55,0,.35,1)' },
+    { transform: tf(mid, midS), offset: 0.5, easing: 'cubic-bezier(.65,0,.45,1)' },
     { transform: tf(cam) },
-  ], { duration: dur, easing: 'cubic-bezier(.6,.05,.3,1)' });
+  ], { duration: dur });
   flying.onfinish = () => { flying = null; };
 }
 
@@ -133,15 +162,14 @@ function current() { return navStack[navStack.length - 1]; }
 
 function activate() {
   const cur = current();
-  const t = cur.track;
-  t.visited.add(cur.row);
-  // 현재 스택에 속한 트랙만 보이게 — 같은 좌표대의 다른 트랙과 겹치지 않도록
+  const tr = cur.track;
+  tr.visited.add(cur.row);
   const live = new Set(navStack.map(e => e.track));
-  tracks.forEach(tr => tr.scenes.forEach(sc => {
-    sc.el.classList.toggle('offstage', !live.has(tr));
-    sc.el.classList.toggle('active', tr === t && sc.row === cur.row);
+  tracks.forEach(x => x.scenes.forEach(sc => {
+    sc.el.classList.toggle('offstage', !live.has(x));
+    sc.el.classList.toggle('active', x === tr && sc.row === cur.row);
   }));
-  const p = scenePos(t, cur.row);
+  const p = scenePos(tr, cur.row);
   flyTo(p.x, p.y);
   backBtn.hidden = navStack.length <= 1;
   renderRail();
@@ -157,9 +185,19 @@ function goRow(row) {
   activate();
 }
 
+function goPrimary() {
+  // → 키는 어느 장면에서든 반드시 동작한다:
+  // 대표 행동(더 깊이) → 없으면 다음 장면 → 마지막 장면이면 이전 깊이로 복귀.
+  const cur = current();
+  const sc = cur.track.scenes[cur.row];
+  if (sc.primary) { sc.primary(); return; }
+  if (cur.row < cur.track.scenes.length - 1) { goRow(cur.row + 1); return; }
+  popTrack();
+}
+
 function pushTrack(key, builder, row = 0) {
-  const t = getTrack(key, builder);
-  navStack.push({ track: t, row: Math.max(0, Math.min(row, t.scenes.length - 1)) });
+  const tr = getTrack(key, builder);
+  navStack.push({ track: tr, row: Math.max(0, Math.min(row, tr.scenes.length - 1)) });
   activate();
 }
 
@@ -174,16 +212,16 @@ function resetHome(row = 0) {
   activate();
 }
 
-/* ---------- HUD: 대시 레일 · 위치 · 힌트 ---------- */
+/* ---------- HUD ---------- */
 function renderRail() {
   const cur = current();
-  const t = cur.track;
-  railDashes.innerHTML = t.scenes.map(sc => `
-    <button class="rail-dash ${sc.row === cur.row ? 'on' : ''} ${t.visited.has(sc.row) ? 'seen' : ''}"
+  const tr = cur.track;
+  railDashes.innerHTML = tr.scenes.map(sc => `
+    <button class="rail-dash ${sc.row === cur.row ? 'on' : ''} ${tr.visited.has(sc.row) ? 'seen' : ''}"
       data-row="${sc.row}" aria-label="${esc(sc.title)}"></button>`).join('');
   railPanel.innerHTML = `
-    <p class="rail-panel-head">${esc(trackLabel(t))}</p>
-    ${t.scenes.map(sc => `
+    <p class="rail-panel-head">${esc(trackLabel(tr))}</p>
+    ${tr.scenes.map(sc => `
       <button class="rail-item ${sc.row === cur.row ? 'on' : ''}" data-row="${sc.row}">
         <span class="rail-idx">${String(sc.row + 1).padStart(2, '0')}</span>${esc(sc.title)}
       </button>`).join('')}`;
@@ -191,13 +229,13 @@ function renderRail() {
     b.addEventListener('click', () => goRow(+b.dataset.row)));
 }
 
-function trackLabel(t) {
-  if (t.key === 'home') return '홈 — 서비스 이야기';
-  if (t.key.startsWith('p:')) { const p = productOf(t.key.slice(2)); return p ? `${p.emoji} ${p.name}` : t.key; }
-  if (t.key.startsWith('s:')) { const s = seriesOf(t.key.slice(2)); return s ? `${s.emoji} ${s.title}` : t.key; }
-  if (t.key.startsWith('a:')) { const c = contentOf(t.key.slice(2)); return c ? c.title : t.key; }
-  if (t.key.startsWith('nl:')) return '📮 뉴스레터';
-  return t.key;
+function trackLabel(tr) {
+  if (tr.key === 'home') return t('homeTrack');
+  if (tr.key.startsWith('p:')) { const p = productOf(tr.key.slice(2)); return p ? `${p.emoji} ${p.name}` : tr.key; }
+  if (tr.key.startsWith('s:')) { const s = seriesOf(tr.key.slice(2)); return s ? `${s.emoji} ${sTr(s).title}` : tr.key; }
+  if (tr.key.startsWith('a:')) { const c = contentOf(tr.key.slice(2)); return c ? cTitle(c) : tr.key; }
+  if (tr.key.startsWith('nl:')) return t('newsletterTrack');
+  return tr.key;
 }
 
 function renderLoc() {
@@ -214,19 +252,27 @@ function renderHint() {
   const cur = current();
   const last = cur.row === cur.track.scenes.length - 1;
   hudHint.textContent = cur.track.key === 'home'
-    ? (last ? '↑ 위로 — 서비스 이야기의 처음으로' : '스크롤 ↓ 다음 이야기 · 카드를 클릭하면 오른쪽으로 깊이 들어갑니다 →')
-    : (last ? '↑ 위로 · ← 돌아가기(Esc)' : '스크롤 ↓ 서사가 이어집니다 · 관심 항목은 → 오른쪽으로');
+    ? (last ? t('hintHomeLast') : t('hintHome'))
+    : (last ? t('hintDeepLast') : t('hintDeep'));
 }
 
-/* ---------- 해시 라우팅 (딥링크·뒤로가기) ---------- */
+function renderBrand() {
+  document.querySelector('#hud-brand .brand-text strong').textContent = t('brandStrong');
+  document.querySelector('#hud-brand .brand-text small').textContent = t('brandSmall');
+  backBtn.textContent = t('back');
+  langBtn.textContent = LANG === 'en' ? '한국어' : 'EN';
+}
+
+/* ---------- 해시 라우팅 ---------- */
 function serialize() {
   const cur = current();
-  const t = cur.track;
-  if (t.key === 'home') return `#/h/${cur.row}`;
-  if (t.key.startsWith('p:')) return `#/p/${t.key.slice(2)}/${cur.row}`;
-  if (t.key.startsWith('s:')) return `#/s/${t.key.slice(2)}`;
-  if (t.key.startsWith('a:')) return `#/a/${t.key.slice(2)}`;
-  if (t.key.startsWith('nl:')) return `#/nl/${t.key.slice(2)}`;
+  if (!cur) return location.hash || '#/h/0'; // 언어 전환 재구성 중 가드
+  const tr = cur.track;
+  if (tr.key === 'home') return `#/h/${cur.row}`;
+  if (tr.key.startsWith('p:')) return `#/p/${tr.key.slice(2)}/${cur.row}`;
+  if (tr.key.startsWith('s:')) return `#/s/${tr.key.slice(2)}`;
+  if (tr.key.startsWith('a:')) return `#/a/${tr.key.slice(2)}`;
+  if (tr.key.startsWith('nl:')) return `#/nl/${tr.key.slice(2)}`;
   return '#/h/0';
 }
 function syncHash() {
@@ -239,7 +285,7 @@ function routeFromHash() {
   if (kind === 'h') { goRow(Math.min(+a || 0, current().track.scenes.length - 1)); return; }
   if (kind === 'p' && productOf(a)) {
     goRow(homeRowOfProduct(a));
-    pushTrack('p:' + a, t => buildProduct(t, productOf(a)), Math.max(0, +b || 0));
+    pushTrack('p:' + a, tr => buildProduct(tr, productOf(a)), Math.max(0, +b || 0));
     return;
   }
   if (kind === 's' && seriesOf(a)) { goRow(HOME_STORIES_ROW()); pushSeries(a); return; }
@@ -247,18 +293,17 @@ function routeFromHash() {
   if (kind === 'nl' || kind === 'n') {
     goRow(HOME_NL_ROW());
     const nl = (DB.newsletters || []).find(n => n.id === a);
-    if (nl) pushTrack('nl:' + a, t => buildNewsletter(t, nl));
+    if (nl) pushTrack('nl:' + a, tr => buildNewsletter(tr, nl));
     return;
   }
-  if (kind === 't') goRow(HOME_STORIES_ROW()); // 구 트랙 링크 → 이야기 허브
+  if (kind === 't') goRow(HOME_STORIES_ROW());
 }
 function openArticleDeep(cid) {
-  // 딥링크로 글에 직행: 홈 → (제품 or 시리즈) → 글 스택을 재구성
   const born = productsOfStory(cid);
   if (born.length) {
     const key = born[0].p.key;
     goRow(homeRowOfProduct(key));
-    pushTrack('p:' + key, t => buildProduct(t, productOf(key)));
+    pushTrack('p:' + key, tr => buildProduct(tr, productOf(key)));
   } else {
     const s = seriesOfContent(cid);
     goRow(HOME_STORIES_ROW());
@@ -268,262 +313,293 @@ function openArticleDeep(cid) {
 }
 
 /* ================================================================
- * 장면 빌더들
+ * 장면 빌더
  * ================================================================ */
-/* 홈 트랙 장면 배치: 0 인트로 → 1..N 서비스 → N+1 이야기 허브 → N+2 뉴스레터 */
 const homeRowOfProduct = (key) => 1 + Math.max(0, (DB.products || []).findIndex(p => p.key === key));
 const HOME_STORIES_ROW = () => 1 + (DB.products || []).length;
 const HOME_NL_ROW = () => 2 + (DB.products || []).length;
 
-const kicker = (txt) => `<p class="kicker">${esc(txt)}</p>`;
-const cue = `<button class="scroll-cue" data-next aria-label="다음 장면">⌄</button>`;
+const kicker = (txt) => `<p class="kicker">${txt}</p>`;
+const cue = `<button class="scroll-cue" data-next aria-label="next">⌄</button>`;
 const bgArt = (url, cls = '') => `<div class="scene-bg ${cls}" style="background-image:url('${esc(url)}')"></div><div class="scene-veil"></div>`;
 
-function buildHome(t) {
-  const nStories = DB.contents.length;
-  const nSeries = DB.series.length;
+function buildHome(tr) {
+  const A = window.SITE_ART;
+  const products = DB.products || [];
 
-  /* 장면 0 — 인트로 */
-  addScene(t, '인트로 — 관중석의 질문', 'sc-hero', `
-    ${bgArt(ART.home)}
+  /* 0 — 인트로 */
+  addScene(tr, LANG === 'en' ? 'Intro — Questions from the stands' : '인트로 — 관중석의 질문', 'sc-hero', `
+    ${bgArt(A.home)}
     <div class="inner center">
-      ${kicker('AI · DATA · YOUTH SPORTS')}
-      <h1 class="display">관중석의 질문이,<br/><em>서비스</em>가 됩니다.</h1>
-      <p class="lead">AI와 데이터로 운동하는 아이의 성장을 기록·분석하는 아빠 개발자.<br/>
-      그가 만드는 서비스의 이야기를, 한 장면씩 내려가며 만나보세요.</p>
+      ${kicker(t('introKicker'))}
+      <h1 class="display">${t('introTitle')}</h1>
+      <p class="lead">${t('introLead')}</p>
       <div class="stat-row">
-        <span class="stat"><b>3</b>개의 서비스</span>
-        <span class="stat"><b>${nSeries}</b>개의 퍼즐</span>
-        <span class="stat"><b>${nStories}</b>편의 이야기</span>
+        <span class="stat"><b>${products.length}</b>${t('statServices')}</span>
+        <span class="stat"><b>${DB.series.length}</b>${t('statSeries')}</span>
+        <span class="stat"><b>${DB.contents.length}</b>${t('statStories')}</span>
       </div>
     </div>
-    ${cue}`);
+    ${cue}`,
+    () => goRow(1));
 
-  /* 장면 1~3 — 서비스 홍보 (한 페이지 = 한 서비스) */
-  (DB.products || []).forEach((p, i) => {
+  /* 1..N — 서비스 (한 페이지 = 한 서비스) */
+  products.forEach((raw, i) => {
+    const p = pTr(raw);
+    const open = () => pushTrack('p:' + p.key, x => buildProduct(x, raw));
     const st = p.status === 'live'
-      ? '<span class="badge live">🟢 지금 사용 가능</span>'
-      : '<span class="badge building">🛠 GitHub에서 공개 개발 중</span>';
-    const el = addScene(t, `${p.emoji} ${p.name}`, 'sc-promo', `
+      ? `<span class="badge live">${t('badgeLive')}</span>`
+      : `<span class="badge building">${t('badgeBuilding')}</span>`;
+    const el = addScene(tr, `${p.emoji} ${p.name}`, 'sc-promo', `
       <div class="inner split">
         <div class="split-text">
           <span class="giant-num">0${i + 1}</span>
-          ${kicker('SERVICE')}
+          ${kicker(`${t('serviceKicker')} ${i + 1} / ${products.length}`)}
           <h2 class="display">${p.emoji} ${esc(p.name)}</h2>
           <p class="tagline">${esc(p.tagline)}</p>
           <p class="lead">${esc(p.problem)}</p>
           ${st}
-          <button class="cta" data-open="${p.key}">서비스 이야기 속으로 <span class="arrow">→</span></button>
+          <div><button class="cta" data-open>${t('intoStory')} <span class="arrow">→</span></button></div>
         </div>
-        <div class="split-art" data-open="${p.key}" role="button" tabindex="0">
+        <div class="split-art" data-open role="button" tabindex="0">
           <figure class="art-frame"><img src="${esc(artOf(p.key, 'hero'))}" alt="${esc(p.name)}" loading="lazy"/></figure>
-          <span class="art-hint">클릭하면 오른쪽으로 →</span>
+          <span class="art-hint">${t('artHint')}</span>
         </div>
       </div>
-      ${cue}`);
-    el.querySelectorAll(`[data-open]`).forEach(n =>
-      n.addEventListener('click', () => pushTrack('p:' + p.key, tr => buildProduct(tr, p))));
+      ${cue}`,
+      open);
+    el.querySelectorAll('[data-open]').forEach(n => n.addEventListener('click', open));
   });
 
-  /* 장면 4 — 이야기 허브 */
-  const hub = addScene(t, '서비스가 태어난 이야기', 'sc-hub', `
-    ${bgArt(ART.stories, 'faint')}
+  /* N+1 — 이야기 허브 */
+  const openFirstSeries = () => pushSeries(DB.series[0].id);
+  const hub = addScene(tr, LANG === 'en' ? 'Origin stories' : '서비스가 태어난 이야기', 'sc-hub', `
+    ${bgArt(A.stories, 'faint')}
     <div class="inner">
-      ${kicker('ORIGIN STORIES')}
-      <h2 class="display">모든 기능에는<br/><em>이야기</em>가 있습니다.</h2>
-      <p class="lead">기능은 그냥 만들지 않습니다 — 질문과 문제가 먼저고, 기능은 그 답입니다.</p>
+      ${kicker(t('hubKicker'))}
+      <h2 class="display sm">${t('hubTitle')}</h2>
+      <p class="lead">${t('hubLead')}</p>
       <div class="scroll-area hub-grid">
         ${DB.series.map(s => {
           const url = coverUrl(s);
+          const x = sTr(s);
           return `
           <button class="hub-card" data-series="${s.id}">
             <span class="hub-thumb">${url ? `<img src="${esc(url)}" alt="" loading="lazy"/>` : ''}</span>
-            <span class="hub-body">
-              <b>${s.emoji} ${esc(s.title)}</b>
-              <small>${esc(s.question)}</small>
-            </span>
+            <span class="hub-body"><b>${s.emoji} ${esc(x.title)}</b><small>${esc(x.question)}</small></span>
           </button>`;
         }).join('')}
       </div>
     </div>
-    ${cue}`);
+    ${cue}`,
+    openFirstSeries);
   hub.querySelectorAll('[data-series]').forEach(n =>
     n.addEventListener('click', () => pushSeries(n.dataset.series)));
 
-  /* 장면 5 — 뉴스레터 */
+  /* N+2 — 뉴스레터 */
   const nls = DB.newsletters || [];
-  const nlScene = addScene(t, '📮 뉴스레터', 'sc-nl', `
-    <div class="inner">
-      ${kicker('NEWSLETTER')}
-      <h2 class="display">이야기가 기능이 되면,<br/><em>편지</em>로 알려드립니다.</h2>
-      <p class="lead">앱 출시와 버전 업그레이드에 맞춰, 그 기능이 태어난 이야기를 요약해 발행합니다.</p>
-      <div class="nl-list">
+  const openFirstNl = nls.length ? () => pushTrack('nl:' + nls[0].id, x => buildNewsletter(x, nls[0])) : null;
+  const nlScene = addScene(tr, t('newsletterTrack'), 'sc-nl', `
+    <div class="inner center">
+      ${kicker(t('nlKicker'))}
+      <h2 class="display sm">${t('nlTitle')}</h2>
+      <p class="lead">${t('nlLead')}</p>
+      <div class="nl-list narrow">
         ${nls.length ? nls.map(n => {
           const p = productOf(n.product);
           return `
           <button class="nl-card" data-nl="${n.id}">
             <span class="nl-meta">${p ? `${p.emoji} ${esc(p.name)}` : ''} · ${esc(n.version || '')} · ${esc(fmtDate(n.date))}</span>
             <b>${esc(n.title)}</b>
-            <span class="nl-open">읽기 →</span>
+            <span class="nl-open">${t('read')}</span>
           </button>`;
-        }).join('') : '<p class="lead dim">첫 호를 준비하고 있습니다.</p>'}
+        }).join('') : `<p class="lead dim">${t('nlEmpty')}</p>`}
       </div>
-      <p class="foot-note">〰️ 데이터를 만들고, 선수를 키웁니다 — <a href="https://github.com/kyj5482" target="_blank" rel="noopener">GitHub @kyj5482</a></p>
-    </div>`);
+      <p class="foot-note">${t('footNote')} <a href="https://github.com/kyj5482" target="_blank" rel="noopener">GitHub @kyj5482</a></p>
+    </div>`,
+    openFirstNl);
   nlScene.querySelectorAll('[data-nl]').forEach(n =>
     n.addEventListener('click', () => {
       const nl = nls.find(x => x.id === n.dataset.nl);
-      pushTrack('nl:' + nl.id, tr => buildNewsletter(tr, nl));
+      pushTrack('nl:' + nl.id, x => buildNewsletter(x, nl));
     }));
 }
 
-/* ---------- 서비스 트랙: 히어로 → 문제 → 기원 → 기능 ×N → CTA ---------- */
-function buildProduct(t, p) {
+/* ---------- 서비스 트랙 ---------- */
+function buildProduct(tr, raw) {
+  const p = pTr(raw);
   const st = p.status === 'live'
-    ? '<span class="badge live">🟢 지금 사용 가능</span>'
-    : '<span class="badge building">🛠 GitHub에서 공개 개발 중</span>';
+    ? `<span class="badge live">${t('badgeLive')}</span>`
+    : `<span class="badge building">${t('badgeBuilding')}</span>`;
 
-  addScene(t, `${p.name} — 시작`, 'sc-hero sc-p-hero', `
+  addScene(tr, LANG === 'en' ? `${p.name} — Opening` : `${p.name} — 시작`, 'sc-hero sc-p-hero', `
     ${bgArt(artOf(p.key, 'hero'))}
     <div class="inner center">
-      ${kicker('SERVICE STORY')}
+      ${kicker(t('storyKicker'))}
       <h1 class="display">${p.emoji} ${esc(p.name)}</h1>
       <p class="tagline">${esc(p.tagline)}</p>
       ${st}
-      <p class="lead dim">아래로 — 이 서비스가 태어난 서사가 이어집니다.</p>
+      <p class="lead dim">${t('scrollNote')}</p>
     </div>
-    ${cue}`);
+    ${cue}`,
+    () => goRow(1));
 
-  addScene(t, '풀려는 문제', 'sc-narr', `
+  addScene(tr, LANG === 'en' ? 'The problem' : '풀려는 문제', 'sc-narr', `
     <div class="inner split">
       <div class="split-text">
-        ${kicker('CHAPTER 1 — 문제')}
-        <h2 class="display sm">모든 서비스는<br/>불편에서 시작됐습니다.</h2>
+        ${kicker(t('ch1Kicker'))}
+        <h2 class="display sm">${t('ch1Title')}</h2>
         <blockquote class="big-quote">${esc(p.problem)}</blockquote>
       </div>
       <div class="split-art"><figure class="art-frame tilt"><img src="${esc(artOf(p.key, 'problem'))}" alt="" loading="lazy"/></figure></div>
     </div>
-    ${cue}`);
+    ${cue}`,
+    () => goRow(2));
 
-  addScene(t, '누가, 왜 만들었나', 'sc-narr', `
+  addScene(tr, LANG === 'en' ? 'The origin' : '누가, 왜 만들었나', 'sc-narr', `
     <div class="inner split rev">
       <div class="split-text">
-        ${kicker('CHAPTER 2 — 기원')}
-        <h2 class="display sm">누가, 왜<br/>만들었을까요?</h2>
+        ${kicker(t('ch2Kicker'))}
+        <h2 class="display sm">${t('ch2Title')}</h2>
         <p class="lead">${esc(p.origin)}</p>
       </div>
       <div class="split-art"><figure class="art-frame tilt-l"><img src="${esc(artOf(p.key, 'origin'))}" alt="" loading="lazy"/></figure></div>
     </div>
-    ${cue}`);
+    ${cue}`,
+    () => goRow(3));
 
   (p.features || []).forEach((f, i) => {
+    const readable = (f.stories || []).map(contentOf).filter(c => c && !isPlanned(c));
+    const primary = readable.length ? () => pushArticle(readable[0].id) : null;
     const stories = (f.stories || []).map(cid => {
       const c = contentOf(cid);
       if (!c) return '';
       return isPlanned(c)
-        ? `<span class="story-link locked">🔒 ${esc(c.title)}<small>${esc(publishLabel(c))}</small></span>`
-        : `<button class="story-link" data-article="${cid}">📖 ${esc(c.title)}<small>이야기 읽기 →</small></button>`;
+        ? `<span class="story-link locked">🔒 ${esc(cTitle(c))}<small>${esc(publishLabel(c))}</small></span>`
+        : `<button class="story-link" data-article="${cid}">${esc(cTitle(c))}<small>${t('readStory')}</small></button>`;
     }).join('');
-    const el = addScene(t, `기능 ${i + 1} — ${f.name}`, 'sc-feat', `
+    const el = addScene(tr, `${LANG === 'en' ? 'Feature' : '기능'} ${i + 1} — ${f.name}`, 'sc-feat', `
       <div class="inner split">
         <div class="split-text">
           <span class="giant-num soft">F${i + 1}</span>
-          ${kicker(`FEATURE ${i + 1} / ${p.features.length}`)}
+          ${kicker(`${t('featureKicker')} ${i + 1} / ${p.features.length}`)}
           <h2 class="display sm">${esc(f.name)}</h2>
           <p class="lead">${esc(f.desc)}</p>
         </div>
         <div class="split-art">
           <div class="story-panel">
-            <p class="story-panel-head">이 기능이 태어난 이야기</p>
-            ${stories || '<p class="dim">연결된 이야기를 준비 중입니다.</p>'}
+            <p class="story-panel-head">${t('storyBehind')}</p>
+            ${stories || `<p class="dim">${t('storyPreparing')}</p>`}
           </div>
         </div>
       </div>
-      ${cue}`);
+      ${cue}`,
+      primary);
     el.querySelectorAll('[data-article]').forEach(n =>
       n.addEventListener('click', () => pushArticle(n.dataset.article)));
   });
 
   const nls = (DB.newsletters || []).filter(n => n.product === p.key);
-  const ctaEl = addScene(t, '함께하기', 'sc-cta', `
+  const ctaEl = addScene(tr, LANG === 'en' ? 'Join the story' : '함께하기', 'sc-cta', `
     ${bgArt(artOf(p.key, 'hero'), 'faint')}
     <div class="inner center">
-      ${kicker('JOIN THE STORY')}
-      <h2 class="display sm">이런 분들과 함께<br/>만들어가고 싶습니다.</h2>
+      ${kicker(t('joinKicker'))}
+      <h2 class="display sm">${t('joinTitle')}</h2>
       <ul class="who-list">${(p.forWho || []).map(w => `<li>${esc(w)}</li>`).join('')}</ul>
       <div class="cta-row">
-        <a class="cta ghosted" href="${esc(p.repo)}" target="_blank" rel="noopener">🐙 GitHub에서 함께 만들기</a>
+        <a class="cta ghosted" href="${esc(p.repo)}" target="_blank" rel="noopener">${t('ctaGithub')}</a>
         ${p.site
-          ? `<a class="cta" href="${esc(p.site)}" target="_blank" rel="noopener">🚀 서비스 사용하기</a>`
-          : `<span class="cta soon">🛠 출시 준비 중 — 뉴스레터로 소식을 받아보세요</span>`}
+          ? `<a class="cta" href="${esc(p.site)}" target="_blank" rel="noopener">${t('ctaUse')}</a>`
+          : `<span class="cta soon">${t('ctaSoon')}</span>`}
         ${(p.links || []).map(l => `<a class="cta ghosted" href="${esc(l.url)}" target="_blank" rel="noopener">🔗 ${esc(l.label)}</a>`).join('')}
       </div>
       ${nls.length ? `<div class="nl-list narrow">${nls.map(n => `
         <button class="nl-card" data-nl="${n.id}">
           <span class="nl-meta">${esc(n.version || '')} · ${esc(fmtDate(n.date))}</span>
-          <b>${esc(n.title)}</b><span class="nl-open">읽기 →</span>
+          <b>${esc(n.title)}</b><span class="nl-open">${t('read')}</span>
         </button>`).join('')}</div>` : ''}
-    </div>`);
+    </div>`,
+    () => window.open(p.site || p.repo, '_blank'));
   ctaEl.querySelectorAll('[data-nl]').forEach(n =>
     n.addEventListener('click', () => {
       const nl = nls.find(x => x.id === n.dataset.nl);
-      pushTrack('nl:' + nl.id, tr => buildNewsletter(tr, nl));
+      pushTrack('nl:' + nl.id, x => buildNewsletter(x, nl));
     }));
 }
 
-/* ---------- 시리즈 트랙(이야기 허브에서 진입): 퍼즐 한 판의 글 목록 ---------- */
+/* ---------- 시리즈 트랙 ---------- */
 function pushSeries(sid) {
-  pushTrack('s:' + sid, t => {
+  pushTrack('s:' + sid, tr => {
     const s = seriesOf(sid);
+    const x = sTr(s);
     const url = coverUrl(s);
-    const el = addScene(t, `${s.emoji} ${s.title}`, 'sc-series', `
+    const readable = s.articles.map(contentOf).filter(c => c && !isPlanned(c));
+    const el = addScene(tr, `${s.emoji} ${x.title}`, 'sc-series', `
       ${url ? bgArt(url, 'faint') : ''}
       <div class="inner">
-        ${kicker('PUZZLE SERIES')}
-        <h2 class="display sm">${s.emoji} ${esc(s.title)}</h2>
-        <p class="lead">${esc(s.question)}</p>
+        ${kicker(t('seriesKicker'))}
+        <h2 class="display sm">${s.emoji} ${esc(x.title)}</h2>
+        <p class="lead">${esc(x.question)}</p>
         <div class="scroll-area ep-list">
           ${s.articles.map((cid, i) => {
             const c = contentOf(cid);
             return isPlanned(c)
-              ? `<span class="ep locked"><span class="ep-num">${i + 1}</span><b>${esc(c.title)}</b><small>🔒 ${esc(publishLabel(c))}</small></span>`
-              : `<button class="ep" data-article="${cid}"><span class="ep-num">${i + 1}</span><b>${esc(c.title)}</b><small>읽기 →</small></button>`;
+              ? `<span class="ep locked"><span class="ep-num">${i + 1}</span><b>${esc(cTitle(c))}</b><small>🔒 ${esc(publishLabel(c))}</small></span>`
+              : `<button class="ep" data-article="${cid}"><span class="ep-num">${i + 1}</span><b>${esc(cTitle(c))}</b><small>${t('read')}</small></button>`;
           }).join('')}
         </div>
-      </div>`);
+      </div>`,
+      readable.length ? () => pushArticle(readable[0].id) : null);
     el.querySelectorAll('[data-article]').forEach(n =>
       n.addEventListener('click', () => pushArticle(n.dataset.article)));
   });
 }
 
-/* ---------- 글 트랙: md 본문 (가장 깊은 오른쪽) ---------- */
+/* ---------- 글 트랙 — 무대 위에서 이어지는 리딩 장면 ----------
+ * 팝업 카드가 아니라 프레젠테이션의 다음 장면: 시리즈 컨텍스트 키커 +
+ * 세리프 대제목 + 본문이 캔버스 배경 위에 그대로 흐른다. */
 function pushArticle(cid) {
-  pushTrack('a:' + cid, t => {
+  pushTrack('a:' + cid, tr => {
     const c = contentOf(cid);
-    const el = addScene(t, c.title, 'sc-article', `
-      <div class="inner">
-        <article class="paper scroll-area"><p class="dim">이야기를 펼치는 중…</p></article>
-      </div>`);
-    loadMarkdown(el.querySelector('.paper'), c.file, cid);
+    const s = seriesOfContent(cid);
+    const sx = s ? sTr(s) : null;
+    // → 키: 같은 시리즈의 다음 게시 글로 이어 읽기 (없으면 goPrimary 폴백이 처리)
+    let next = null;
+    if (s) {
+      const idx = s.articles.indexOf(cid);
+      const nid = s.articles.slice(idx + 1).find(x => !isPlanned(contentOf(x)));
+      if (nid) next = () => { navStack.pop(); pushArticle(nid); };
+    }
+    const el = addScene(tr, cTitle(c), 'sc-article', `
+      <div class="inner reading scroll-area">
+        ${kicker(s ? `${s.emoji} ${esc(sx.title)}` : t('seriesKicker'))}
+        <h1 class="display sm article-title">${esc(cTitle(c))}</h1>
+        ${LANG === 'en' ? `<p class="lang-note">${t('koreanNote')}</p>` : ''}
+        <div class="article-body"><p class="dim">${t('loading')}</p></div>
+      </div>`,
+      next);
+    loadMarkdown(el.querySelector('.article-body'), c.file, cid);
   });
 }
 
-function buildNewsletter(t, nl) {
-  const el = addScene(t, nl.title, 'sc-article', `
-    <div class="inner">
-      <article class="paper scroll-area"><p class="dim">불러오는 중…</p></article>
+function buildNewsletter(tr, nl) {
+  const el = addScene(tr, nl.title, 'sc-article', `
+    <div class="inner reading scroll-area">
+      ${kicker(t('nlKicker'))}
+      <div class="article-body"><p class="dim">${t('loading')}</p></div>
     </div>`);
-  loadMarkdown(el.querySelector('.paper'), nl.file, null);
+  loadMarkdown(el.querySelector('.article-body'), nl.file, null);
 }
 
-async function loadMarkdown(paperEl, file, cid) {
+async function loadMarkdown(bodyEl, file, cid) {
   try {
     const md = await fetch(withVer(file)).then(r => { if (!r.ok) throw new Error(r.status); return r.text(); });
     const body = md.replace(/^\s*---\s*\n[\s\S]*?\n---\s*\n?/, '');
-    paperEl.innerHTML = marked.parse(body);
-    // 본문 속 상대 md 링크 → 캔버스 글 점프 (번호 프리픽스 무시, 슬러그 매칭)
+    bodyEl.innerHTML = marked.parse(body);
+    // 장면 헤더에 이미 제목을 크게 얹었으므로 본문 첫 H1은 숨긴다 (제목 중복 방지)
+    if (cid) { const h1 = bodyEl.querySelector('h1'); if (h1) h1.remove(); }
     const slugKey = (path) => path.split('/').pop().replace(/\.md$/, '').replace(/^\d+-/, '');
-    paperEl.querySelectorAll('a[href$=".md"]').forEach(a => {
+    bodyEl.querySelectorAll('a[href$=".md"]').forEach(a => {
       const target = DB.contents.find(x => slugKey(x.file) === slugKey(a.getAttribute('href')));
       if (target && !isPlanned(target)) {
         a.setAttribute('href', 'javascript:void 0');
@@ -532,29 +608,33 @@ async function loadMarkdown(paperEl, file, cid) {
         const span = document.createElement('span'); span.textContent = a.textContent; a.replaceWith(span);
       }
     });
-    // 이 이야기에서 태어난 기능 → 해당 서비스 트랙으로 (스택을 갈아타고 왼쪽으로 비행)
     if (cid) {
       const born = productsOfStory(cid);
       if (born.length) {
         const div = document.createElement('div');
         div.className = 'born-box';
-        div.innerHTML = `<p class="story-panel-head">이 이야기에서 태어난 기능</p>` + born.map(({ p, feats }) => `
-          <button class="story-link" data-product="${p.key}">${p.emoji} ${esc(p.name)} — ${feats.map(f => esc(f.name)).join(' · ')}<small>서비스 보러 가기 →</small></button>`).join('');
-        paperEl.appendChild(div);
+        div.innerHTML = `<p class="story-panel-head">${t('bornFrom')}</p>` + born.map(({ p, feats }) => {
+          const px = pTr(p);
+          return `<button class="story-link" data-product="${p.key}">${p.emoji} ${esc(p.name)} — ${feats.map((f, i) => {
+            const fi = p.features.indexOf(f);
+            return esc((px.features[fi] || f).name);
+          }).join(' · ')}<small>${t('seeService')}</small></button>`;
+        }).join('');
+        bodyEl.appendChild(div);
         div.querySelectorAll('[data-product]').forEach(n => n.addEventListener('click', () => {
           const key = n.dataset.product;
           resetHome(homeRowOfProduct(key));
-          pushTrack('p:' + key, tr => buildProduct(tr, productOf(key)));
+          pushTrack('p:' + key, x => buildProduct(x, productOf(key)));
         }));
       }
     }
   } catch (e) {
-    paperEl.innerHTML = '<p class="dim">이 글을 불러오지 못했습니다.</p>';
+    bodyEl.innerHTML = `<p class="dim">${t('loadFail')}</p>`;
   }
 }
 
 /* ================================================================
- * 입력: 휠 / 키보드 / 터치 / 버튼
+ * 입력
  * ================================================================ */
 let wheelLock = 0;
 function canScrollInside(el, dy) {
@@ -564,10 +644,10 @@ function canScrollInside(el, dy) {
   return area.scrollTop > 2;
 }
 stage.addEventListener('wheel', (e) => {
-  if (canScrollInside(e.target, e.deltaY)) return; // 장면 내부 스크롤 우선
+  if (canScrollInside(e.target, e.deltaY)) return;
   e.preventDefault();
   const now = Date.now();
-  if (now - wheelLock < 850 || Math.abs(e.deltaY) < 12) return;
+  if (now - wheelLock < 950 || Math.abs(e.deltaY) < 12) return;
   wheelLock = now;
   goRow(current().row + (e.deltaY > 0 ? 1 : -1));
 }, { passive: false });
@@ -579,16 +659,23 @@ stage.addEventListener('touchend', (e) => {
   const dy = touchY - e.changedTouches[0].clientY;
   const dx = touchX - e.changedTouches[0].clientX;
   touchY = touchX = null;
-  if (Math.abs(dx) > Math.abs(dy)) { if (dx < -70) popTrack(); return; } // 오른쪽 스와이프 = 뒤로
+  if (Math.abs(dx) > Math.abs(dy)) {
+    if (dx < -70) popTrack();       // → 스와이프: 뒤로
+    else if (dx > 70) goPrimary();  // ← 스와이프: 더 깊이
+    return;
+  }
   if (Math.abs(dy) < 60) return;
   if (canScrollInside(e.target, dy)) return;
   goRow(current().row + (dy > 0 ? 1 : -1));
 }, { passive: true });
 
 window.addEventListener('keydown', (e) => {
+  // 포커스된 버튼/링크의 Enter는 그 요소의 클릭에 맡긴다 (이중 동작 방지)
+  if (e.key === 'Enter' && e.target.closest && e.target.closest('button, a')) return;
   if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); goRow(current().row + 1); }
   else if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); goRow(current().row - 1); }
-  else if (e.key === 'Escape' || e.key === 'ArrowLeft') popTrack();
+  else if (e.key === 'ArrowRight' || e.key === 'Enter') { e.preventDefault(); goPrimary(); }
+  else if (e.key === 'Escape' || e.key === 'ArrowLeft') { e.preventDefault(); popTrack(); }
   else if (e.key === 'Home') resetHome(0);
 });
 
@@ -597,6 +684,23 @@ document.addEventListener('click', (e) => {
 });
 backBtn.addEventListener('click', popTrack);
 document.getElementById('hud-brand').addEventListener('click', () => resetHome(0));
+
+/* 언어 전환: 캔버스를 비우고 현재 위치를 같은 해시로 재구성 */
+langBtn.addEventListener('click', () => {
+  LANG = LANG === 'en' ? 'ko' : 'en';
+  localStorage.setItem(LANG_KEY, LANG);
+  document.documentElement.lang = LANG;
+  rebuild();
+});
+function rebuild() {
+  const hash = serialize();
+  tracks.clear();
+  canvas.innerHTML = '';
+  navStack = [];
+  renderBrand();
+  location.hash = hash;   // 동일 해시면 이벤트가 안 오므로 직접 라우팅도 호출
+  routeFromHash();
+}
 
 railEl.addEventListener('mouseenter', () => { railPanel.hidden = false; });
 railEl.addEventListener('mouseleave', () => { railPanel.hidden = true; });
@@ -607,11 +711,12 @@ window.addEventListener('resize', () => {
   if (cur) { const p = scenePos(cur.track, cur.row); flyTo(p.x, p.y, { instant: true }); }
 });
 
-// 내부 이동이 만든 해시 변경은 serialize()와 일치하므로 무시된다 — 브라우저 뒤로가기만 라우팅
 window.addEventListener('hashchange', () => { if (location.hash !== serialize()) routeFromHash(); });
 
 /* ---------- 시작 ---------- */
 (async function init() {
+  document.documentElement.lang = LANG;
   DB = await fetch(withVer('data/contents.json')).then(r => r.json());
+  renderBrand();
   routeFromHash();
 })();
