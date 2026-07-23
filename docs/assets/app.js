@@ -1,753 +1,617 @@
-/* SPA for GitHub Pages personal branding site.
- * Routes: #/ (홈: 제품+독자 선택) · #/t/<audience> (트랙) · #/s/<seriesId> (퍼즐 시리즈) · #/c/<contentId> (글)
- *         #/p/<productKey> (제품/브랜드) · #/n (뉴스레터 목록) · #/n/<newsletterId> (뉴스레터)
- * 독자 프로필(레벨/단계/관심사)은 localStorage에 저장되어 시리즈 활성화·맞춤 정렬에 사용된다.
- * 읽은 글(pb-read)은 시리즈 퍼즐의 조각 공개에 사용된다 — 글 하나 = 퍼즐 한 조각.
- * 테마 파라미터: ?theme=swim (수영: swimmer·parent·dreamer) / ?theme=dev (개발자: builder·dreamer). */
+/* 프레지(Prezi)식 무한 캔버스 SPA.
+ *
+ * 모든 화면은 거대한 캔버스(#canvas) 위의 '장면(.scene)'이고, 카메라(transform)가
+ * 줌아웃→이동→줌인으로 날아다닌다. 구조는 트랙(track) = 세로 장면 시퀀스:
+ *
+ *   홈 트랙(col 0)      : 인트로 → 서비스 홍보 ×3 → 이야기 허브 → 뉴스레터   (스크롤 ↓)
+ *   서비스 트랙(col 1)   : 히어로 → 문제 → 기원 → 기능 ×N → CTA              (클릭 시 → 오른쪽)
+ *   글/시리즈 트랙(col 2): 더 깊은 관심 — 기능이 태어난 이야기(md)             (더 오른쪽)
+ *
+ * 세로 = 서사의 진행, 가로(오른쪽) = 관심의 깊이. 뒤로가기는 왼쪽으로 돌아온다.
+ * 우측 대시 레일: 현재 트랙의 장면 수만큼 -가 쌓이고, 호버하면 목차가 열려 점프한다.
+ * 데이터 원천은 data/contents.json (tools/build_contents.py 산출물) 하나다. */
 
-const app = document.getElementById('app');
-let DB = null;      // contents.json (tools/build_contents.py가 폴더에서 생성)
-let LEVELS = null;  // levels.json
+const stage = document.getElementById('stage');
+const canvas = document.getElementById('canvas');
+const railEl = document.getElementById('rail');
+const railDashes = document.getElementById('rail-dashes');
+const railPanel = document.getElementById('rail-panel');
+const hudLoc = document.getElementById('hud-loc');
+const hudHint = document.getElementById('hud-hint');
+const backBtn = document.getElementById('nav-back');
 
-/* ---------- 테마(주제) 필터 ---------- */
-const THEMES = {
-  swim: { audiences: ['swimmer', 'parent', 'dreamer'], label: '🏊 수영' },
-  dev:  { audiences: ['builder', 'dreamer'], label: '💻 개발자' },
-};
-const themeKey = () => {
-  const t = new URLSearchParams(location.search).get('theme');
-  return THEMES[t] ? t : null;
-};
-const allowedAudiences = () => {
-  const t = themeKey();
-  return t ? THEMES[t].audiences : DB.audiences.map(a => a.key);
-};
-const isAllowed = (audKey) => allowedAudiences().includes(audKey);
+let DB = null;
 
-const PROFILE_KEY = 'pb-profile';
-const getProfile = () => JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}');
-const setProfile = (patch) => {
-  const p = { ...getProfile(), ...patch };
-  localStorage.setItem(PROFILE_KEY, JSON.stringify(p));
-  return p;
-};
-
-/* ---------- 읽음(조각) 추적 ---------- */
-const READ_KEY = 'pb-read';
-const getRead = () => JSON.parse(localStorage.getItem(READ_KEY) || '{}');
-const markRead = (id) => {
-  const r = getRead();
-  const isNew = !r[id];
-  r[id] = Date.now();
-  localStorage.setItem(READ_KEY, JSON.stringify(r));
-  return isNew;
-};
-
-/* 캐시 버스팅: 배포 워크플로우가 index.html의 __BUILD_VERSION__을 커밋 해시로 치환. */
 const VER = (window.BUILD_VERSION && !window.BUILD_VERSION.startsWith('__')) ? window.BUILD_VERSION : 'dev';
 const withVer = (url) => `${url}${url.includes('?') ? '&' : '?'}v=${VER}`;
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 
-async function loadData() {
-  if (DB && LEVELS) return;
-  const [c, l] = await Promise.all([
-    fetch(withVer('data/contents.json')).then(r => r.json()),
-    fetch(withVer('data/levels.json')).then(r => r.json()),
-  ]);
-  DB = c; LEVELS = l;
-}
-
-const esc = (s) => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-
-/* ---------- 게시 예정(planned) 글 처리 ----------
- * status가 'planned'인 글은 아직 본문이 없다. 사이트에는 '게시 예정'으로 보여주되
- * 클릭(라우팅)은 막고, publish 날짜가 있으면 언제 열리는지 알려준다. */
+const contentOf = (id) => DB.contents.find(c => c.id === id);
+const seriesOf = (id) => DB.series.find(s => s.id === id);
+const seriesOfContent = (cid) => DB.series.find(s => s.articles.includes(cid));
+const productOf = (key) => (DB.products || []).find(p => p.key === key);
+const productsOfStory = (cid) => (DB.products || [])
+  .map(p => ({ p, feats: (p.features || []).filter(f => (f.stories || []).includes(cid)) }))
+  .filter(x => x.feats.length);
 const isPlanned = (c) => !!c && c.status === 'planned';
 const fmtDate = (s) => {
   const m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(String(s || ''));
   return m ? `${m[1]}년 ${+m[2]}월 ${+m[3]}일` : String(s || '');
 };
 const publishLabel = (c) => (c && c.publish) ? `${fmtDate(c.publish)} 공개 예정` : '작성 중 · 공개 예정';
-const audienceOf = (key) => DB.audiences.find(a => a.key === key);
-/* ---------- 제품(브랜드) · 뉴스레터 ----------
- * products.json의 각 제품은 GitHub에서 개발 중인 앱 하나. feature.stories가 퍼즐 글 id를
- * 가리켜 '이 기능은 이 이야기에서 태어났다'를 보여준다 (스토리 → Feature 연결). */
-const productOf = (key) => (DB.products || []).find(p => p.key === key);
-const productsOfStory = (cid) => (DB.products || [])
-  .map(p => ({ p, feats: (p.features || []).filter(f => (f.stories || []).includes(cid)) }))
-  .filter(x => x.feats.length);
-const newslettersOfProduct = (key) => (DB.newsletters || []).filter(n => n.product === key);
-const PRODUCT_STATUS = {
-  live: { label: '🟢 서비스 중', cls: 'live' },
-  building: { label: '🛠 개발 중 · GitHub 공개', cls: 'building' },
+const coverUrl = (s) => (s && s.hasCover !== false) ? `${s.coverBase}${s.sexed ? '_M' : ''}.jpg` : null;
+
+/* 서비스별 장면 배경 아트 — 퍼즐 커버 사진을 재사용한다 */
+const ART = {
+  home: 'content/swimmer/first-lane/cover.jpg',
+  stories: 'content/builder/data-to-ai/cover.jpg',
+  swimvault: { hero: 'content/swimmer/american-lanes/cover.jpg', problem: 'content/swimmer/first-lane/cover.jpg', origin: 'content/dreamer/pacific-bridge/cover.jpg' },
+  splitlane: { hero: 'content/swimmer/race-craft/cover.jpg', problem: 'content/swimmer/champion-code/cover_M.jpg', origin: 'content/builder/builder-origin/cover.jpg' },
+  'swim-meets': { hero: 'content/parent/away-meets/cover.jpg', problem: 'content/parent/parent-seasons/cover.jpg', origin: 'content/builder/data-to-ai/cover.jpg' },
 };
-const contentOf = (id) => DB.contents.find(c => c.id === id);
-const seriesOf = (id) => DB.series.find(s => s.id === id);
-const seriesOfContent = (contentId) => DB.series.find(s => s.articles.includes(contentId));
+const artOf = (key, kind) => (ART[key] && ART[key][kind]) || ART.home;
 
-/* ---------- 시리즈 활성화 판정 ----------
- * 퍼즐(시리즈)은 프로필과 맞으면 "활성", 아니면 흐리게(비활성) 보인다.
- * swimmer: 온보딩에서 판정된 등급이 unlock.levels에 포함 · parent: 단계 · builder: 관심사.
- * unlock이 빈 객체면 항상 활성. 프로필이 없으면 '미정' — 온보딩 유도. */
-function seriesState(s, profile) {
-  const u = s.unlock || {};
-  if (!u.levels && !u.stages && !u.interests) return 'active';
-  if (s.audience === 'swimmer') {
-    const lvl = profile.swimmer && profile.swimmer.level;
-    if (!lvl) return 'unknown';
-    return u.levels.includes(lvl) ? 'active' : 'dim';
-  }
-  if (s.audience === 'parent') {
-    if (!profile.parentStage) return 'unknown';
-    return u.stages.includes(profile.parentStage) ? 'active' : 'dim';
-  }
-  if (s.audience === 'builder') {
-    if (!profile.builderInterest) return 'unknown';
-    return u.interests.includes(profile.builderInterest) ? 'active' : 'dim';
-  }
-  return 'active';
-}
+/* ---------- 캔버스 좌표계 ----------
+ * 장면 크기 = 뷰포트. 가로 간격 GX(관심의 깊이), 세로 간격 GY(서사의 진행). */
+let VW = window.innerWidth, VH = window.innerHeight;
+const GX = () => VW * 1.3;
+const GY = () => VH * 1.22;
 
-function seriesProgress(s) {
-  const read = getRead();
-  const revealed = new Set();
-  s.articles.forEach((id, i) => { if (read[id]) revealed.add(i); });
-  return revealed;
-}
+const tracks = new Map(); // key → track
+let navStack = [];        // [{track, row}] — 마지막이 현재 위치
 
-/* ---------- 홈: 제품(브랜드) 3종 + 스토리(독자 선택) ----------
- * 이 사이트는 '이야기가 기능이 되는' 제품 홈페이지다.
- * 위: 개발 중인 앱 3개(브랜드) — 누가 왜 만들었는지의 기원 스토리로 소개.
- * 아래: 그 기원이 되는 퍼즐 스토리 트랙 — 독자가 자기 모습을 골라 들어간다. */
-function productCardHTML(p) {
-  const st = PRODUCT_STATUS[p.status] || PRODUCT_STATUS.building;
-  const nStories = (p.features || []).reduce((n, f) => n + (f.stories || []).length, 0);
-  return `
-    <a class="product-card" href="#/p/${p.key}">
-      <div class="product-head">
-        <span class="product-emoji">${p.emoji}</span>
-        <span class="product-status ${st.cls}">${st.label}</span>
-      </div>
-      <h3>${esc(p.name)}</h3>
-      <p class="product-tagline">${esc(p.tagline)}</p>
-      <p class="product-problem">${esc(p.problem)}</p>
-      <span class="product-more">기원 스토리와 기능 ${nStories ? `· 연결된 이야기 ${nStories}편 ` : ''}→</span>
-    </a>`;
-}
+function trackBaseY(t) { return t.parent ? trackBaseY(t.parent) + t.entryRow * GY() : 0; }
+function scenePos(t, row) { return { x: t.col * GX(), y: trackBaseY(t) + row * GY() }; }
 
-function renderHome() {
-  const t = themeKey();
-  const heroTitle = t === 'swim'
-    ? '두 수영 선수를 키우는 아빠의<br/>물살 위 성장 기록.'
-    : t === 'dev'
-    ? '차량 데이터 플랫폼을 만들어온<br/>20년차 엔지니어의 기록.'
-    : 'AI와 데이터로, 운동하는 아이의<br/>성장을 기록·분석하는 아빠 개발자.';
-  const nSeries = DB.series.filter(s => isAllowed(s.audience)).length;
-  const products = DB.products || [];
-  const latestNl = (DB.newsletters || [])[0];
-  app.innerHTML = `
-    <section class="hero">
-      <h1>${heroTitle}</h1>
-      <p>관중석에서 마주친 질문들이 이야기가 되고, 그 이야기가 앱의 기능이 됩니다.<br/>
-      여기서 만드는 모든 서비스는 <strong>퍼즐 스토리</strong>에서 태어났습니다.</p>
-    </section>
-    ${products.length ? `
-    <h2 class="section-label">만들고 있는 서비스</h2>
-    <p class="reco-note">GitHub에서 공개 개발 중입니다. 각 기능이 어떤 이야기에서 태어났는지 함께 보세요.</p>
-    <div class="product-grid">${products.map(productCardHTML).join('')}</div>` : ''}
-    ${latestNl ? `
-    <a class="nl-banner" href="#/n/${latestNl.id}">
-      <span class="nl-badge">📮 뉴스레터</span>
-      <span class="nl-banner-title">${esc(latestNl.title)}</span>
-      <span class="nl-banner-more">전체 보기 →</span>
-    </a>` : ''}
-    <h2 class="section-label">서비스가 태어난 이야기</h2>
-    <p class="reco-note">모든 이야기는 <strong>${nSeries}개의 퍼즐</strong>로 나뉘어 있고, 글을 하나 읽을 때마다
-    조각이 하나 맞춰집니다. 자신과 가장 가까운 모습을 골라주세요.</p>
-    <div class="audience-grid">
-      ${DB.audiences.filter(a => isAllowed(a.key)).map(a => {
-        const ss = DB.series.filter(s => s.audience === a.key);
-        const total = ss.reduce((n, s) => n + s.articles.length, 0);
-        const done = ss.reduce((n, s) => n + seriesProgress(s).size, 0);
-        return `
-        <button class="audience-card" data-key="${a.key}">
-          <span class="emoji">${a.emoji}</span>
-          <h2>${esc(a.name)}</h2>
-          <p>${esc(a.tagline)}</p>
-          <span class="audience-progress">🧩 퍼즐 ${ss.length}판 · ${done}/${total} 조각</span>
-        </button>`;
-      }).join('')}
-    </div>`;
-  app.querySelectorAll('.audience-card').forEach(btn =>
-    btn.addEventListener('click', () => { location.hash = `#/t/${btn.dataset.key}`; }));
-}
-
-/* ---------- 제품(브랜드) 페이지 ----------
- * 하나의 앱을 '기원 스토리 → 누가 쓰면 좋은가 → 기능(각 기능이 태어난 이야기 링크) →
- * 뉴스레터' 순서로 소개한다. 팬이 이야기를 따라 기능의 이유를 이해하게 하는 구조. */
-function renderProduct(key) {
-  const p = productOf(key);
-  if (!p) { location.hash = '#/'; return; }
-  const st = PRODUCT_STATUS[p.status] || PRODUCT_STATUS.building;
-  const storyItem = (cid) => {
-    const c = contentOf(cid);
-    if (!c) return '';
-    const planned = isPlanned(c);
-    return planned
-      ? `<span class="feature-story planned" title="게시 예정">🔒 ${esc(c.title)} <em>(${esc(publishLabel(c))})</em></span>`
-      : `<a class="feature-story" href="#/c/${cid}">📖 ${esc(c.title)}</a>`;
+function getTrack(key, builder) {
+  if (tracks.has(key)) return tracks.get(key);
+  const cur = navStack[navStack.length - 1];
+  const t = {
+    key,
+    col: cur ? cur.track.col + 1 : 0,
+    parent: cur ? cur.track : null,
+    entryRow: cur ? cur.row : 0,
+    scenes: [],
+    visited: new Set(),
   };
-  const relSeries = (p.series || []).map(seriesOf).filter(Boolean).filter(s => isAllowed(s.audience));
-  const nls = newslettersOfProduct(key);
-  app.innerHTML = `
-    <div class="track-head">
-      <div class="crumb"><a href="#/">← 처음으로</a></div>
-      <h1>${p.emoji} ${esc(p.name)} <span class="product-status ${st.cls}">${st.label}</span></h1>
-      <p>${esc(p.tagline)}</p>
-    </div>
-    <div class="product-hero">
-      <h2 class="product-section">이 앱이 풀려는 문제</h2>
-      <p>${esc(p.problem)}</p>
-      <h2 class="product-section">누가, 왜 만들었나</h2>
-      <p>${esc(p.origin)}</p>
-      <h2 class="product-section">이런 분들이 쓰면 좋습니다</h2>
-      <ul>${(p.forWho || []).map(w => `<li>${esc(w)}</li>`).join('')}</ul>
-      <div class="product-links">
-        <a class="product-link" href="${esc(p.repo)}" target="_blank" rel="noopener">🐙 GitHub에서 함께 만들기</a>
-        ${p.site ? `<a class="product-link primary" href="${esc(p.site)}" target="_blank" rel="noopener">🚀 서비스 사용하기</a>` : `<span class="product-link soon">🛠 출시 준비 중 — 뉴스레터로 소식을 받아보세요</span>`}
-        ${(p.links || []).map(l => `<a class="product-link" href="${esc(l.url)}" target="_blank" rel="noopener">🔗 ${esc(l.label)}</a>`).join('')}
-      </div>
-    </div>
-    <h2 class="section-label">기능과, 기능이 태어난 이야기</h2>
-    <p class="reco-note">기능은 그냥 만들지 않습니다 — 질문과 문제(이야기)가 먼저고, 기능은 그 답입니다.</p>
-    <div class="feature-list">
-      ${(p.features || []).map((f, i) => `
-        <div class="feature-card">
-          <h3><span class="feature-num">${i + 1}</span> ${esc(f.name)}</h3>
-          <p>${esc(f.desc)}</p>
-          ${(f.stories || []).length ? `<div class="feature-stories">${f.stories.map(storyItem).join('')}</div>` : ''}
-        </div>`).join('')}
-    </div>
-    ${relSeries.length ? `
-      <h2 class="section-label">이 앱의 뿌리가 된 퍼즐</h2>
-      <div class="series-grid">${relSeries.map((s, i) => seriesCardHTML(s, getProfile(), { uid: '-p' + i })).join('')}</div>` : ''}
-    ${nls.length ? `
-      <h2 class="section-label">📮 이 앱의 뉴스레터</h2>
-      <div class="content-list">${nls.map(n => `
-        <a class="content-item" href="#/n/${n.id}">
-          <div class="meta"><span class="tag">${esc(n.version || '')}</span><span class="pieces">${esc(fmtDate(n.date))}</span></div>
-          <h3>${esc(n.title)}</h3>
-        </a>`).join('')}</div>` : ''}
-    <div class="back-row"><button class="ghost" onclick="location.hash='#/'">← 처음으로</button></div>
-  `;
-  window.scrollTo(0, 0);
+  tracks.set(key, t);
+  builder(t);
+  layoutTrack(t);
+  return t;
 }
 
-/* ---------- 뉴스레터 목록 · 상세 ----------
- * newsletters/*.md 중 status: published만 contents.json에 실린다(선택적 발행).
- * 각 호는 퍼즐 스토리 요약 + 링크로 구성 — 앱 출시/버전 업에 맞춰 발행. */
-function renderNewsletterList() {
+function addScene(t, title, cls, html) {
+  const el = document.createElement('section');
+  el.className = `scene ${cls}`;
+  el.innerHTML = html;
+  canvas.appendChild(el);
+  t.scenes.push({ title, el, row: t.scenes.length });
+  return el;
+}
+
+function layoutTrack(t) {
+  t.scenes.forEach(sc => {
+    const p = scenePos(t, sc.row);
+    sc.el.style.left = p.x + 'px';
+    sc.el.style.top = p.y + 'px';
+    sc.el.style.width = VW + 'px';
+    sc.el.style.height = VH + 'px';
+  });
+}
+
+function layoutAll() {
+  VW = window.innerWidth; VH = window.innerHeight;
+  tracks.forEach(layoutTrack);
+}
+
+/* ---------- 카메라 ---------- */
+let cam = { x: 0, y: 0 };
+let flying = null;
+const tf = (c, s = 1) => `scale(${s}) translate(${-c.x}px, ${-c.y}px)`;
+
+function flyTo(x, y, opts = {}) {
+  if (flying) { flying.cancel(); flying = null; }
+  const from = { ...cam };
+  cam = { x, y };
+  canvas.style.transform = tf(cam);
+  if (opts.instant) return;
+  const dist = Math.hypot(x - from.x, y - from.y);
+  const dur = Math.min(1500, 550 + dist * 0.18);
+  // 먼 비행일수록 중간에 줌아웃해 '캔버스 위를 난다'는 감각을 준다
+  const midS = dist > VW * 0.7 ? 0.45 : dist > VW * 0.25 ? 0.8 : 0.96;
+  const mid = { x: (from.x + x) / 2, y: (from.y + y) / 2 };
+  flying = canvas.animate([
+    { transform: tf(from) },
+    { transform: tf(mid, midS), offset: 0.5 },
+    { transform: tf(cam) },
+  ], { duration: dur, easing: 'cubic-bezier(.6,.05,.3,1)' });
+  flying.onfinish = () => { flying = null; };
+}
+
+/* ---------- 내비게이션 ---------- */
+function current() { return navStack[navStack.length - 1]; }
+
+function activate() {
+  const cur = current();
+  const t = cur.track;
+  t.visited.add(cur.row);
+  // 현재 스택에 속한 트랙만 보이게 — 같은 좌표대의 다른 트랙과 겹치지 않도록
+  const live = new Set(navStack.map(e => e.track));
+  tracks.forEach(tr => tr.scenes.forEach(sc => {
+    sc.el.classList.toggle('offstage', !live.has(tr));
+    sc.el.classList.toggle('active', tr === t && sc.row === cur.row);
+  }));
+  const p = scenePos(t, cur.row);
+  flyTo(p.x, p.y);
+  backBtn.hidden = navStack.length <= 1;
+  renderRail();
+  renderLoc();
+  renderHint();
+  syncHash();
+}
+
+function goRow(row) {
+  const cur = current();
+  if (row < 0 || row >= cur.track.scenes.length || row === cur.row) return;
+  cur.row = row;
+  activate();
+}
+
+function pushTrack(key, builder, row = 0) {
+  const t = getTrack(key, builder);
+  navStack.push({ track: t, row: Math.max(0, Math.min(row, t.scenes.length - 1)) });
+  activate();
+}
+
+function popTrack() {
+  if (navStack.length <= 1) return;
+  navStack.pop();
+  activate();
+}
+
+function resetHome(row = 0) {
+  navStack = [{ track: getTrack('home', buildHome), row }];
+  activate();
+}
+
+/* ---------- HUD: 대시 레일 · 위치 · 힌트 ---------- */
+function renderRail() {
+  const cur = current();
+  const t = cur.track;
+  railDashes.innerHTML = t.scenes.map(sc => `
+    <button class="rail-dash ${sc.row === cur.row ? 'on' : ''} ${t.visited.has(sc.row) ? 'seen' : ''}"
+      data-row="${sc.row}" aria-label="${esc(sc.title)}"></button>`).join('');
+  railPanel.innerHTML = `
+    <p class="rail-panel-head">${esc(trackLabel(t))}</p>
+    ${t.scenes.map(sc => `
+      <button class="rail-item ${sc.row === cur.row ? 'on' : ''}" data-row="${sc.row}">
+        <span class="rail-idx">${String(sc.row + 1).padStart(2, '0')}</span>${esc(sc.title)}
+      </button>`).join('')}`;
+  railEl.querySelectorAll('[data-row]').forEach(b =>
+    b.addEventListener('click', () => goRow(+b.dataset.row)));
+}
+
+function trackLabel(t) {
+  if (t.key === 'home') return '홈 — 서비스 이야기';
+  if (t.key.startsWith('p:')) { const p = productOf(t.key.slice(2)); return p ? `${p.emoji} ${p.name}` : t.key; }
+  if (t.key.startsWith('s:')) { const s = seriesOf(t.key.slice(2)); return s ? `${s.emoji} ${s.title}` : t.key; }
+  if (t.key.startsWith('a:')) { const c = contentOf(t.key.slice(2)); return c ? c.title : t.key; }
+  if (t.key.startsWith('nl:')) return '📮 뉴스레터';
+  return t.key;
+}
+
+function renderLoc() {
+  hudLoc.innerHTML = navStack.map((e, i) =>
+    i === navStack.length - 1
+      ? `<strong>${esc(trackLabel(e.track))}</strong>`
+      : `<button class="loc-jump" data-depth="${i}">${esc(trackLabel(e.track))}</button>`
+  ).join('<span class="loc-sep">›</span>');
+  hudLoc.querySelectorAll('.loc-jump').forEach(b =>
+    b.addEventListener('click', () => { navStack = navStack.slice(0, +b.dataset.depth + 1); activate(); }));
+}
+
+function renderHint() {
+  const cur = current();
+  const last = cur.row === cur.track.scenes.length - 1;
+  hudHint.textContent = cur.track.key === 'home'
+    ? (last ? '↑ 위로 — 서비스 이야기의 처음으로' : '스크롤 ↓ 다음 이야기 · 카드를 클릭하면 오른쪽으로 깊이 들어갑니다 →')
+    : (last ? '↑ 위로 · ← 돌아가기(Esc)' : '스크롤 ↓ 서사가 이어집니다 · 관심 항목은 → 오른쪽으로');
+}
+
+/* ---------- 해시 라우팅 (딥링크·뒤로가기) ---------- */
+function serialize() {
+  const cur = current();
+  const t = cur.track;
+  if (t.key === 'home') return `#/h/${cur.row}`;
+  if (t.key.startsWith('p:')) return `#/p/${t.key.slice(2)}/${cur.row}`;
+  if (t.key.startsWith('s:')) return `#/s/${t.key.slice(2)}`;
+  if (t.key.startsWith('a:')) return `#/a/${t.key.slice(2)}`;
+  if (t.key.startsWith('nl:')) return `#/nl/${t.key.slice(2)}`;
+  return '#/h/0';
+}
+function syncHash() {
+  if (location.hash !== serialize()) location.hash = serialize();
+}
+function routeFromHash() {
+  const parts = (location.hash || '#/').slice(2).split('/').map(decodeURIComponent);
+  const [kind, a, b] = parts;
+  resetHome(0);
+  if (kind === 'h') { goRow(Math.min(+a || 0, current().track.scenes.length - 1)); return; }
+  if (kind === 'p' && productOf(a)) {
+    goRow(homeRowOfProduct(a));
+    pushTrack('p:' + a, t => buildProduct(t, productOf(a)), Math.max(0, +b || 0));
+    return;
+  }
+  if (kind === 's' && seriesOf(a)) { goRow(HOME_STORIES_ROW()); pushSeries(a); return; }
+  if ((kind === 'a' || kind === 'c') && contentOf(a)) { openArticleDeep(a); return; }
+  if (kind === 'nl' || kind === 'n') {
+    goRow(HOME_NL_ROW());
+    const nl = (DB.newsletters || []).find(n => n.id === a);
+    if (nl) pushTrack('nl:' + a, t => buildNewsletter(t, nl));
+    return;
+  }
+  if (kind === 't') goRow(HOME_STORIES_ROW()); // 구 트랙 링크 → 이야기 허브
+}
+function openArticleDeep(cid) {
+  // 딥링크로 글에 직행: 홈 → (제품 or 시리즈) → 글 스택을 재구성
+  const born = productsOfStory(cid);
+  if (born.length) {
+    const key = born[0].p.key;
+    goRow(homeRowOfProduct(key));
+    pushTrack('p:' + key, t => buildProduct(t, productOf(key)));
+  } else {
+    const s = seriesOfContent(cid);
+    goRow(HOME_STORIES_ROW());
+    if (s) pushSeries(s.id);
+  }
+  pushArticle(cid);
+}
+
+/* ================================================================
+ * 장면 빌더들
+ * ================================================================ */
+/* 홈 트랙 장면 배치: 0 인트로 → 1..N 서비스 → N+1 이야기 허브 → N+2 뉴스레터 */
+const homeRowOfProduct = (key) => 1 + Math.max(0, (DB.products || []).findIndex(p => p.key === key));
+const HOME_STORIES_ROW = () => 1 + (DB.products || []).length;
+const HOME_NL_ROW = () => 2 + (DB.products || []).length;
+
+const kicker = (txt) => `<p class="kicker">${esc(txt)}</p>`;
+const cue = `<button class="scroll-cue" data-next aria-label="다음 장면">⌄</button>`;
+const bgArt = (url, cls = '') => `<div class="scene-bg ${cls}" style="background-image:url('${esc(url)}')"></div><div class="scene-veil"></div>`;
+
+function buildHome(t) {
+  const nStories = DB.contents.length;
+  const nSeries = DB.series.length;
+
+  /* 장면 0 — 인트로 */
+  addScene(t, '인트로 — 관중석의 질문', 'sc-hero', `
+    ${bgArt(ART.home)}
+    <div class="inner center">
+      ${kicker('AI · DATA · YOUTH SPORTS')}
+      <h1 class="display">관중석의 질문이,<br/><em>서비스</em>가 됩니다.</h1>
+      <p class="lead">AI와 데이터로 운동하는 아이의 성장을 기록·분석하는 아빠 개발자.<br/>
+      그가 만드는 서비스의 이야기를, 한 장면씩 내려가며 만나보세요.</p>
+      <div class="stat-row">
+        <span class="stat"><b>3</b>개의 서비스</span>
+        <span class="stat"><b>${nSeries}</b>개의 퍼즐</span>
+        <span class="stat"><b>${nStories}</b>편의 이야기</span>
+      </div>
+    </div>
+    ${cue}`);
+
+  /* 장면 1~3 — 서비스 홍보 (한 페이지 = 한 서비스) */
+  (DB.products || []).forEach((p, i) => {
+    const st = p.status === 'live'
+      ? '<span class="badge live">🟢 지금 사용 가능</span>'
+      : '<span class="badge building">🛠 GitHub에서 공개 개발 중</span>';
+    const el = addScene(t, `${p.emoji} ${p.name}`, 'sc-promo', `
+      <div class="inner split">
+        <div class="split-text">
+          <span class="giant-num">0${i + 1}</span>
+          ${kicker('SERVICE')}
+          <h2 class="display">${p.emoji} ${esc(p.name)}</h2>
+          <p class="tagline">${esc(p.tagline)}</p>
+          <p class="lead">${esc(p.problem)}</p>
+          ${st}
+          <button class="cta" data-open="${p.key}">서비스 이야기 속으로 <span class="arrow">→</span></button>
+        </div>
+        <div class="split-art" data-open="${p.key}" role="button" tabindex="0">
+          <figure class="art-frame"><img src="${esc(artOf(p.key, 'hero'))}" alt="${esc(p.name)}" loading="lazy"/></figure>
+          <span class="art-hint">클릭하면 오른쪽으로 →</span>
+        </div>
+      </div>
+      ${cue}`);
+    el.querySelectorAll(`[data-open]`).forEach(n =>
+      n.addEventListener('click', () => pushTrack('p:' + p.key, tr => buildProduct(tr, p))));
+  });
+
+  /* 장면 4 — 이야기 허브 */
+  const hub = addScene(t, '서비스가 태어난 이야기', 'sc-hub', `
+    ${bgArt(ART.stories, 'faint')}
+    <div class="inner">
+      ${kicker('ORIGIN STORIES')}
+      <h2 class="display">모든 기능에는<br/><em>이야기</em>가 있습니다.</h2>
+      <p class="lead">기능은 그냥 만들지 않습니다 — 질문과 문제가 먼저고, 기능은 그 답입니다.</p>
+      <div class="scroll-area hub-grid">
+        ${DB.series.map(s => {
+          const url = coverUrl(s);
+          return `
+          <button class="hub-card" data-series="${s.id}">
+            <span class="hub-thumb">${url ? `<img src="${esc(url)}" alt="" loading="lazy"/>` : ''}</span>
+            <span class="hub-body">
+              <b>${s.emoji} ${esc(s.title)}</b>
+              <small>${esc(s.question)}</small>
+            </span>
+          </button>`;
+        }).join('')}
+      </div>
+    </div>
+    ${cue}`);
+  hub.querySelectorAll('[data-series]').forEach(n =>
+    n.addEventListener('click', () => pushSeries(n.dataset.series)));
+
+  /* 장면 5 — 뉴스레터 */
   const nls = DB.newsletters || [];
-  app.innerHTML = `
-    <div class="track-head">
-      <div class="crumb"><a href="#/">← 처음으로</a></div>
-      <h1>📮 뉴스레터</h1>
-      <p>앱 출시와 버전 업그레이드에 맞춰, 그 기능이 태어난 퍼즐 스토리를 요약해 전합니다.</p>
+  const nlScene = addScene(t, '📮 뉴스레터', 'sc-nl', `
+    <div class="inner">
+      ${kicker('NEWSLETTER')}
+      <h2 class="display">이야기가 기능이 되면,<br/><em>편지</em>로 알려드립니다.</h2>
+      <p class="lead">앱 출시와 버전 업그레이드에 맞춰, 그 기능이 태어난 이야기를 요약해 발행합니다.</p>
+      <div class="nl-list">
+        ${nls.length ? nls.map(n => {
+          const p = productOf(n.product);
+          return `
+          <button class="nl-card" data-nl="${n.id}">
+            <span class="nl-meta">${p ? `${p.emoji} ${esc(p.name)}` : ''} · ${esc(n.version || '')} · ${esc(fmtDate(n.date))}</span>
+            <b>${esc(n.title)}</b>
+            <span class="nl-open">읽기 →</span>
+          </button>`;
+        }).join('') : '<p class="lead dim">첫 호를 준비하고 있습니다.</p>'}
+      </div>
+      <p class="foot-note">〰️ 데이터를 만들고, 선수를 키웁니다 — <a href="https://github.com/kyj5482" target="_blank" rel="noopener">GitHub @kyj5482</a></p>
+    </div>`);
+  nlScene.querySelectorAll('[data-nl]').forEach(n =>
+    n.addEventListener('click', () => {
+      const nl = nls.find(x => x.id === n.dataset.nl);
+      pushTrack('nl:' + nl.id, tr => buildNewsletter(tr, nl));
+    }));
+}
+
+/* ---------- 서비스 트랙: 히어로 → 문제 → 기원 → 기능 ×N → CTA ---------- */
+function buildProduct(t, p) {
+  const st = p.status === 'live'
+    ? '<span class="badge live">🟢 지금 사용 가능</span>'
+    : '<span class="badge building">🛠 GitHub에서 공개 개발 중</span>';
+
+  addScene(t, `${p.name} — 시작`, 'sc-hero sc-p-hero', `
+    ${bgArt(artOf(p.key, 'hero'))}
+    <div class="inner center">
+      ${kicker('SERVICE STORY')}
+      <h1 class="display">${p.emoji} ${esc(p.name)}</h1>
+      <p class="tagline">${esc(p.tagline)}</p>
+      ${st}
+      <p class="lead dim">아래로 — 이 서비스가 태어난 서사가 이어집니다.</p>
     </div>
-    <div class="content-list" style="margin-top:20px">
-      ${nls.length ? nls.map(n => {
-        const p = productOf(n.product);
-        return `
-        <a class="content-item" href="#/n/${n.id}">
-          <div class="meta">
-            ${p ? `<span class="tag">${p.emoji} ${esc(p.name)}</span>` : ''}
-            <span class="tag">${esc(n.version || '')}</span>
-            <span class="pieces">${esc(fmtDate(n.date))}</span>
+    ${cue}`);
+
+  addScene(t, '풀려는 문제', 'sc-narr', `
+    <div class="inner split">
+      <div class="split-text">
+        ${kicker('CHAPTER 1 — 문제')}
+        <h2 class="display sm">모든 서비스는<br/>불편에서 시작됐습니다.</h2>
+        <blockquote class="big-quote">${esc(p.problem)}</blockquote>
+      </div>
+      <div class="split-art"><figure class="art-frame tilt"><img src="${esc(artOf(p.key, 'problem'))}" alt="" loading="lazy"/></figure></div>
+    </div>
+    ${cue}`);
+
+  addScene(t, '누가, 왜 만들었나', 'sc-narr', `
+    <div class="inner split rev">
+      <div class="split-text">
+        ${kicker('CHAPTER 2 — 기원')}
+        <h2 class="display sm">누가, 왜<br/>만들었을까요?</h2>
+        <p class="lead">${esc(p.origin)}</p>
+      </div>
+      <div class="split-art"><figure class="art-frame tilt-l"><img src="${esc(artOf(p.key, 'origin'))}" alt="" loading="lazy"/></figure></div>
+    </div>
+    ${cue}`);
+
+  (p.features || []).forEach((f, i) => {
+    const stories = (f.stories || []).map(cid => {
+      const c = contentOf(cid);
+      if (!c) return '';
+      return isPlanned(c)
+        ? `<span class="story-link locked">🔒 ${esc(c.title)}<small>${esc(publishLabel(c))}</small></span>`
+        : `<button class="story-link" data-article="${cid}">📖 ${esc(c.title)}<small>이야기 읽기 →</small></button>`;
+    }).join('');
+    const el = addScene(t, `기능 ${i + 1} — ${f.name}`, 'sc-feat', `
+      <div class="inner split">
+        <div class="split-text">
+          <span class="giant-num soft">F${i + 1}</span>
+          ${kicker(`FEATURE ${i + 1} / ${p.features.length}`)}
+          <h2 class="display sm">${esc(f.name)}</h2>
+          <p class="lead">${esc(f.desc)}</p>
+        </div>
+        <div class="split-art">
+          <div class="story-panel">
+            <p class="story-panel-head">이 기능이 태어난 이야기</p>
+            ${stories || '<p class="dim">연결된 이야기를 준비 중입니다.</p>'}
           </div>
-          <h3>${esc(n.title)}</h3>
-        </a>`;
-      }).join('') : '<p class="reco-note">아직 발행된 뉴스레터가 없습니다.</p>'}
-    </div>`;
+        </div>
+      </div>
+      ${cue}`);
+    el.querySelectorAll('[data-article]').forEach(n =>
+      n.addEventListener('click', () => pushArticle(n.dataset.article)));
+  });
+
+  const nls = (DB.newsletters || []).filter(n => n.product === p.key);
+  const ctaEl = addScene(t, '함께하기', 'sc-cta', `
+    ${bgArt(artOf(p.key, 'hero'), 'faint')}
+    <div class="inner center">
+      ${kicker('JOIN THE STORY')}
+      <h2 class="display sm">이런 분들과 함께<br/>만들어가고 싶습니다.</h2>
+      <ul class="who-list">${(p.forWho || []).map(w => `<li>${esc(w)}</li>`).join('')}</ul>
+      <div class="cta-row">
+        <a class="cta ghosted" href="${esc(p.repo)}" target="_blank" rel="noopener">🐙 GitHub에서 함께 만들기</a>
+        ${p.site
+          ? `<a class="cta" href="${esc(p.site)}" target="_blank" rel="noopener">🚀 서비스 사용하기</a>`
+          : `<span class="cta soon">🛠 출시 준비 중 — 뉴스레터로 소식을 받아보세요</span>`}
+        ${(p.links || []).map(l => `<a class="cta ghosted" href="${esc(l.url)}" target="_blank" rel="noopener">🔗 ${esc(l.label)}</a>`).join('')}
+      </div>
+      ${nls.length ? `<div class="nl-list narrow">${nls.map(n => `
+        <button class="nl-card" data-nl="${n.id}">
+          <span class="nl-meta">${esc(n.version || '')} · ${esc(fmtDate(n.date))}</span>
+          <b>${esc(n.title)}</b><span class="nl-open">읽기 →</span>
+        </button>`).join('')}</div>` : ''}
+    </div>`);
+  ctaEl.querySelectorAll('[data-nl]').forEach(n =>
+    n.addEventListener('click', () => {
+      const nl = nls.find(x => x.id === n.dataset.nl);
+      pushTrack('nl:' + nl.id, tr => buildNewsletter(tr, nl));
+    }));
 }
 
-async function renderNewsletter(id) {
-  const n = (DB.newsletters || []).find(x => x.id === id);
-  if (!n) { location.hash = '#/n'; return; }
-  const p = productOf(n.product);
-  app.innerHTML = `
-    <div class="track-head">
-      <div class="crumb"><a href="#/">처음</a> · <a href="#/n">📮 뉴스레터</a>${p ? ` · <a href="#/p/${p.key}">${p.emoji} ${esc(p.name)}</a>` : ''}</div>
-    </div>
-    <article class="article"><p class="loading">불러오는 중…</p></article>
-    <div class="back-row"><button class="ghost" onclick="location.hash='#/n'">← 뉴스레터 목록으로</button></div>
-  `;
-  const articleEl = app.querySelector('.article');
+/* ---------- 시리즈 트랙(이야기 허브에서 진입): 퍼즐 한 판의 글 목록 ---------- */
+function pushSeries(sid) {
+  pushTrack('s:' + sid, t => {
+    const s = seriesOf(sid);
+    const url = coverUrl(s);
+    const el = addScene(t, `${s.emoji} ${s.title}`, 'sc-series', `
+      ${url ? bgArt(url, 'faint') : ''}
+      <div class="inner">
+        ${kicker('PUZZLE SERIES')}
+        <h2 class="display sm">${s.emoji} ${esc(s.title)}</h2>
+        <p class="lead">${esc(s.question)}</p>
+        <div class="scroll-area ep-list">
+          ${s.articles.map((cid, i) => {
+            const c = contentOf(cid);
+            return isPlanned(c)
+              ? `<span class="ep locked"><span class="ep-num">${i + 1}</span><b>${esc(c.title)}</b><small>🔒 ${esc(publishLabel(c))}</small></span>`
+              : `<button class="ep" data-article="${cid}"><span class="ep-num">${i + 1}</span><b>${esc(c.title)}</b><small>읽기 →</small></button>`;
+          }).join('')}
+        </div>
+      </div>`);
+    el.querySelectorAll('[data-article]').forEach(n =>
+      n.addEventListener('click', () => pushArticle(n.dataset.article)));
+  });
+}
+
+/* ---------- 글 트랙: md 본문 (가장 깊은 오른쪽) ---------- */
+function pushArticle(cid) {
+  pushTrack('a:' + cid, t => {
+    const c = contentOf(cid);
+    const el = addScene(t, c.title, 'sc-article', `
+      <div class="inner">
+        <article class="paper scroll-area"><p class="dim">이야기를 펼치는 중…</p></article>
+      </div>`);
+    loadMarkdown(el.querySelector('.paper'), c.file, cid);
+  });
+}
+
+function buildNewsletter(t, nl) {
+  const el = addScene(t, nl.title, 'sc-article', `
+    <div class="inner">
+      <article class="paper scroll-area"><p class="dim">불러오는 중…</p></article>
+    </div>`);
+  loadMarkdown(el.querySelector('.paper'), nl.file, null);
+}
+
+async function loadMarkdown(paperEl, file, cid) {
   try {
-    const md = await fetch(withVer(n.file)).then(r => { if (!r.ok) throw new Error(r.status); return r.text(); });
+    const md = await fetch(withVer(file)).then(r => { if (!r.ok) throw new Error(r.status); return r.text(); });
     const body = md.replace(/^\s*---\s*\n[\s\S]*?\n---\s*\n?/, '');
-    articleEl.innerHTML = marked.parse(body);
-    // 뉴스레터 속 상대 md 링크도 글 라우트로 변환 (글 페이지와 동일한 슬러그 매칭)
+    paperEl.innerHTML = marked.parse(body);
+    // 본문 속 상대 md 링크 → 캔버스 글 점프 (번호 프리픽스 무시, 슬러그 매칭)
     const slugKey = (path) => path.split('/').pop().replace(/\.md$/, '').replace(/^\d+-/, '');
-    articleEl.querySelectorAll('a[href$=".md"]').forEach(a => {
+    paperEl.querySelectorAll('a[href$=".md"]').forEach(a => {
       const target = DB.contents.find(x => slugKey(x.file) === slugKey(a.getAttribute('href')));
-      if (target && isAllowed(target.audience) && !isPlanned(target)) a.setAttribute('href', `#/c/${target.id}`);
-    });
-  } catch (e) {
-    articleEl.innerHTML = `<p>이 뉴스레터를 불러오지 못했습니다.</p>`;
-  }
-  window.scrollTo(0, 0);
-}
-
-/* ---------- 온보딩 위젯 (USA Swimming 등급 판정 등) ---------- */
-function ageGroupOf(age) {
-  const g = LEVELS.ageGroups.find(a => age >= a.min && age <= a.max);
-  return g ? g.key : '17-18';
-}
-
-function parseTime(str) {
-  const s = String(str).trim();
-  if (!s) return null;
-  const m = s.match(/^(?:(\d+):)?(\d{1,2}(?:\.\d{1,2})?)$/);
-  if (!m) return null;
-  return (m[1] ? parseInt(m[1], 10) * 60 : 0) + parseFloat(m[2]);
-}
-
-function levelFromRecord(ageGroup, course, event, sex, sec) {
-  const std = LEVELS.standards[ageGroup]?.[course]?.[event]?.[sex];
-  if (!std || !(sec > 0)) return null;
-  let achieved = 'PRE_B';
-  for (const lvl of LEVELS.levelOrder) {
-    if (std[lvl] != null && sec <= std[lvl]) achieved = lvl;
-  }
-  if (achieved === 'AAAA' && sec <= std['AAAA'] * 0.98) achieved = 'AAAA_PLUS';
-  return { level: achieved, standards: std };
-}
-
-function eventsFor(ageGroup, course) {
-  const evs = Object.keys(LEVELS.standards[ageGroup]?.[course] || {});
-  return evs.sort((a, b) => {
-    const [da, sa] = a.split(' '); const [db, sb] = b.split(' ');
-    const order = ['FR', 'BK', 'BR', 'FL', 'IM'];
-    return order.indexOf(sa) - order.indexOf(sb) || (+da) - (+db);
-  });
-}
-
-function eventLabel(ev) {
-  const [dist, stroke] = ev.split(' ');
-  return `${LEVELS.strokeLabels[stroke] || stroke} ${dist}`;
-}
-
-function onboardingHTML(aud, profile, expanded) {
-  if (aud.onboarding === 'level') {
-    const p = profile.swimmer || {};
-    // 레벨이 판정되어 있으면 요약 바로 최소화 — 퍼즐 보드가 주인공이 되도록
-    if (p.level && !expanded) {
-      const info = LEVELS.levelLabels[p.level] || {};
-      const next = (p.nextLevel && p.nextGap != null)
-        ? ` · 다음 ${esc((LEVELS.levelLabels[p.nextLevel] || {}).name || p.nextLevel)}까지 ${p.nextGap.toFixed(2)}초`
-        : '';
-      return `
-      <div class="onboarding-mini" id="onboarding">
-        <span class="level-chip">${esc(info.name || p.level)}</span>
-        <span class="mini-desc">${esc(info.ko || '')} · ${esc(eventLabel(p.event))} ${esc(p.course)} ${esc(p.time)}${next}</span>
-        <button class="ghost mini-edit" id="ob-edit">수정</button>
-      </div>`;
-    }
-    const ageGroup = p.age ? ageGroupOf(p.age) : '11-12';
-    const course = p.course || 'SCY';
-    return `
-      <div class="onboarding" id="onboarding">
-        <h3>🏊 내 레벨로 퍼즐 열기 <small style="font-weight:400;color:var(--text-dim)">USA Swimming 공식 기준</small></h3>
-        <p class="sub">나이·성별·종목·베스트 기록을 입력하면 등급(B → AAAA)을 판정하고, <strong>내 등급에 맞는 퍼즐이 활성화</strong>됩니다.</p>
-        <label>나이</label>
-        <input id="ob-age" type="number" min="5" max="25" placeholder="12" value="${p.age || ''}" />
-        <label>성별</label>
-        <select id="ob-sex">
-          <option value="F" ${p.sex === 'F' ? 'selected' : ''}>여자 (Girls)</option>
-          <option value="M" ${p.sex === 'M' ? 'selected' : ''}>남자 (Boys)</option>
-        </select>
-        <label>코스</label>
-        <select id="ob-course">
-          ${Object.entries(LEVELS.courses).map(([k, v]) => `<option value="${k}" ${course === k ? 'selected' : ''}>${k} — ${esc(v)}</option>`).join('')}
-        </select>
-        <label>종목</label>
-        <select id="ob-event">
-          ${eventsFor(ageGroup, course).map(ev => `<option value="${ev}" ${p.event === ev ? 'selected' : ''}>${esc(eventLabel(ev))}</option>`).join('')}
-        </select>
-        <label>베스트 기록 — 예: 31.50 또는 1:08.29</label>
-        <input id="ob-time" type="text" inputmode="decimal" placeholder="31.50" value="${p.time || ''}" />
-        <div class="actions">
-          <button class="primary" id="ob-run">레벨 확인</button>
-          ${p.level ? `<button class="ghost" id="ob-reset">초기화</button>` : ''}
-        </div>
-        <div id="ob-result">${p.level ? levelResultHTML(p) : ''}</div>
-        <p class="sub" style="margin-top:14px">기준 출처: <a href="${LEVELS.source.url}" target="_blank" rel="noopener" style="color:var(--accent)">USA Swimming Time Standards</a> (${esc(LEVELS.source.name)})</p>
-      </div>`;
-  }
-  if (aud.onboarding === 'stage') {
-    return `
-      <div class="onboarding" id="onboarding">
-        <h3>👨‍👩‍👧‍👦 우리 아이는 지금 어느 단계인가요?</h3>
-        <p class="sub">단계를 고르면 그 시기의 퍼즐이 활성화됩니다.</p>
-        <div class="chip-row">
-          ${aud.stages.map(s => `
-            <button class="chip ${profile.parentStage === s.key ? 'active' : ''}" data-stage="${s.key}">
-              ${esc(s.name)}<small>${esc(s.hint)}</small>
-            </button>`).join('')}
-        </div>
-      </div>`;
-  }
-  if (aud.onboarding === 'interest') {
-    return `
-      <div class="onboarding" id="onboarding">
-        <h3>💻 어떤 이야기가 궁금하세요?</h3>
-        <p class="sub">관심사를 고르면 그 주제의 퍼즐이 활성화됩니다.</p>
-        <div class="chip-row">
-          ${aud.interests.map(i => `
-            <button class="chip ${profile.builderInterest === i.key ? 'active' : ''}" data-interest="${i.key}">${esc(i.name)}</button>`).join('')}
-        </div>
-      </div>`;
-  }
-  return '';
-}
-
-function levelResultHTML(p) {
-  const info = LEVELS.levelLabels[p.level];
-  if (!info) return '';
-  let next = '';
-  if (p.nextLevel && p.nextGap != null) {
-    next = ` 다음 등급 <strong>${esc(LEVELS.levelLabels[p.nextLevel].name)}</strong>까지 <strong>${p.nextGap.toFixed(2)}초</strong>.`;
-  } else if (p.level === 'AAAA' || p.level === 'AAAA_PLUS') {
-    next = ` 다음 무대는 ${LEVELS.championshipLadder.steps.join(' → ')}.`;
-  }
-  return `<div class="level-result">판정: <strong>${esc(info.name)} · ${esc(info.ko)}</strong> (${esc(p.ageGroup)} ${p.sex === 'F' ? 'Girls' : 'Boys'}, ${esc(eventLabel(p.event))} ${esc(p.course)}) — ${esc(info.hint)}.${next} 이 등급의 퍼즐이 아래에서 활성화되었습니다.</div>`;
-}
-
-/* ---------- 시리즈(퍼즐) 카드 ---------- */
-function seriesCardHTML(s, profile, opts = {}) {
-  const state = seriesState(s, profile);
-  const revealed = seriesProgress(s);
-  const total = s.articles.length;
-  const sex = (profile.swimmer && profile.swimmer.sex) || 'M';
-  const svg = window.PUZZLE.render(s, revealed, { sex, locked: state !== 'active', uid: opts.uid || '' });
-  const stateBadge = state === 'active'
-    ? `<span class="series-state on">지금 나의 퍼즐</span>`
-    : state === 'unknown'
-    ? `<span class="series-state">${esc(s.unlockLabel)}</span>`
-    : `<span class="series-state">${esc(s.unlockLabel)}</span>`;
-  const done = revealed.size === total;
-  return `
-    <a class="series-card ${state !== 'active' ? 'dimmed' : ''} ${done ? 'complete' : ''}" href="#/s/${s.id}">
-      <div class="series-art">${svg}${done ? '<span class="series-done">🏆 완성!</span>' : ''}</div>
-      <div class="series-body">
-        <div class="series-meta">${stateBadge}<span class="pieces">🧩 ${revealed.size}/${total}</span></div>
-        <h3>${s.emoji} ${esc(s.title)}</h3>
-        <p>${esc(s.question)}</p>
-      </div>
-    </a>`;
-}
-
-/* ---------- 트랙 페이지: 온보딩 + 퍼즐 시리즈 + 교차 추천 ---------- */
-function renderTrack(key, opts = {}) {
-  const aud = audienceOf(key);
-  if (!aud || !isAllowed(key)) { location.hash = '#/'; return; }
-  const profile = getProfile();
-
-  const mySeries = DB.series.filter(s => s.audience === key);
-  const stateRank = { active: 0, unknown: 1, dim: 2 };
-  const sorted = [...mySeries].sort((a, b) => stateRank[seriesState(a, profile)] - stateRank[seriesState(b, profile)]);
-  const anyProfileNeeded = aud.onboarding !== 'none' && sorted.some(s => seriesState(s, profile) === 'unknown');
-
-  // 교차 추천: 이 트랙 글들의 related 중 다른 트랙 글 (아마존식)
-  const mine = DB.contents.filter(c => c.audience === key);
-  const recoIds = [...new Set(mine.flatMap(c => c.related || []))]
-    .filter(id => { const c = contentOf(id); return c && c.audience !== key && isAllowed(c.audience); })
-    .slice(0, 4);
-
-  app.innerHTML = `
-    <div class="track-head">
-      <div class="crumb"><a href="#/">← 처음으로</a></div>
-      <h1>${aud.emoji} ${esc(aud.name)}</h1>
-      <p>${esc(aud.tagline)}</p>
-    </div>
-    ${onboardingHTML(aud, profile, opts.editProfile)}
-    <h2 class="section-label">나의 퍼즐 보드</h2>
-    ${anyProfileNeeded ? `<p class="reco-note">🔍 위에서 ${aud.onboarding === 'level' ? '기록을 입력' : '선택'}하면 흐린 퍼즐 중 나에게 맞는 것이 켜집니다.</p>` : ''}
-    <div class="series-grid">
-      ${sorted.map((s, i) => seriesCardHTML(s, profile, { uid: '-t' + i })).join('')}
-    </div>
-    ${recoIds.length ? `
-      <h2 class="section-label">함께 보면 좋은 콘텐츠</h2>
-      <p class="reco-note">이 트랙의 독자들이 함께 읽는 다른 트랙의 글입니다.</p>
-      <div class="content-list">
-        ${recoIds.map(id => contentItemHTML(contentOf(id), { isReco: true })).join('')}
-      </div>` : ''}
-  `;
-
-  // 온보딩 이벤트
-  const editBtn = document.getElementById('ob-edit');
-  if (editBtn) editBtn.addEventListener('click', () => renderTrack(key, { editProfile: true }));
-  const ageEl = document.getElementById('ob-age');
-  const courseEl = document.getElementById('ob-course');
-  const eventEl = document.getElementById('ob-event');
-  const refreshEvents = () => {
-    const age = parseInt(ageEl.value, 10);
-    const ag = ageGroupOf(isNaN(age) ? 12 : age);
-    const prev = eventEl.value;
-    eventEl.innerHTML = eventsFor(ag, courseEl.value)
-      .map(ev => `<option value="${ev}" ${ev === prev ? 'selected' : ''}>${esc(eventLabel(ev))}</option>`).join('');
-  };
-  if (ageEl) ageEl.addEventListener('change', refreshEvents);
-  if (courseEl) courseEl.addEventListener('change', refreshEvents);
-
-  const runBtn = document.getElementById('ob-run');
-  if (runBtn) runBtn.addEventListener('click', () => {
-    const age = parseInt(ageEl.value, 10);
-    const sex = document.getElementById('ob-sex').value;
-    const course = courseEl.value;
-    const event = eventEl.value;
-    const timeStr = document.getElementById('ob-time').value;
-    const sec = parseTime(timeStr);
-    if (isNaN(age) || age < 5) { document.getElementById('ob-result').innerHTML = `<div class="level-result">나이를 입력해주세요.</div>`; return; }
-    if (sec == null) { document.getElementById('ob-result').innerHTML = `<div class="level-result">기록을 31.50 또는 1:08.29 형식으로 입력해주세요.</div>`; return; }
-    const ageGroup = ageGroupOf(age);
-    const res = levelFromRecord(ageGroup, course, event, sex, sec);
-    if (!res) { document.getElementById('ob-result').innerHTML = `<div class="level-result">이 연령대·코스에는 해당 종목 기준이 없습니다. 다른 종목을 선택해주세요.</div>`; return; }
-    const order = LEVELS.levelOrder;
-    const idx = order.indexOf(res.level);
-    let nextLevel = null, nextGap = null;
-    if (res.level === 'PRE_B') { nextLevel = 'B'; nextGap = sec - res.standards['B']; }
-    else if (idx >= 0 && idx < order.length - 1) { nextLevel = order[idx + 1]; nextGap = sec - res.standards[nextLevel]; }
-    setProfile({ swimmer: { age, ageGroup, sex, course, event, time: timeStr, sec, level: res.level, nextLevel, nextGap } });
-    renderTrack(key);
-  });
-  const resetBtn = document.getElementById('ob-reset');
-  if (resetBtn) resetBtn.addEventListener('click', () => { setProfile({ swimmer: null }); renderTrack(key); });
-
-  app.querySelectorAll('[data-stage]').forEach(b =>
-    b.addEventListener('click', () => { setProfile({ parentStage: b.dataset.stage }); renderTrack(key); }));
-  app.querySelectorAll('[data-interest]').forEach(b =>
-    b.addEventListener('click', () => { setProfile({ builderInterest: b.dataset.interest }); renderTrack(key); }));
-}
-
-/* ---------- 시리즈 페이지: 퍼즐 + 조각(글) 목록 ---------- */
-function renderSeries(id) {
-  const s = seriesOf(id);
-  if (!s || !isAllowed(s.audience)) { location.hash = '#/'; return; }
-  const aud = audienceOf(s.audience);
-  const profile = getProfile();
-  const revealed = seriesProgress(s);
-  const total = s.articles.length;
-  const sex = (profile.swimmer && profile.swimmer.sex) || 'M';
-  const state = seriesState(s, profile);
-
-  // 방금 읽은 글의 조각이 있으면 반짝임 효과
-  let flash = null;
-  const flashId = sessionStorage.getItem('pz-flash');
-  if (flashId) {
-    const idx = s.articles.indexOf(flashId);
-    if (idx >= 0 && revealed.has(idx)) flash = idx;
-    sessionStorage.removeItem('pz-flash');
-  }
-
-  const svg = window.PUZZLE.render(s, revealed, { sex, flash, uid: '-d' });
-  const done = revealed.size === total;
-  const read = getRead();
-  // '다음 조각'은 아직 안 읽었으면서 실제로 읽을 수 있는(게시된) 글이어야 한다.
-  // planned(미작성) 글은 건너뛴다 — 없는 본문으로 안내하지 않도록.
-  const nextIdx = s.articles.findIndex(a => !read[a] && !isPlanned(contentOf(a)));
-  // 읽을 수 있는 다음 조각이 없을 때(모두 게시 예정) 안내할 가장 이른 planned 글
-  const upcoming = contentOf(s.articles.find(a => isPlanned(contentOf(a))));
-  const credit = window.PUZZLE.creditFor(s, sex);
-
-  app.innerHTML = `
-    <div class="track-head">
-      <div class="crumb"><a href="#/">처음</a> · <a href="#/t/${s.audience}">${aud.emoji} ${esc(aud.name)}</a></div>
-      <h1>${s.emoji} ${esc(s.title)}</h1>
-      <p>${esc(s.question)}</p>
-    </div>
-    <div class="series-hero ${done ? 'complete' : ''}">
-      ${svg}
-      <div class="series-hero-info">
-        <div class="series-progressbar"><span style="width:${(revealed.size / total) * 100}%"></span></div>
-        <p class="series-count">${done
-          ? '🏆 <strong>퍼즐 완성!</strong> 사진이 모두 열렸습니다.'
-          : `🧩 <strong>${revealed.size}/${total} 조각</strong> — 글을 하나 읽을 때마다 사진이 한 조각씩 열립니다.`}</p>
-        ${!done && nextIdx >= 0 ? `<a class="piece-next" href="#/c/${s.articles[nextIdx]}">다음 조각 읽기 → ${esc(contentOf(s.articles[nextIdx]).title)}</a>` : ''}
-        ${!done && nextIdx < 0 && upcoming ? `<p class="series-upcoming">🔒 다음 조각 <strong>${esc(upcoming.title)}</strong> — ${esc(publishLabel(upcoming))}</p>` : ''}
-        ${state !== 'active' && !done ? `<p class="series-lockhint">${esc(s.unlockLabel)} — 지금도 읽을 수 있지만, <a href="#/t/${s.audience}">프로필을 맞추면</a> 나의 퍼즐로 표시됩니다.</p>` : ''}
-      </div>
-    </div>
-    <h2 class="section-label">퍼즐 조각 ${revealed.size}/${total}</h2>
-    <div class="piece-grid">
-      ${s.articles.map((cid, i) => {
-        const c = contentOf(cid);
-        const isRead = !!read[cid];
-        const planned = isPlanned(c);
-        const isNext = i === nextIdx;
-        const thumb = window.PUZZLE.renderPiece(s, i, isRead, { sex, uid: '-g' });
-        const inner = `
-          <div class="piece-thumb">${thumb}${isRead ? '' : `<span class="piece-num">${i + 1}</span>`}</div>
-          <div class="piece-info">
-            <span class="piece-status">${planned ? '🔒 게시 예정' : isRead ? '🧩 조각 완성' : isNext ? '▶ 다음 조각' : `조각 ${i + 1}`}</span>
-            <h3>${esc(c.title)}</h3>
-            ${planned ? `<span class="piece-publish">🗓 ${esc(publishLabel(c))}</span>` : ''}
-          </div>`;
-        // planned은 클릭 불가(a 대신 div). 나머지는 글로 이동.
-        return planned
-          ? `<div class="piece-card planned" aria-disabled="true" title="아직 작성 중인 글입니다">${inner}</div>`
-          : `<a class="piece-card ${isRead ? 'read' : ''} ${isNext ? 'next' : ''}" href="#/c/${cid}">${inner}</a>`;
-      }).join('')}
-    </div>
-    ${credit && (credit.artist || credit.source) ? `<p class="photo-credit">사진: ${esc(credit.artist || 'Unknown')}${credit.source ? ` · <a href="${esc(credit.source)}" target="_blank" rel="noopener">Wikimedia Commons</a>` : ''}${credit.license ? ` · ${esc(credit.license)}` : ''}</p>` : ''}
-    <div class="back-row"><button class="ghost" onclick="location.hash='#/t/${s.audience}'">← 퍼즐 보드로</button></div>
-  `;
-  window.scrollTo(0, 0);
-}
-
-function tagLabel(c) {
-  const aud = audienceOf(c.audience);
-  if (c.audience === 'swimmer') {
-    const ages = (c.ages || []).map(k => {
-      const g = LEVELS.ageGroups.find(a => a.key === k);
-      return g ? g.label : k;
-    });
-    const ageStr = ages.length ? ` · ${ages[0]}${ages.length > 1 ? `~${ages[ages.length - 1]}` : ''}` : '';
-    return `${c.tag}${ageStr}`;
-  }
-  if (c.audience === 'parent') {
-    const s = (aud.stages || []).find(s => s.key === c.tag);
-    return s ? `${c.tag} ${s.name}` : c.tag;
-  }
-  if (c.audience === 'builder') {
-    const i = (aud.interests || []).find(i => i.key === c.tag);
-    return i ? i.name : c.tag;
-  }
-  return c.tag;
-}
-
-function contentItemHTML(c, opts = {}) {
-  const { matched = false, isReco = false } = opts;
-  const aud = audienceOf(c.audience);
-  const planned = isPlanned(c);
-  const inner = `
-      <div class="meta">
-        <span class="tag ${matched ? 'match' : ''}">${isReco ? `${aud.emoji} ${esc(aud.name)}` : esc(tagLabel(c))}</span>
-        <span class="pieces">${planned ? `🗓 ${esc(publishLabel(c))}` : `🧩 ${c.pieces}조각`}</span>
-      </div>
-      <h3>${esc(c.title)}</h3>`;
-  return planned
-    ? `<div class="content-item planned" aria-disabled="true" title="아직 작성 중인 글입니다">${inner}</div>`
-    : `<a class="content-item" href="#/c/${c.id}">${inner}</a>`;
-}
-
-/* ---------- 글 페이지: md 로드 + 조각 획득 ---------- */
-async function renderArticle(id) {
-  const c = contentOf(id);
-  if (!c || !isAllowed(c.audience)) { location.hash = '#/'; return; }
-  const aud = audienceOf(c.audience);
-  const series = seriesOfContent(id);
-  const pieceIdx = series ? series.articles.indexOf(id) : -1;
-
-  // 게시 예정(planned) 글은 본문이 없다. 직접 진입(해시 등)해도 시리즈로 돌려보낸다.
-  if (isPlanned(c)) { location.hash = series ? `#/s/${series.id}` : `#/t/${c.audience}`; return; }
-
-  const crumbSeries = series ? ` · <a href="#/s/${series.id}">${series.emoji} ${esc(series.title)}</a>` : '';
-  app.innerHTML = `
-    <div class="track-head">
-      <div class="crumb"><a href="#/">처음</a> · <a href="#/t/${c.audience}">${aud.emoji} ${esc(aud.name)}</a>${crumbSeries}</div>
-    </div>
-    <article class="article"><p class="loading">퍼즐을 펼치는 중…</p></article>
-    <div class="back-row"><button class="ghost" onclick="location.hash='${series ? `#/s/${series.id}` : `#/t/${c.audience}`}'">← ${series ? '퍼즐로' : '목록으로'}</button></div>
-  `;
-
-  const articleEl = app.querySelector('.article');
-  try {
-    const md = await fetch(withVer(c.file)).then(r => { if (!r.ok) throw new Error(r.status); return r.text(); });
-    // 상단 YAML frontmatter(--- ... ---)는 빌드용 메타데이터이므로 렌더 전에 제거한다.
-    const body = md.replace(/^\s*---\s*\n[\s\S]*?\n---\s*\n?/, '');
-    articleEl.innerHTML = marked.parse(body);
-    // 글 안의 상대 md 링크를 SPA 라우트로 변환.
-    // 파일명 앞의 조각 번호(NN-)는 무시하고 슬러그로 매칭한다 (폴더/번호가 바뀌어도 안 깨지게).
-    const slugKey = (path) => path.split('/').pop().replace(/\.md$/, '').replace(/^\d+-/, '');
-    articleEl.querySelectorAll('a[href$=".md"]').forEach(a => {
-      const wantSlug = slugKey(a.getAttribute('href'));
-      const target = DB.contents.find(x => slugKey(x.file) === wantSlug);
-      if (target && isAllowed(target.audience)) {
-        a.setAttribute('href', `#/c/${target.id}`);
-      } else if (target) {
-        const span = document.createElement('span');
-        span.textContent = a.textContent;
-        a.replaceWith(span);
+      if (target && !isPlanned(target)) {
+        a.setAttribute('href', 'javascript:void 0');
+        a.addEventListener('click', () => { navStack.pop(); pushArticle(target.id); });
+      } else {
+        const span = document.createElement('span'); span.textContent = a.textContent; a.replaceWith(span);
       }
     });
-
-    // 읽음 처리 → 조각 획득. 시리즈가 있으면 획득 배너 + 다음 조각 안내를 글 끝에 붙인다.
-    const isNew = markRead(id);
-    if (series) {
-      sessionStorage.setItem('pz-flash', id);
-      const read = getRead();
-      const doneCount = series.articles.filter(a => read[a]).length;
-      // 다음 조각: 안 읽은 '게시된' 글 우선. 없으면 게시 예정(planned) 글을 안내.
-      const nextId = series.articles.find(a => !read[a] && !isPlanned(contentOf(a)));
-      const next = nextId ? contentOf(nextId) : null;
-      const upcoming = next ? null : contentOf(series.articles.find(a => !read[a] && isPlanned(contentOf(a))));
-      const banner = document.createElement('div');
-      banner.className = 'piece-earned' + (isNew ? ' new' : '');
-      banner.innerHTML = `
-        <div class="piece-earned-head">🧩 조각 ${pieceIdx + 1} ${isNew ? '획득!' : '(이미 맞춘 조각)'} — <strong>${doneCount}/${series.articles.length}</strong></div>
-        ${next
-          ? `<a class="piece-next" href="#/c/${next.id}">다음 조각 → ${esc(next.title)}</a>`
-          : upcoming
-          ? `<div class="piece-next-done">🔒 다음 조각 <strong>${esc(upcoming.title)}</strong> — ${esc(publishLabel(upcoming))}</div>`
-          : `<div class="piece-next-done">🏆 퍼즐의 마지막 조각까지 완성! <a href="#/s/${series.id}">완성된 그림 보러 가기</a></div>`}
-        <a class="piece-board" href="#/s/${series.id}">퍼즐 진행도 보기</a>`;
-      articleEl.after(banner);
+    // 이 이야기에서 태어난 기능 → 해당 서비스 트랙으로 (스택을 갈아타고 왼쪽으로 비행)
+    if (cid) {
+      const born = productsOfStory(cid);
+      if (born.length) {
+        const div = document.createElement('div');
+        div.className = 'born-box';
+        div.innerHTML = `<p class="story-panel-head">이 이야기에서 태어난 기능</p>` + born.map(({ p, feats }) => `
+          <button class="story-link" data-product="${p.key}">${p.emoji} ${esc(p.name)} — ${feats.map(f => esc(f.name)).join(' · ')}<small>서비스 보러 가기 →</small></button>`).join('');
+        paperEl.appendChild(div);
+        div.querySelectorAll('[data-product]').forEach(n => n.addEventListener('click', () => {
+          const key = n.dataset.product;
+          resetHome(homeRowOfProduct(key));
+          pushTrack('p:' + key, tr => buildProduct(tr, productOf(key)));
+        }));
+      }
     }
   } catch (e) {
-    articleEl.innerHTML = `<p>이 글은 아직 준비 중입니다. (${esc(c.title)})</p>`;
+    paperEl.innerHTML = '<p class="dim">이 글을 불러오지 못했습니다.</p>';
   }
-
-  // 이 이야기에서 태어난 기능: 스토리 → 제품 Feature 역링크.
-  // 글을 읽은 독자가 '이 문제의 답이 앱의 이 기능'임을 바로 확인하고 제품으로 넘어간다.
-  const born = productsOfStory(id);
-  if (born.length) {
-    const div = document.createElement('div');
-    div.innerHTML = `
-      <h2 class="section-label">이 이야기에서 태어난 기능</h2>
-      <div class="content-list">${born.map(({ p, feats }) => `
-        <a class="content-item story-feature" href="#/p/${p.key}">
-          <div class="meta"><span class="tag">${p.emoji} ${esc(p.name)}</span></div>
-          <h3>${feats.map(f => esc(f.name)).join(' · ')}</h3>
-          <p class="feature-hint">${esc(feats[0].desc)}</p>
-        </a>`).join('')}</div>`;
-    app.querySelector('.back-row').before(div);
-  }
-
-  // 하단 교차 추천
-  const related = (c.related || []).map(contentOf).filter(Boolean)
-    .filter(r => isAllowed(r.audience));
-  if (related.length) {
-    const div = document.createElement('div');
-    div.innerHTML = `
-      <h2 class="section-label">함께 보면 좋은 콘텐츠</h2>
-      <div class="content-list">${related.map(r => contentItemHTML(r, { isReco: r.audience !== c.audience })).join('')}</div>`;
-    app.querySelector('.back-row').before(div);
-  }
-  window.scrollTo(0, 0);
 }
 
-/* ---------- 라우터 ---------- */
-async function route() {
-  await loadData();
-  const hash = location.hash || '#/';
-  const [, kind, param] = hash.split('/');
-  if (kind === 't' && param) return renderTrack(param);
-  if (kind === 's' && param) return renderSeries(decodeURIComponent(param));
-  if (kind === 'c' && param) return renderArticle(decodeURIComponent(param));
-  if (kind === 'p' && param) return renderProduct(decodeURIComponent(param));
-  if (kind === 'n') return param ? renderNewsletter(decodeURIComponent(param)) : renderNewsletterList();
-  return renderHome();
+/* ================================================================
+ * 입력: 휠 / 키보드 / 터치 / 버튼
+ * ================================================================ */
+let wheelLock = 0;
+function canScrollInside(el, dy) {
+  const area = el && el.closest && el.closest('.scroll-area');
+  if (!area) return false;
+  if (dy > 0) return area.scrollTop + area.clientHeight < area.scrollHeight - 2;
+  return area.scrollTop > 2;
 }
+stage.addEventListener('wheel', (e) => {
+  if (canScrollInside(e.target, e.deltaY)) return; // 장면 내부 스크롤 우선
+  e.preventDefault();
+  const now = Date.now();
+  if (now - wheelLock < 850 || Math.abs(e.deltaY) < 12) return;
+  wheelLock = now;
+  goRow(current().row + (e.deltaY > 0 ? 1 : -1));
+}, { passive: false });
 
-window.addEventListener('hashchange', route);
-route();
+let touchY = null, touchX = null;
+stage.addEventListener('touchstart', (e) => { touchY = e.touches[0].clientY; touchX = e.touches[0].clientX; }, { passive: true });
+stage.addEventListener('touchend', (e) => {
+  if (touchY == null) return;
+  const dy = touchY - e.changedTouches[0].clientY;
+  const dx = touchX - e.changedTouches[0].clientX;
+  touchY = touchX = null;
+  if (Math.abs(dx) > Math.abs(dy)) { if (dx < -70) popTrack(); return; } // 오른쪽 스와이프 = 뒤로
+  if (Math.abs(dy) < 60) return;
+  if (canScrollInside(e.target, dy)) return;
+  goRow(current().row + (dy > 0 ? 1 : -1));
+}, { passive: true });
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); goRow(current().row + 1); }
+  else if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); goRow(current().row - 1); }
+  else if (e.key === 'Escape' || e.key === 'ArrowLeft') popTrack();
+  else if (e.key === 'Home') resetHome(0);
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('[data-next]')) goRow(current().row + 1);
+});
+backBtn.addEventListener('click', popTrack);
+document.getElementById('hud-brand').addEventListener('click', () => resetHome(0));
+
+railEl.addEventListener('mouseenter', () => { railPanel.hidden = false; });
+railEl.addEventListener('mouseleave', () => { railPanel.hidden = true; });
+
+window.addEventListener('resize', () => {
+  layoutAll();
+  const cur = current();
+  if (cur) { const p = scenePos(cur.track, cur.row); flyTo(p.x, p.y, { instant: true }); }
+});
+
+// 내부 이동이 만든 해시 변경은 serialize()와 일치하므로 무시된다 — 브라우저 뒤로가기만 라우팅
+window.addEventListener('hashchange', () => { if (location.hash !== serialize()) routeFromHash(); });
+
+/* ---------- 시작 ---------- */
+(async function init() {
+  DB = await fetch(withVer('data/contents.json')).then(r => r.json());
+  routeFromHash();
+})();
