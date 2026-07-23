@@ -36,6 +36,6 @@ related: [parent-athlete-registration]
 몇 년을 유지할 수 있는 수준을 정하고 그 안에서 운영하는 것이,
 피크 한 시즌의 올인보다 선수 생활 전체에 이롭다. 시즌 설계와 같다: 페이스 배분이 기록을 만든다.
 
-> **다음 퍼즐 →** [아이가 수영장에 가기 싫다고 할 때](slump-season.md)
+> **다음 퍼즐 →** [훈련과 학업, 둘 다 잡을 수 있을까?](05-study-and-training.md)
 >
 > 함께 보면 좋은 콘텐츠: [선수 등록, 언제 어떻게 결정해야 할까?](athlete-registration.md)

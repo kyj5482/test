@@ -5,7 +5,7 @@ pieces: 3
 related: [builder-vehicle-twin, dreamer-visa-vs-expat]
 ---
 
-# 실리콘밸리 파견 6개월은 무엇을 남겼나?
+# 실리콘밸리 파견 2년은 무엇을 남겼나?
 
 `주제: 해외 근무` · `퍼즐 3조각`
 
@@ -30,6 +30,6 @@ related: [builder-vehicle-twin, dreamer-visa-vs-expat]
 파견 생활을 통해 "가족과 함께 살 수 있겠다"는 확신으로 바뀌었다.
 훗날 주재원 기회가 왔을 때 빠르게 결정할 수 있었던 것은, 이 6개월×2년의 예행연습 덕분이었다.
 
-> **다음 퍼즐 →** [스타트업비자 vs 주재원, 무엇을 선택해야 할까?](visa-vs-expat.md)
+> **다음 퍼즐 →** [영어는 얼마나 해야 미국에서 일할 수 있을까?](04-english-reality.md)
 >
 > 함께 보면 좋은 콘텐츠: [매일 100만 대에서 수집하는데 왜 하루 1대도 분석 못할까?](../builder/vehicle-twin.md)

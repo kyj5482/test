@@ -41,6 +41,6 @@ related: [builder-three-devs-platform, builder-one-day-one-app]
 차량-서버 스펙은 향후 업데이트 없이도 수집 정책을 바꿀 수 있게 설계했다 — 과거에는 수정 하나에 차량 개발 프로세스상 3년이 걸렸기 때문이다.
 **야심은 설계에 넣고, 이름은 겸손하게.**
 
-> **다음 퍼즐 →** [1일 1앱은 어떻게 가능한가?](one-day-one-app.md)
+> **다음 퍼즐 →** [연 $2M 데이터 수집 비용은 어떻게 줄일까?](02-cutting-2m-cost.md)
 >
 > 함께 보면 좋은 콘텐츠: [3명이 어떻게 글로벌 커넥티드카 플랫폼을 만들었나?](three-devs-global-platform.md)

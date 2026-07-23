@@ -31,6 +31,6 @@ related: [builder-three-devs-platform, parent-moving-abroad]
 하지만 한국이 지난 20년간 극적으로 발전하는 동안, 미국은 발전보다 **성숙**해지고 있었다.
 "해외 = 더 발전한 곳"이라는 기대로 가면 실망하고, "다르게 성숙한 곳"으로 가면 배운다.
 
-> **다음 퍼즐 →** [아이들은 미국 훈련에 어떻게 적응했나?](kids-adaptation.md)
+> **다음 퍼즐 →** [주재원 정착 첫 90일, 무엇부터 해야 할까?](06-first-90-days.md)
 >
 > 함께 보면 좋은 콘텐츠: [3명이 어떻게 글로벌 커넥티드카 플랫폼을 만들었나?](../builder/three-devs-global-platform.md) · [아이의 수영을 위해 나라를 옮긴다는 것은?](../parent/moving-abroad.md)

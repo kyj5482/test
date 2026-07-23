@@ -697,7 +697,7 @@
     {
       "id": "swimmer-us-top8",
       "audience": "swimmer",
-      "tag": "AAA–AAAA",
+      "tag": "AA–AAAA",
       "title": "미국 전국 8위는 어떻게 만들어졌을까?",
       "file": "content/swimmer/american-lanes/06-us-top8.md",
       "pieces": 3,
@@ -810,7 +810,7 @@
       "id": "swimmer-season-design",
       "audience": "swimmer",
       "tag": "AAA+",
-      "title": "1년에 피크는 두 번뿐 — 시즌은 어떻게 설계할까?",
+      "title": "1년에 피크는 2~3번뿐 — 시즌은 어떻게 설계할까?",
       "file": "content/swimmer/champion-code/05-season-design.md",
       "pieces": 3,
       "levels": [
@@ -1589,7 +1589,7 @@
       "id": "dreamer-silicon-valley",
       "audience": "dreamer",
       "tag": "해외 근무",
-      "title": "실리콘밸리 파견 6개월은 무엇을 남겼나?",
+      "title": "실리콘밸리 파견 2년은 무엇을 남겼나?",
       "file": "content/dreamer/pacific-bridge/03-silicon-valley.md",
       "pieces": 3,
       "related": [
