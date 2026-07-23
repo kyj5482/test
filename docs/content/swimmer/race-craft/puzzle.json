@@ -1,0 +1,22 @@
+{
+  "order": 1,
+  "emoji": "⚡",
+  "title": "레이스는 디테일이다",
+  "question": "0.1초는 어디서 만들어질까?",
+  "unlock": {
+    "levels": [
+      "B",
+      "BB",
+      "A",
+      "AA"
+    ]
+  },
+  "unlockLabel": "B–AA 레벨에서 활성화",
+  "credit": {
+    "file": "Swimmer Diving Off a Block.jpg",
+    "artist": "Alex Kushell",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Swimmer_Diving_Off_a_Block.jpg"
+  }
+}

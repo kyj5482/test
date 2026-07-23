@@ -1,0 +1,21 @@
+{
+  "order": 0,
+  "emoji": "🌊",
+  "title": "첫 물살을 가르다",
+  "question": "취미가 선수로 바뀌는 순간, 무엇이 필요할까?",
+  "unlock": {
+    "levels": [
+      "PRE_B",
+      "B",
+      "BB"
+    ]
+  },
+  "unlockLabel": "PRE_B–BB 레벨에서 활성화",
+  "credit": {
+    "file": "World's Largest Swimming Lesson 2014 (14542831582).jpg",
+    "artist": "PoolSafely",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:World%27s_Largest_Swimming_Lesson_2014_(14542831582).jpg"
+  }
+}

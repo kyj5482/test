@@ -1,0 +1,19 @@
+{
+  "order": 7,
+  "emoji": "🛠️",
+  "title": "3인의 글로벌 플랫폼",
+  "question": "3명이 4개 대륙 플랫폼을 만들고 운영한 방법은?",
+  "unlock": {
+    "interests": [
+      "platform"
+    ]
+  },
+  "unlockLabel": "관심사 '플랫폼'에서 활성화",
+  "credit": {
+    "file": "Berlin Hackathon 2012-48.jpg",
+    "artist": "Victorgrigas",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Berlin_Hackathon_2012-48.jpg"
+  }
+}

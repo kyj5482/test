@@ -1,0 +1,20 @@
+{
+  "order": 6,
+  "emoji": "🎒",
+  "title": "원정의 기술",
+  "question": "대회 원정을 가족의 시간으로 만들 수 있을까?",
+  "unlock": {
+    "stages": [
+      "S3",
+      "S4"
+    ]
+  },
+  "unlockLabel": "대회의 시간(S3) 단계에서 활성화",
+  "credit": {
+    "file": "Flushing Meadows-Corona Park Aquatic Center Pano-FMCPAq-002 (6446891517).jpg",
+    "artist": "Charles Smith from New York, United States",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Flushing_Meadows-Corona_Park_Aquatic_Center_Pano-FMCPAq-002_(6446891517).jpg"
+  }
+}

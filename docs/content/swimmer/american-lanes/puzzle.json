@@ -1,0 +1,23 @@
+{
+  "order": 2,
+  "emoji": "🇺🇸",
+  "title": "아메리칸 레인",
+  "question": "미국 수영 시스템에서 헤엄친다는 것은?",
+  "unlock": {
+    "levels": [
+      "A",
+      "AA",
+      "AAA",
+      "AAAA",
+      "AAAA_PLUS"
+    ]
+  },
+  "unlockLabel": "A 레벨 이상에서 활성화",
+  "credit": {
+    "file": "RIMPAC 2012 international swim meet 120706-F-MQ656-198.jpg",
+    "artist": "Tech. Sgt. Michael Holzworth",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File:RIMPAC_2012_international_swim_meet_120706-F-MQ656-198.jpg"
+  }
+}

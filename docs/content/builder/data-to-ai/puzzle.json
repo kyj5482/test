@@ -1,0 +1,20 @@
+{
+  "order": 8,
+  "emoji": "📊",
+  "title": "데이터에서 AI로",
+  "question": "100만 대의 데이터는 어떻게 돈이 되는 앱이 될까?",
+  "unlock": {
+    "interests": [
+      "data",
+      "ai"
+    ]
+  },
+  "unlockLabel": "관심사 '데이터/AI'에서 활성화",
+  "credit": {
+    "file": "BalticServers data center.jpg",
+    "artist": "BalticServers.com",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "source": "https://commons.wikimedia.org/wiki/File:BalticServers_data_center.jpg"
+  }
+}

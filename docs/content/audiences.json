@@ -1,0 +1,70 @@
+[
+  {
+    "key": "swimmer",
+    "emoji": "🏊",
+    "name": "물살을 가르는 선수",
+    "tagline": "내 기록은 어떻게 다음 단계로 갈 수 있을까?",
+    "onboarding": "level"
+  },
+  {
+    "key": "parent",
+    "emoji": "👨‍👩‍👧‍👦",
+    "name": "선수 뒤의 부모",
+    "tagline": "아이를 선수로 키운다는 건 무엇을 결정하는 일일까?",
+    "onboarding": "stage",
+    "stages": [
+      {
+        "key": "S1",
+        "name": "시작 전",
+        "hint": "운동을 시켜볼까 고민 중"
+      },
+      {
+        "key": "S2",
+        "name": "선수 등록 결정",
+        "hint": "취미에서 선수로 갈림길"
+      },
+      {
+        "key": "S3",
+        "name": "대회의 시간",
+        "hint": "대회 원정이 일상이 된 시기"
+      },
+      {
+        "key": "S4",
+        "name": "해외 도전",
+        "hint": "더 큰 무대를 고민 중"
+      }
+    ]
+  },
+  {
+    "key": "builder",
+    "emoji": "💻",
+    "name": "만드는 사람",
+    "tagline": "작은 팀이 어떻게 대기업 스케일의 플랫폼을 만들까?",
+    "onboarding": "interest",
+    "interests": [
+      {
+        "key": "platform",
+        "name": "플랫폼"
+      },
+      {
+        "key": "data",
+        "name": "데이터"
+      },
+      {
+        "key": "ai",
+        "name": "AI"
+      },
+      {
+        "key": "career",
+        "name": "커리어 스토리"
+      }
+    ]
+  },
+  {
+    "key": "dreamer",
+    "emoji": "🌎",
+    "name": "바다 건너를 꿈꾸는 사람",
+    "tagline": "해외에서 사는 삶은 어떻게 시작되는가?",
+    "onboarding": "none"
+  }
+]

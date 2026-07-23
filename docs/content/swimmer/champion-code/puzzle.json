@@ -1,0 +1,30 @@
+{
+  "order": 4,
+  "emoji": "🔥",
+  "title": "챔피언의 코드",
+  "question": "최상위 선수의 하루는 무엇으로 만들어질까?",
+  "unlock": {
+    "levels": [
+      "AAA",
+      "AAAA",
+      "AAAA_PLUS"
+    ]
+  },
+  "unlockLabel": "AAA 레벨 이상에서 활성화",
+  "credit": {
+    "M": {
+      "file": "Phelps in butterfly (3651951961).jpg",
+      "artist": "JD Lasica from Pleasanton, CA, US",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Phelps_in_butterfly_(3651951961).jpg"
+    },
+    "F": {
+      "file": "Katie Ledecky 2016c.jpg",
+      "artist": "Agência Brasil Fotografias",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Katie_Ledecky_2016c.jpg"
+    }
+  }
+}

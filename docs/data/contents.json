@@ -14,10 +14,26 @@
       "tagline": "아이를 선수로 키운다는 건 무엇을 결정하는 일일까?",
       "onboarding": "stage",
       "stages": [
-        { "key": "S1", "name": "시작 전", "hint": "운동을 시켜볼까 고민 중" },
-        { "key": "S2", "name": "선수 등록 결정", "hint": "취미에서 선수로 갈림길" },
-        { "key": "S3", "name": "대회의 시간", "hint": "대회 원정이 일상이 된 시기" },
-        { "key": "S4", "name": "해외 도전", "hint": "더 큰 무대를 고민 중" }
+        {
+          "key": "S1",
+          "name": "시작 전",
+          "hint": "운동을 시켜볼까 고민 중"
+        },
+        {
+          "key": "S2",
+          "name": "선수 등록 결정",
+          "hint": "취미에서 선수로 갈림길"
+        },
+        {
+          "key": "S3",
+          "name": "대회의 시간",
+          "hint": "대회 원정이 일상이 된 시기"
+        },
+        {
+          "key": "S4",
+          "name": "해외 도전",
+          "hint": "더 큰 무대를 고민 중"
+        }
       ]
     },
     {
@@ -27,9 +43,22 @@
       "tagline": "작은 팀이 어떻게 대기업 스케일의 플랫폼을 만들까?",
       "onboarding": "interest",
       "interests": [
-        { "key": "platform", "name": "플랫폼" },
-        { "key": "data", "name": "데이터" },
-        { "key": "ai", "name": "AI" }
+        {
+          "key": "platform",
+          "name": "플랫폼"
+        },
+        {
+          "key": "data",
+          "name": "데이터"
+        },
+        {
+          "key": "ai",
+          "name": "AI"
+        },
+        {
+          "key": "career",
+          "name": "커리어 스토리"
+        }
       ]
     },
     {
@@ -40,162 +69,1590 @@
       "onboarding": "none"
     }
   ],
+  "series": [
+    {
+      "id": "first-lane",
+      "audience": "swimmer",
+      "emoji": "🌊",
+      "title": "첫 물살을 가르다",
+      "question": "취미가 선수로 바뀌는 순간, 무엇이 필요할까?",
+      "unlock": {
+        "levels": [
+          "PRE_B",
+          "B",
+          "BB"
+        ]
+      },
+      "unlockLabel": "PRE_B–BB 레벨에서 활성화",
+      "coverBase": "content/swimmer/first-lane/cover",
+      "sexed": false,
+      "credit": {
+        "file": "World's Largest Swimming Lesson 2014 (14542831582).jpg",
+        "artist": "PoolSafely",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "source": "https://commons.wikimedia.org/wiki/File:World%27s_Largest_Swimming_Lesson_2014_(14542831582).jpg"
+      },
+      "articles": [
+        "swimmer-when-to-start",
+        "swimmer-restart-form",
+        "swimmer-sibling-restart",
+        "swimmer-first-race-9th",
+        "swimmer-record-updown",
+        "swimmer-masters-to-athlete"
+      ]
+    },
+    {
+      "id": "race-craft",
+      "audience": "swimmer",
+      "emoji": "⚡",
+      "title": "레이스는 디테일이다",
+      "question": "0.1초는 어디서 만들어질까?",
+      "unlock": {
+        "levels": [
+          "B",
+          "BB",
+          "A",
+          "AA"
+        ]
+      },
+      "unlockLabel": "B–AA 레벨에서 활성화",
+      "coverBase": "content/swimmer/race-craft/cover",
+      "sexed": false,
+      "credit": {
+        "file": "Swimmer Diving Off a Block.jpg",
+        "artist": "Alex Kushell",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Swimmer_Diving_Off_a_Block.jpg"
+      },
+      "articles": [
+        "swimmer-start-tenth",
+        "swimmer-turn-underwater",
+        "swimmer-pacing",
+        "swimmer-event-choice",
+        "swimmer-relay-strategy",
+        "swimmer-taper-week",
+        "swimmer-second-stroke",
+        "swimmer-race-note"
+      ]
+    },
+    {
+      "id": "american-lanes",
+      "audience": "swimmer",
+      "emoji": "🇺🇸",
+      "title": "아메리칸 레인",
+      "question": "미국 수영 시스템에서 헤엄친다는 것은?",
+      "unlock": {
+        "levels": [
+          "A",
+          "AA",
+          "AAA",
+          "AAAA",
+          "AAAA_PLUS"
+        ]
+      },
+      "unlockLabel": "A 레벨 이상에서 활성화",
+      "coverBase": "content/swimmer/american-lanes/cover",
+      "sexed": false,
+      "credit": {
+        "file": "RIMPAC 2012 international swim meet 120706-F-MQ656-198.jpg",
+        "artist": "Tech. Sgt. Michael Holzworth",
+        "license": "Public domain",
+        "licenseUrl": "",
+        "source": "https://commons.wikimedia.org/wiki/File:RIMPAC_2012_international_swim_meet_120706-F-MQ656-198.jpg"
+      },
+      "articles": [
+        "swimmer-us-club-system",
+        "swimmer-read-time-standards",
+        "swimmer-scy-vs-lcm",
+        "swimmer-first-us-meet",
+        "swimmer-us-training",
+        "swimmer-us-top8"
+      ]
+    },
+    {
+      "id": "olympic-ladder",
+      "audience": "swimmer",
+      "emoji": "🥇",
+      "title": "올림픽으로 가는 사다리",
+      "question": "올림픽 무대는 어떤 계단으로 이어져 있을까?",
+      "unlock": {
+        "levels": [
+          "AAA",
+          "AAAA",
+          "AAAA_PLUS"
+        ]
+      },
+      "unlockLabel": "AAA 레벨 이상에서 활성화",
+      "coverBase": "content/swimmer/olympic-ladder/cover",
+      "sexed": true,
+      "credit": {
+        "M": {
+          "file": "Michael Phelps winning 100 butterfly (18791979248).jpg",
+          "artist": "JD Lasica from Pleasanton, CA, US",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Michael_Phelps_winning_100_butterfly_(18791979248).jpg"
+        },
+        "F": {
+          "file": "Katie Ledecky 2016b.jpg",
+          "artist": "Agência Brasil Fotografias",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Katie_Ledecky_2016b.jpg"
+        }
+      },
+      "articles": [
+        "swimmer-ladder-overview",
+        "swimmer-sectionals",
+        "swimmer-futures",
+        "swimmer-junior-nationals",
+        "swimmer-olympic-trials-cut",
+        "swimmer-team-selection"
+      ]
+    },
+    {
+      "id": "champion-code",
+      "audience": "swimmer",
+      "emoji": "🔥",
+      "title": "챔피언의 코드",
+      "question": "최상위 선수의 하루는 무엇으로 만들어질까?",
+      "unlock": {
+        "levels": [
+          "AAA",
+          "AAAA",
+          "AAAA_PLUS"
+        ]
+      },
+      "unlockLabel": "AAA 레벨 이상에서 활성화",
+      "coverBase": "content/swimmer/champion-code/cover",
+      "sexed": true,
+      "credit": {
+        "M": {
+          "file": "Phelps in butterfly (3651951961).jpg",
+          "artist": "JD Lasica from Pleasanton, CA, US",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Phelps_in_butterfly_(3651951961).jpg"
+        },
+        "F": {
+          "file": "Katie Ledecky 2016c.jpg",
+          "artist": "Agência Brasil Fotografias",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+          "source": "https://commons.wikimedia.org/wiki/File:Katie_Ledecky_2016c.jpg"
+        }
+      },
+      "articles": [
+        "swimmer-double-practice",
+        "swimmer-dryland",
+        "swimmer-recovery-sleep",
+        "swimmer-mental-race",
+        "swimmer-season-design",
+        "swimmer-coach-partnership"
+      ]
+    },
+    {
+      "id": "parent-seasons",
+      "audience": "parent",
+      "emoji": "🧭",
+      "title": "부모의 사계절",
+      "question": "시작 전부터 해외 도전까지, 부모는 무엇을 결정할까?",
+      "unlock": {
+        "stages": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ]
+      },
+      "unlockLabel": "자녀 단계를 고르면 활성화",
+      "coverBase": "content/parent/parent-seasons/cover",
+      "sexed": false,
+      "credit": {
+        "file": "Father with Babygirl in a swimming pool.jpg",
+        "artist": "U.S. Navy photo by Mass Communication Specialist 3rd Class Angela Grube",
+        "license": "Public domain",
+        "licenseUrl": "",
+        "source": "https://commons.wikimedia.org/wiki/File:Father_with_Babygirl_in_a_swimming_pool.jpg"
+      },
+      "articles": [
+        "parent-kids-sports-start",
+        "parent-why-swimming",
+        "parent-athlete-registration",
+        "parent-sports-budget",
+        "parent-study-and-training",
+        "parent-slump-season",
+        "parent-two-athletes",
+        "parent-moving-abroad"
+      ]
+    },
+    {
+      "id": "away-meets",
+      "audience": "parent",
+      "emoji": "🎒",
+      "title": "원정의 기술",
+      "question": "대회 원정을 가족의 시간으로 만들 수 있을까?",
+      "unlock": {
+        "stages": [
+          "S3",
+          "S4"
+        ]
+      },
+      "unlockLabel": "대회의 시간(S3) 단계에서 활성화",
+      "coverBase": "content/parent/away-meets/cover",
+      "sexed": false,
+      "credit": {
+        "file": "Flushing Meadows-Corona Park Aquatic Center Pano-FMCPAq-002 (6446891517).jpg",
+        "artist": "Charles Smith from New York, United States",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Flushing_Meadows-Corona_Park_Aquatic_Center_Pano-FMCPAq-002_(6446891517).jpg"
+      },
+      "articles": [
+        "parent-packing-checklist",
+        "parent-race-day-food",
+        "parent-waiting-hours",
+        "parent-stands-manner",
+        "parent-race-trip-gift",
+        "parent-after-meet"
+      ]
+    },
+    {
+      "id": "three-devs",
+      "audience": "builder",
+      "emoji": "🛠️",
+      "title": "3인의 글로벌 플랫폼",
+      "question": "3명이 4개 대륙 플랫폼을 만들고 운영한 방법은?",
+      "unlock": {
+        "interests": [
+          "platform"
+        ]
+      },
+      "unlockLabel": "관심사 '플랫폼'에서 활성화",
+      "coverBase": "content/builder/three-devs/cover",
+      "sexed": false,
+      "credit": {
+        "file": "Berlin Hackathon 2012-48.jpg",
+        "artist": "Victorgrigas",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Berlin_Hackathon_2012-48.jpg"
+      },
+      "articles": [
+        "builder-inheriting-no-docs",
+        "builder-one-account",
+        "builder-oauth-jwt-design",
+        "builder-onprem-cicd",
+        "builder-three-devs-platform",
+        "builder-global-oncall"
+      ]
+    },
+    {
+      "id": "data-to-ai",
+      "audience": "builder",
+      "emoji": "📊",
+      "title": "데이터에서 AI로",
+      "question": "100만 대의 데이터는 어떻게 돈이 되는 앱이 될까?",
+      "unlock": {
+        "interests": [
+          "data",
+          "ai"
+        ]
+      },
+      "unlockLabel": "관심사 '데이터/AI'에서 활성화",
+      "coverBase": "content/builder/data-to-ai/cover",
+      "sexed": false,
+      "credit": {
+        "file": "BalticServers data center.jpg",
+        "artist": "BalticServers.com",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:BalticServers_data_center.jpg"
+      },
+      "articles": [
+        "builder-vehicle-twin",
+        "builder-cutting-2m-cost",
+        "builder-email-to-api",
+        "builder-data-quality",
+        "builder-dark-current-mart",
+        "builder-remote-diagnostics",
+        "builder-one-day-one-app",
+        "builder-ai-suite",
+        "builder-quickwin-scale",
+        "builder-data-appmarket"
+      ]
+    },
+    {
+      "id": "builder-origin",
+      "audience": "builder",
+      "emoji": "💾",
+      "title": "엔지니어의 성장기",
+      "question": "초등학생의 코딩은 어떻게 20년차 플랫폼 엔지니어가 됐을까?",
+      "unlock": {
+        "interests": [
+          "career"
+        ]
+      },
+      "unlockLabel": "관심사 '커리어 스토리'에서 활성화",
+      "coverBase": "content/builder/builder-origin/cover",
+      "sexed": false,
+      "credit": {
+        "file": "Commodore-64-Computer-FL.jpg",
+        "artist": "Evan-Amos",
+        "license": "Public domain",
+        "licenseUrl": "",
+        "source": "https://commons.wikimedia.org/wiki/File:Commodore-64-Computer-FL.jpg"
+      },
+      "articles": [
+        "builder-first-code",
+        "builder-robot-soccer",
+        "builder-samsung-membership",
+        "builder-tizen-convergence",
+        "builder-paper-per-year",
+        "builder-to-carmaker"
+      ]
+    },
+    {
+      "id": "pacific-bridge",
+      "audience": "dreamer",
+      "emoji": "🌉",
+      "title": "태평양 브릿지",
+      "question": "여행자에서 거주자가 되기까지, 무엇이 바뀔까?",
+      "unlock": {},
+      "unlockLabel": "항상 열려 있는 퍼즐",
+      "coverBase": "content/dreamer/pacific-bridge/cover",
+      "sexed": false,
+      "credit": {
+        "file": "Golden Gate Fog - Flickr - romainguy.jpg",
+        "artist": "Romain Guy from San Francisco, USA",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "source": "https://commons.wikimedia.org/wiki/File:Golden_Gate_Fog_-_Flickr_-_romainguy.jpg"
+      },
+      "articles": [
+        "dreamer-us-trip-2006",
+        "dreamer-vancouver",
+        "dreamer-silicon-valley",
+        "dreamer-english-reality",
+        "dreamer-visa-vs-expat",
+        "dreamer-first-90-days",
+        "dreamer-kids-adaptation",
+        "dreamer-korean-identity"
+      ]
+    }
+  ],
   "contents": [
+    {
+      "id": "swimmer-when-to-start",
+      "audience": "swimmer",
+      "tag": "PRE_B",
+      "title": "수영은 언제 시작해야 늦지 않을까?",
+      "file": "content/swimmer/first-lane/01-when-to-start.md",
+      "pieces": 3,
+      "levels": [
+        "PRE_B",
+        "B"
+      ],
+      "ages": [
+        "10U",
+        "11-12"
+      ],
+      "sex": "all",
+      "related": [
+        "parent-kids-sports-start"
+      ]
+    },
     {
       "id": "swimmer-restart-form",
       "audience": "swimmer",
       "tag": "PRE_B–B",
-      "levels": ["PRE_B", "B"],
-      "ages": ["10U", "11-12", "13-14"],
-      "sex": "all",
       "title": "잘못 배운 폼, 다 무너뜨리고 다시 시작해야 할까?",
-      "file": "content/swimmer/restart-form.md",
+      "file": "content/swimmer/first-lane/02-restart-form.md",
       "pieces": 3,
-      "related": ["parent-athlete-registration"]
+      "levels": [
+        "PRE_B",
+        "B"
+      ],
+      "ages": [
+        "10U",
+        "11-12",
+        "13-14"
+      ],
+      "sex": "all",
+      "related": [
+        "parent-athlete-registration"
+      ]
+    },
+    {
+      "id": "swimmer-sibling-restart",
+      "audience": "swimmer",
+      "tag": "PRE_B–B",
+      "title": "발차기부터 다시? 기본기 재적응은 시간 낭비일까?",
+      "file": "content/swimmer/first-lane/03-sibling-restart.md",
+      "pieces": 3,
+      "levels": [
+        "PRE_B",
+        "B"
+      ],
+      "ages": [
+        "10U",
+        "11-12"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-restart-form"
+      ]
     },
     {
       "id": "swimmer-first-race-9th",
       "audience": "swimmer",
       "tag": "B–BB",
-      "levels": ["PRE_B", "B", "BB"],
-      "ages": ["10U", "11-12", "13-14"],
-      "sex": "all",
       "title": "대회에서 결승에 못 가면 실패일까?",
-      "file": "content/swimmer/first-race-9th.md",
+      "file": "content/swimmer/first-lane/04-first-race-9th.md",
       "pieces": 3,
-      "related": ["parent-athlete-registration"]
+      "levels": [
+        "PRE_B",
+        "B",
+        "BB"
+      ],
+      "ages": [
+        "10U",
+        "11-12",
+        "13-14"
+      ],
+      "sex": "all",
+      "related": [
+        "parent-athlete-registration"
+      ]
     },
     {
-      "id": "swimmer-second-stroke",
+      "id": "swimmer-record-updown",
       "audience": "swimmer",
-      "tag": "A–AA",
-      "levels": ["A", "AA"],
-      "ages": ["10U", "11-12", "13-14", "15-16", "17-18"],
-      "sex": "all",
-      "title": "주종목이 아닌 종목으로 입상할 수 있을까?",
-      "file": "content/swimmer/second-stroke.md",
+      "tag": "B–BB",
+      "title": "기록이 오르락내리락하면 정체된 걸까?",
+      "file": "content/swimmer/first-lane/05-record-updown.md",
       "pieces": 3,
-      "related": ["parent-race-trip-gift"]
+      "levels": [
+        "B",
+        "BB"
+      ],
+      "ages": [
+        "10U",
+        "11-12",
+        "13-14"
+      ],
+      "sex": "all",
+      "related": [
+        "parent-slump-season"
+      ]
+    },
+    {
+      "id": "swimmer-masters-to-athlete",
+      "audience": "swimmer",
+      "tag": "B–BB",
+      "title": "취미반에서 선수 무대로, 무엇이 달라질까?",
+      "file": "content/swimmer/first-lane/06-masters-to-athlete.md",
+      "pieces": 3,
+      "levels": [
+        "PRE_B",
+        "B",
+        "BB"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16"
+      ],
+      "sex": "all",
+      "related": [
+        "parent-athlete-registration"
+      ]
+    },
+    {
+      "id": "swimmer-us-club-system",
+      "audience": "swimmer",
+      "tag": "A–AAAA",
+      "title": "미국 수영 클럽은 어떻게 굴러갈까?",
+      "file": "content/swimmer/american-lanes/01-us-club-system.md",
+      "pieces": 3,
+      "levels": [
+        "A",
+        "AA",
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "parent-moving-abroad"
+      ]
+    },
+    {
+      "id": "swimmer-read-time-standards",
+      "audience": "swimmer",
+      "tag": "A–AAAA",
+      "title": "B부터 AAAA까지, 미국 기준 기록표는 어떻게 읽을까?",
+      "file": "content/swimmer/american-lanes/02-read-time-standards.md",
+      "pieces": 3,
+      "levels": [
+        "A",
+        "AA",
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-ladder-overview"
+      ]
+    },
+    {
+      "id": "swimmer-scy-vs-lcm",
+      "audience": "swimmer",
+      "tag": "A–AAAA",
+      "title": "야드 풀 기록과 미터 풀 기록, 어떻게 비교할까?",
+      "file": "content/swimmer/american-lanes/03-scy-vs-lcm.md",
+      "pieces": 3,
+      "levels": [
+        "A",
+        "AA",
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-read-time-standards"
+      ]
+    },
+    {
+      "id": "swimmer-first-us-meet",
+      "audience": "swimmer",
+      "tag": "A–AAAA",
+      "title": "첫 미국 대회, 한국과 무엇이 다를까?",
+      "file": "content/swimmer/american-lanes/04-first-us-meet.md",
+      "pieces": 3,
+      "levels": [
+        "A",
+        "AA",
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "dreamer-kids-adaptation"
+      ]
     },
     {
       "id": "swimmer-us-training",
       "audience": "swimmer",
       "tag": "AAA–AAAA",
-      "levels": ["AAA", "AAAA", "AAAA_PLUS"],
-      "ages": ["11-12", "13-14", "15-16", "17-18"],
-      "sex": "all",
       "title": "한국 훈련과 미국 훈련은 무엇이 다를까?",
-      "file": "content/swimmer/us-training.md",
+      "file": "content/swimmer/american-lanes/05-us-training.md",
       "pieces": 3,
-      "related": ["dreamer-kids-adaptation", "parent-moving-abroad"]
+      "levels": [
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "dreamer-kids-adaptation",
+        "parent-moving-abroad"
+      ]
     },
     {
-      "id": "parent-kids-sports-start",
-      "audience": "parent",
-      "tag": "S1",
-      "title": "영어유치원 대신 운동을 시키면 뒤처지는 걸까?",
-      "file": "content/parent/kids-sports-start.md",
+      "id": "swimmer-us-top8",
+      "audience": "swimmer",
+      "tag": "AAA–AAAA",
+      "title": "미국 전국 8위는 어떻게 만들어졌을까?",
+      "file": "content/swimmer/american-lanes/06-us-top8.md",
       "pieces": 3,
-      "related": ["swimmer-restart-form"]
+      "levels": [
+        "AA",
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "parent-moving-abroad"
+      ]
     },
     {
-      "id": "parent-athlete-registration",
-      "audience": "parent",
-      "tag": "S2",
-      "title": "선수 등록, 언제 어떻게 결정해야 할까?",
-      "file": "content/parent/athlete-registration.md",
+      "id": "swimmer-double-practice",
+      "audience": "swimmer",
+      "tag": "AAA+",
+      "title": "새벽 훈련은 왜 최상위 선수의 기본값일까?",
+      "file": "content/swimmer/champion-code/01-double-practice.md",
       "pieces": 3,
-      "related": ["swimmer-first-race-9th"]
+      "levels": [
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "parent-study-and-training"
+      ]
+    },
+    {
+      "id": "swimmer-dryland",
+      "audience": "swimmer",
+      "tag": "AAA+",
+      "title": "물 밖 훈련이 물속 기록을 바꿀 수 있을까?",
+      "file": "content/swimmer/champion-code/02-dryland.md",
+      "pieces": 3,
+      "levels": [
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-start-tenth"
+      ]
+    },
+    {
+      "id": "swimmer-recovery-sleep",
+      "audience": "swimmer",
+      "tag": "AAA+",
+      "title": "자는 것도 훈련일까? 회복의 과학",
+      "file": "content/swimmer/champion-code/03-recovery-sleep.md",
+      "pieces": 3,
+      "levels": [
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "parent-race-day-food"
+      ]
+    },
+    {
+      "id": "swimmer-mental-race",
+      "audience": "swimmer",
+      "tag": "AAA+",
+      "title": "레이스 전 머릿속에서는 무슨 일이 일어날까?",
+      "file": "content/swimmer/champion-code/04-mental-race.md",
+      "pieces": 3,
+      "levels": [
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-race-note"
+      ]
+    },
+    {
+      "id": "swimmer-season-design",
+      "audience": "swimmer",
+      "tag": "AAA+",
+      "title": "1년에 피크는 두 번뿐 — 시즌은 어떻게 설계할까?",
+      "file": "content/swimmer/champion-code/05-season-design.md",
+      "pieces": 3,
+      "levels": [
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-taper-week"
+      ]
+    },
+    {
+      "id": "swimmer-coach-partnership",
+      "audience": "swimmer",
+      "tag": "AAA+",
+      "title": "코치와 선수는 어떻게 한 팀이 될까?",
+      "file": "content/swimmer/champion-code/06-coach-partnership.md",
+      "pieces": 3,
+      "levels": [
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-ladder-overview"
+      ]
+    },
+    {
+      "id": "swimmer-ladder-overview",
+      "audience": "swimmer",
+      "tag": "AAA+",
+      "title": "AAAA 다음은? 챔피언십 사다리 전체 지도",
+      "file": "content/swimmer/olympic-ladder/01-ladder-overview.md",
+      "pieces": 3,
+      "levels": [
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-read-time-standards"
+      ]
+    },
+    {
+      "id": "swimmer-sectionals",
+      "audience": "swimmer",
+      "tag": "AAA+",
+      "title": "Sectionals, 첫 챔피언십 커트는 어떻게 통과할까?",
+      "file": "content/swimmer/olympic-ladder/02-sectionals.md",
+      "pieces": 3,
+      "levels": [
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-ladder-overview"
+      ]
+    },
+    {
+      "id": "swimmer-futures",
+      "audience": "swimmer",
+      "tag": "AAA+",
+      "title": "Futures는 왜 '진짜 시작'이라고 불릴까?",
+      "file": "content/swimmer/olympic-ladder/03-futures.md",
+      "pieces": 3,
+      "levels": [
+        "AAA",
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-sectionals"
+      ]
+    },
+    {
+      "id": "swimmer-junior-nationals",
+      "audience": "swimmer",
+      "tag": "AAAA+",
+      "title": "Junior Nationals, 전국급 선수의 조건은?",
+      "file": "content/swimmer/olympic-ladder/04-junior-nationals.md",
+      "pieces": 3,
+      "levels": [
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-futures"
+      ]
+    },
+    {
+      "id": "swimmer-olympic-trials-cut",
+      "audience": "swimmer",
+      "tag": "AAAA+",
+      "title": "올림픽 트라이얼 출전 기준 기록은 어떻게 정해질까?",
+      "file": "content/swimmer/olympic-ladder/05-olympic-trials-cut.md",
+      "pieces": 3,
+      "levels": [
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-junior-nationals"
+      ]
+    },
+    {
+      "id": "swimmer-team-selection",
+      "audience": "swimmer",
+      "tag": "AAAA+",
+      "title": "올림픽 대표는 어떻게 선발될까? 트라이얼 1·2위의 법칙",
+      "file": "content/swimmer/olympic-ladder/06-team-selection.md",
+      "pieces": 3,
+      "levels": [
+        "AAAA",
+        "AAAA_PLUS"
+      ],
+      "ages": [
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-olympic-trials-cut"
+      ]
+    },
+    {
+      "id": "swimmer-start-tenth",
+      "audience": "swimmer",
+      "tag": "BB–AA",
+      "title": "스타트의 0.1초는 어디서 나올까?",
+      "file": "content/swimmer/race-craft/01-start-tenth.md",
+      "pieces": 3,
+      "levels": [
+        "B",
+        "BB",
+        "A",
+        "AA"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-race-note"
+      ]
+    },
+    {
+      "id": "swimmer-turn-underwater",
+      "audience": "swimmer",
+      "tag": "BB–AA",
+      "title": "턴과 잠영, 물속에서 이기는 법은?",
+      "file": "content/swimmer/race-craft/02-turn-underwater.md",
+      "pieces": 3,
+      "levels": [
+        "B",
+        "BB",
+        "A",
+        "AA"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-start-tenth"
+      ]
+    },
+    {
+      "id": "swimmer-pacing",
+      "audience": "swimmer",
+      "tag": "BB–AA",
+      "title": "후반에 더 빨라질 수 있을까? 페이스 배분의 비밀",
+      "file": "content/swimmer/race-craft/03-pacing.md",
+      "pieces": 3,
+      "levels": [
+        "BB",
+        "A",
+        "AA"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-taper-week"
+      ]
+    },
+    {
+      "id": "swimmer-event-choice",
+      "audience": "swimmer",
+      "tag": "B–AA",
+      "title": "내 몸에 맞는 종목은 어떻게 찾을까?",
+      "file": "content/swimmer/race-craft/04-event-choice.md",
+      "pieces": 3,
+      "levels": [
+        "B",
+        "BB",
+        "A",
+        "AA"
+      ],
+      "ages": [
+        "10U",
+        "11-12",
+        "13-14"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-second-stroke"
+      ]
+    },
+    {
+      "id": "swimmer-relay-strategy",
+      "audience": "swimmer",
+      "tag": "B–AA",
+      "title": "계영은 왜 개인 종목보다 빠를까?",
+      "file": "content/swimmer/race-craft/05-relay-strategy.md",
+      "pieces": 3,
+      "levels": [
+        "B",
+        "BB",
+        "A",
+        "AA"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "swimmer-pacing"
+      ]
+    },
+    {
+      "id": "swimmer-taper-week",
+      "audience": "swimmer",
+      "tag": "BB–AA",
+      "title": "대회 전 일주일, 훈련을 줄여도 될까?",
+      "file": "content/swimmer/race-craft/06-taper-week.md",
+      "pieces": 3,
+      "levels": [
+        "BB",
+        "A",
+        "AA"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "parent-race-day-food"
+      ]
+    },
+    {
+      "id": "swimmer-second-stroke",
+      "audience": "swimmer",
+      "tag": "A–AA",
+      "title": "주종목이 아닌 종목으로 입상할 수 있을까?",
+      "file": "content/swimmer/race-craft/07-second-stroke.md",
+      "pieces": 3,
+      "levels": [
+        "A",
+        "AA"
+      ],
+      "ages": [
+        "10U",
+        "11-12",
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "parent-race-trip-gift"
+      ]
+    },
+    {
+      "id": "swimmer-race-note",
+      "audience": "swimmer",
+      "tag": "BB–AA",
+      "title": "레이스 노트 한 줄이 기록을 바꿀 수 있을까?",
+      "file": "content/swimmer/race-craft/08-race-note.md",
+      "pieces": 3,
+      "levels": [
+        "B",
+        "BB",
+        "A",
+        "AA"
+      ],
+      "ages": [
+        "11-12",
+        "13-14",
+        "15-16",
+        "17-18"
+      ],
+      "sex": "all",
+      "related": [
+        "builder-vehicle-twin"
+      ]
+    },
+    {
+      "id": "parent-packing-checklist",
+      "audience": "parent",
+      "tag": "S3",
+      "title": "대회 원정 가방, 무엇을 챙겨야 할까?",
+      "file": "content/parent/away-meets/01-packing-checklist.md",
+      "pieces": 3,
+      "related": [
+        "parent-race-day-food"
+      ]
+    },
+    {
+      "id": "parent-race-day-food",
+      "audience": "parent",
+      "tag": "S3",
+      "title": "대회 날 아침, 무엇을 먹여야 할까?",
+      "file": "content/parent/away-meets/02-race-day-food.md",
+      "pieces": 3,
+      "related": [
+        "swimmer-taper-week"
+      ]
+    },
+    {
+      "id": "parent-waiting-hours",
+      "audience": "parent",
+      "tag": "S3",
+      "title": "경기 3분, 대기 5시간을 어떻게 보낼까?",
+      "file": "content/parent/away-meets/03-waiting-hours.md",
+      "pieces": 3,
+      "related": [
+        "parent-race-trip-gift"
+      ]
+    },
+    {
+      "id": "parent-stands-manner",
+      "audience": "parent",
+      "tag": "S3",
+      "title": "관중석의 부모는 무엇을 해야 할까?",
+      "file": "content/parent/away-meets/04-stands-manner.md",
+      "pieces": 3,
+      "related": [
+        "parent-after-meet"
+      ]
     },
     {
       "id": "parent-race-trip-gift",
       "audience": "parent",
       "tag": "S3",
       "title": "대회 원정을 아이의 선물로 만들 수 있을까?",
-      "file": "content/parent/race-trip-gift.md",
+      "file": "content/parent/away-meets/05-race-trip-gift.md",
       "pieces": 3,
-      "related": ["swimmer-second-stroke", "dreamer-us-trip-2006"]
+      "related": [
+        "swimmer-second-stroke",
+        "dreamer-us-trip-2006"
+      ]
+    },
+    {
+      "id": "parent-after-meet",
+      "audience": "parent",
+      "tag": "S3",
+      "title": "대회가 끝난 저녁, 아이에게 무슨 말을 해줘야 할까?",
+      "file": "content/parent/away-meets/06-after-meet.md",
+      "pieces": 3,
+      "related": [
+        "swimmer-first-race-9th"
+      ]
+    },
+    {
+      "id": "parent-kids-sports-start",
+      "audience": "parent",
+      "tag": "S1",
+      "title": "영어유치원 대신 운동을 시키면 뒤처지는 걸까?",
+      "file": "content/parent/parent-seasons/01-kids-sports-start.md",
+      "pieces": 3,
+      "related": [
+        "swimmer-restart-form"
+      ]
+    },
+    {
+      "id": "parent-why-swimming",
+      "audience": "parent",
+      "tag": "S1",
+      "title": "왜 하필 수영일까? 첫 운동을 고르는 기준",
+      "file": "content/parent/parent-seasons/02-why-swimming.md",
+      "pieces": 3,
+      "related": [
+        "swimmer-when-to-start"
+      ]
+    },
+    {
+      "id": "parent-athlete-registration",
+      "audience": "parent",
+      "tag": "S2",
+      "title": "선수 등록, 언제 어떻게 결정해야 할까?",
+      "file": "content/parent/parent-seasons/03-athlete-registration.md",
+      "pieces": 3,
+      "related": [
+        "swimmer-first-race-9th"
+      ]
+    },
+    {
+      "id": "parent-sports-budget",
+      "audience": "parent",
+      "tag": "S2",
+      "title": "선수 가정의 가계부는 어떻게 다를까?",
+      "file": "content/parent/parent-seasons/04-sports-budget.md",
+      "pieces": 3,
+      "related": [
+        "parent-athlete-registration"
+      ]
+    },
+    {
+      "id": "parent-study-and-training",
+      "audience": "parent",
+      "tag": "S2",
+      "title": "훈련과 학업, 둘 다 잡을 수 있을까?",
+      "file": "content/parent/parent-seasons/05-study-and-training.md",
+      "pieces": 3,
+      "related": [
+        "swimmer-masters-to-athlete"
+      ]
+    },
+    {
+      "id": "parent-slump-season",
+      "audience": "parent",
+      "tag": "S3",
+      "title": "아이가 수영장에 가기 싫다고 할 때",
+      "file": "content/parent/parent-seasons/06-slump-season.md",
+      "pieces": 3,
+      "related": [
+        "swimmer-record-updown"
+      ]
+    },
+    {
+      "id": "parent-two-athletes",
+      "audience": "parent",
+      "tag": "S3",
+      "title": "형제가 같은 운동을 하면 비교를 피할 수 있을까?",
+      "file": "content/parent/parent-seasons/07-two-athletes.md",
+      "pieces": 3,
+      "related": [
+        "swimmer-event-choice"
+      ]
     },
     {
       "id": "parent-moving-abroad",
       "audience": "parent",
       "tag": "S4",
       "title": "아이의 수영을 위해 나라를 옮긴다는 것은?",
-      "file": "content/parent/moving-abroad.md",
+      "file": "content/parent/parent-seasons/08-moving-abroad.md",
       "pieces": 3,
-      "related": ["dreamer-visa-vs-expat", "swimmer-us-training"]
+      "related": [
+        "dreamer-visa-vs-expat",
+        "swimmer-us-training"
+      ]
+    },
+    {
+      "id": "builder-first-code",
+      "audience": "builder",
+      "tag": "career",
+      "title": "초등학생의 첫 코딩은 무엇을 남겼을까?",
+      "file": "content/builder/builder-origin/01-first-code.md",
+      "pieces": 3,
+      "related": [
+        "builder-robot-soccer"
+      ]
+    },
+    {
+      "id": "builder-robot-soccer",
+      "audience": "builder",
+      "tag": "career",
+      "title": "로봇축구 세계대회는 무엇을 가르쳐줬을까?",
+      "file": "content/builder/builder-origin/02-robot-soccer.md",
+      "pieces": 3,
+      "related": [
+        "builder-samsung-membership"
+      ]
+    },
+    {
+      "id": "builder-samsung-membership",
+      "audience": "builder",
+      "tag": "career",
+      "title": "삼성소프트웨어멤버십 4년, RTOS가 준 기본기는?",
+      "file": "content/builder/builder-origin/03-samsung-membership.md",
+      "pieces": 3,
+      "related": [
+        "builder-tizen-convergence"
+      ]
+    },
+    {
+      "id": "builder-tizen-convergence",
+      "audience": "builder",
+      "tag": "career",
+      "title": "오픈소스 커뮤니티 리뷰어로 산다는 것은?",
+      "file": "content/builder/builder-origin/04-tizen-convergence.md",
+      "pieces": 3,
+      "related": [
+        "builder-paper-per-year"
+      ]
+    },
+    {
+      "id": "builder-paper-per-year",
+      "audience": "builder",
+      "tag": "career",
+      "title": "매년 논문 한 편, 엔지니어에게 왜 필요할까?",
+      "file": "content/builder/builder-origin/05-paper-per-year.md",
+      "pieces": 3,
+      "related": [
+        "builder-to-carmaker"
+      ]
+    },
+    {
+      "id": "builder-to-carmaker",
+      "audience": "builder",
+      "tag": "career",
+      "title": "연구소에서 자동차 회사로, 왜 옮겼을까?",
+      "file": "content/builder/builder-origin/06-to-carmaker.md",
+      "pieces": 3,
+      "related": [
+        "builder-one-account"
+      ]
+    },
+    {
+      "id": "builder-inheriting-no-docs",
+      "audience": "builder",
+      "tag": "platform",
+      "title": "문서 없는 시스템은 어떻게 인수할까?",
+      "file": "content/builder/three-devs/01-inheriting-no-docs.md",
+      "pieces": 3,
+      "related": [
+        "builder-three-devs-platform"
+      ]
     },
     {
       "id": "builder-one-account",
       "audience": "builder",
       "tag": "platform",
       "title": "3개 브랜드의 계정을 6개월 만에 통합할 수 있을까?",
-      "file": "content/builder/one-account.md",
+      "file": "content/builder/three-devs/02-one-account.md",
       "pieces": 3,
-      "related": ["builder-three-devs-platform"]
+      "related": [
+        "builder-three-devs-platform"
+      ]
+    },
+    {
+      "id": "builder-oauth-jwt-design",
+      "audience": "builder",
+      "tag": "platform",
+      "title": "글로벌 차량 API 인증은 어떻게 설계할까?",
+      "file": "content/builder/three-devs/03-oauth-jwt-design.md",
+      "pieces": 3,
+      "related": [
+        "builder-one-account"
+      ]
+    },
+    {
+      "id": "builder-onprem-cicd",
+      "audience": "builder",
+      "tag": "platform",
+      "title": "온프레미스에서도 하루 10번 배포할 수 있을까?",
+      "file": "content/builder/three-devs/04-onprem-cicd.md",
+      "pieces": 3,
+      "related": [
+        "builder-global-oncall"
+      ]
     },
     {
       "id": "builder-three-devs-platform",
       "audience": "builder",
       "tag": "platform",
       "title": "3명이 어떻게 글로벌 커넥티드카 플랫폼을 만들었나?",
-      "file": "content/builder/three-devs-global-platform.md",
+      "file": "content/builder/three-devs/05-three-devs-global-platform.md",
       "pieces": 4,
-      "related": ["builder-vehicle-twin", "dreamer-visa-vs-expat"]
+      "related": [
+        "builder-vehicle-twin",
+        "dreamer-visa-vs-expat"
+      ]
+    },
+    {
+      "id": "builder-global-oncall",
+      "audience": "builder",
+      "tag": "platform",
+      "title": "3명이 4개 대륙을 운영하는 게 가능할까?",
+      "file": "content/builder/three-devs/06-global-oncall.md",
+      "pieces": 3,
+      "related": [
+        "dreamer-silicon-valley"
+      ]
     },
     {
       "id": "builder-vehicle-twin",
       "audience": "builder",
       "tag": "data",
       "title": "매일 100만 대에서 수집하는데 왜 하루 1대도 분석 못할까?",
-      "file": "content/builder/vehicle-twin.md",
+      "file": "content/builder/data-to-ai/01-vehicle-twin.md",
       "pieces": 4,
-      "related": ["builder-three-devs-platform", "builder-one-day-one-app"]
+      "related": [
+        "builder-three-devs-platform",
+        "builder-one-day-one-app"
+      ]
+    },
+    {
+      "id": "builder-cutting-2m-cost",
+      "audience": "builder",
+      "tag": "data",
+      "title": "연 $2M 데이터 수집 비용은 어떻게 줄일까?",
+      "file": "content/builder/data-to-ai/02-cutting-2m-cost.md",
+      "pieces": 3,
+      "related": [
+        "builder-vehicle-twin"
+      ]
+    },
+    {
+      "id": "builder-email-to-api",
+      "audience": "builder",
+      "tag": "data",
+      "title": "이메일로 주던 데이터를 24/7 API로 바꾸면 무슨 일이 생길까?",
+      "file": "content/builder/data-to-ai/03-email-to-api.md",
+      "pieces": 3,
+      "related": [
+        "builder-cutting-2m-cost"
+      ]
+    },
+    {
+      "id": "builder-data-quality",
+      "audience": "builder",
+      "tag": "data",
+      "title": "데이터가 많은데 왜 믿을 수 있는 숫자는 없을까?",
+      "file": "content/builder/data-to-ai/04-data-quality.md",
+      "pieces": 3,
+      "related": [
+        "builder-email-to-api"
+      ]
+    },
+    {
+      "id": "builder-dark-current-mart",
+      "audience": "builder",
+      "tag": "data",
+      "title": "12V 배터리 암전류는 어떻게 데이터로 잡을까?",
+      "file": "content/builder/data-to-ai/05-dark-current-mart.md",
+      "pieces": 3,
+      "related": [
+        "builder-email-to-api"
+      ]
+    },
+    {
+      "id": "builder-remote-diagnostics",
+      "audience": "builder",
+      "tag": "data",
+      "title": "원격진단은 어떻게 스트림 위에서 돌아갈까?",
+      "file": "content/builder/data-to-ai/06-remote-diagnostics.md",
+      "pieces": 3,
+      "related": [
+        "builder-vehicle-twin"
+      ]
     },
     {
       "id": "builder-one-day-one-app",
       "audience": "builder",
       "tag": "ai",
       "title": "1일 1앱은 어떻게 가능한가?",
-      "file": "content/builder/one-day-one-app.md",
+      "file": "content/builder/data-to-ai/07-one-day-one-app.md",
       "pieces": 3,
-      "related": ["builder-vehicle-twin"]
+      "related": [
+        "builder-vehicle-twin"
+      ]
+    },
+    {
+      "id": "builder-ai-suite",
+      "audience": "builder",
+      "tag": "ai",
+      "title": "부서마다 AI 앱을 하나씩 주면 무슨 일이 생길까?",
+      "file": "content/builder/data-to-ai/08-ai-suite.md",
+      "pieces": 3,
+      "related": [
+        "builder-one-day-one-app"
+      ]
+    },
+    {
+      "id": "builder-quickwin-scale",
+      "audience": "builder",
+      "tag": "ai",
+      "title": "2주 안에 가치를 증명 못하면 접어야 할까?",
+      "file": "content/builder/data-to-ai/09-quickwin-scale.md",
+      "pieces": 3,
+      "related": [
+        "builder-ai-suite"
+      ]
+    },
+    {
+      "id": "builder-data-appmarket",
+      "audience": "builder",
+      "tag": "ai",
+      "title": "누구나 데이터 앱을 배포하는 앱마켓은 어떻게 만들까?",
+      "file": "content/builder/data-to-ai/10-data-appmarket.md",
+      "pieces": 3,
+      "related": [
+        "builder-one-day-one-app"
+      ]
     },
     {
       "id": "dreamer-us-trip-2006",
       "audience": "dreamer",
       "tag": "여행",
       "title": "2006년, 지도 없이 미국 20일을 어떻게 여행했나?",
-      "file": "content/dreamer/us-trip-2006.md",
+      "file": "content/dreamer/pacific-bridge/01-us-trip-2006.md",
       "pieces": 3,
-      "related": ["dreamer-silicon-valley"]
+      "related": [
+        "dreamer-silicon-valley"
+      ]
+    },
+    {
+      "id": "dreamer-vancouver",
+      "audience": "dreamer",
+      "tag": "여행",
+      "title": "밴쿠버 2개월, 여행과 살아보기는 무엇이 다를까?",
+      "file": "content/dreamer/pacific-bridge/02-vancouver-two-months.md",
+      "pieces": 3,
+      "related": [
+        "dreamer-us-trip-2006"
+      ]
     },
     {
       "id": "dreamer-silicon-valley",
       "audience": "dreamer",
       "tag": "해외 근무",
       "title": "실리콘밸리 파견 6개월은 무엇을 남겼나?",
-      "file": "content/dreamer/silicon-valley.md",
+      "file": "content/dreamer/pacific-bridge/03-silicon-valley.md",
       "pieces": 3,
-      "related": ["builder-vehicle-twin", "dreamer-visa-vs-expat"]
+      "related": [
+        "builder-vehicle-twin",
+        "dreamer-visa-vs-expat"
+      ]
+    },
+    {
+      "id": "dreamer-english-reality",
+      "audience": "dreamer",
+      "tag": "해외 근무",
+      "title": "영어는 얼마나 해야 미국에서 일할 수 있을까?",
+      "file": "content/dreamer/pacific-bridge/04-english-reality.md",
+      "pieces": 3,
+      "related": [
+        "dreamer-silicon-valley"
+      ]
     },
     {
       "id": "dreamer-visa-vs-expat",
       "audience": "dreamer",
       "tag": "해외 근무",
       "title": "스타트업비자 vs 주재원, 무엇을 선택해야 할까?",
-      "file": "content/dreamer/visa-vs-expat.md",
+      "file": "content/dreamer/pacific-bridge/05-visa-vs-expat.md",
       "pieces": 3,
-      "related": ["builder-three-devs-platform", "parent-moving-abroad"]
+      "related": [
+        "builder-three-devs-platform",
+        "parent-moving-abroad"
+      ]
+    },
+    {
+      "id": "dreamer-first-90-days",
+      "audience": "dreamer",
+      "tag": "가족과 정착",
+      "title": "주재원 정착 첫 90일, 무엇부터 해야 할까?",
+      "file": "content/dreamer/pacific-bridge/06-first-90-days.md",
+      "pieces": 3,
+      "related": [
+        "parent-moving-abroad"
+      ]
     },
     {
       "id": "dreamer-kids-adaptation",
       "audience": "dreamer",
       "tag": "가족과 정착",
       "title": "아이들은 미국 훈련에 어떻게 적응했나?",
-      "file": "content/dreamer/kids-adaptation.md",
+      "file": "content/dreamer/pacific-bridge/07-kids-adaptation.md",
       "pieces": 3,
-      "related": ["swimmer-us-training", "parent-moving-abroad"]
+      "related": [
+        "swimmer-us-training",
+        "parent-moving-abroad"
+      ]
+    },
+    {
+      "id": "dreamer-korean-identity",
+      "audience": "dreamer",
+      "tag": "가족과 정착",
+      "title": "미국에서 아이는 한국인으로 자랄 수 있을까?",
+      "file": "content/dreamer/pacific-bridge/08-korean-identity.md",
+      "pieces": 3,
+      "related": [
+        "dreamer-kids-adaptation"
+      ]
     }
   ]
 }

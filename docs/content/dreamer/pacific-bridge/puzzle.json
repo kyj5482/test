@@ -1,0 +1,15 @@
+{
+  "order": 10,
+  "emoji": "🌉",
+  "title": "태평양 브릿지",
+  "question": "여행자에서 거주자가 되기까지, 무엇이 바뀔까?",
+  "unlock": {},
+  "unlockLabel": "항상 열려 있는 퍼즐",
+  "credit": {
+    "file": "Golden Gate Fog - Flickr - romainguy.jpg",
+    "artist": "Romain Guy from San Francisco, USA",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Golden_Gate_Fog_-_Flickr_-_romainguy.jpg"
+  }
+}

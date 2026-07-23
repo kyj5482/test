@@ -1,0 +1,22 @@
+{
+  "order": 5,
+  "emoji": "🧭",
+  "title": "부모의 사계절",
+  "question": "시작 전부터 해외 도전까지, 부모는 무엇을 결정할까?",
+  "unlock": {
+    "stages": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+    ]
+  },
+  "unlockLabel": "자녀 단계를 고르면 활성화",
+  "credit": {
+    "file": "Father with Babygirl in a swimming pool.jpg",
+    "artist": "U.S. Navy photo by Mass Communication Specialist 3rd Class Angela Grube",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File:Father_with_Babygirl_in_a_swimming_pool.jpg"
+  }
+}

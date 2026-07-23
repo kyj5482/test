@@ -1,0 +1,19 @@
+{
+  "order": 9,
+  "emoji": "💾",
+  "title": "엔지니어의 성장기",
+  "question": "초등학생의 코딩은 어떻게 20년차 플랫폼 엔지니어가 됐을까?",
+  "unlock": {
+    "interests": [
+      "career"
+    ]
+  },
+  "unlockLabel": "관심사 '커리어 스토리'에서 활성화",
+  "credit": {
+    "file": "Commodore-64-Computer-FL.jpg",
+    "artist": "Evan-Amos",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "source": "https://commons.wikimedia.org/wiki/File:Commodore-64-Computer-FL.jpg"
+  }
+}
