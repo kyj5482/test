@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI · Data · Youth Sports — a dad engineer recording and analyzing young athletes' growth</title>
-  <meta name="description" content="A dad engineer who records and analyzes youth sports (swimming) growth with AI and data. Questions from the stands become stories, and the stories become features of SwimVault, SplitLane, and swim.meets." />
+  <title>AramLens — a dad engineer recording and analyzing young athletes' growth with AI & data</title>
+  <meta name="description" content="AramLens — a dad engineer who records and analyzes youth sports (swimming) growth with AI and data. Questions from the stands become stories, and the stories become features of SwimVault, SplitLane, and swim.meets." />
   <!-- __BUILD_VERSION__은 배포 워크플로우가 커밋 해시로 치환 (캐시 버스팅) -->
   <script>window.BUILD_VERSION = '__BUILD_VERSION__';</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,14 +21,21 @@
 
   <!-- HUD: 캔버스 위에 고정되는 UI -->
   <header class="hud hud-brand" id="hud-brand" title="Home">
-    <span class="brand-mark">〰️</span>
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="16" cy="16" r="9"/>
+        <circle cx="16" cy="16" r="3.4"/>
+        <path d="M16 3.5v3M16 25.5v3M3.5 16h3M25.5 16h3"/>
+      </svg>
+    </span>
     <span class="brand-text">
-      <strong>AI · DATA · YOUTH SPORTS</strong>
-      <small>Engineering data, raising athletes.</small>
+      <strong>AramLens</strong>
+      <small>AI · DATA · YOUTH SPORTS</small>
     </span>
   </header>
 
   <nav class="hud hud-nav" id="hud-nav">
+    <button id="nav-map" class="hud-btn map" aria-label="Overview map">Map</button>
     <button id="nav-back" class="hud-btn" hidden>← Back</button>
     <button id="lang-toggle" class="hud-btn lang" aria-label="Toggle language">한국어</button>
   </nav>
@@ -42,8 +49,9 @@
   <div class="hud hud-loc" id="hud-loc"></div>
   <div class="hud hud-hint" id="hud-hint"></div>
 
-  <!-- 사진 경로(교체는 art.js에서) · 다국어 사전 -->
+  <!-- 사진 경로(교체는 art.js에서) · 아이콘 · 다국어 사전 -->
   <script src="assets/art.js?v=__BUILD_VERSION__"></script>
+  <script src="assets/icons.js?v=__BUILD_VERSION__"></script>
   <script src="assets/i18n.js?v=__BUILD_VERSION__"></script>
   <script src="assets/app.js?v=__BUILD_VERSION__"></script>
 </body>

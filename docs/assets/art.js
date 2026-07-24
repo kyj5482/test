@@ -17,18 +17,21 @@ window.SITE_ART = {
   /* 서비스별: hero(대표) · problem(문제 장면) · origin(기원 장면) */
   products: {
     swimvault: {
-      hero: 'content/swimmer/american-lanes/cover.jpg',
+      // hero: 텅 빈 경기 레인 — '평생 기록부'의 차분한 여백 (군복 인물 사진 대체)
+      hero: 'assets/img/svc-comp-pool.jpg',
       problem: 'content/swimmer/first-lane/cover.jpg',
       origin: 'content/dreamer/pacific-bridge/cover.jpg',
     },
     splitlane: {
       hero: 'content/swimmer/race-craft/cover.jpg',
       problem: 'content/swimmer/champion-code/cover_M.jpg',
-      origin: 'content/builder/builder-origin/cover.jpg',
+      // origin: 벽을 짚은 선수 — 스타트/턴/스플릿 타이머의 세계 (코모도어64 사진 대체)
+      origin: 'assets/img/svc-swimmer-wall.jpg',
     },
     'swim-meets': {
       hero: 'content/parent/away-meets/cover.jpg',
-      problem: 'content/parent/parent-seasons/cover.jpg',
+      // problem: 관중석 딸린 대형 경기장 — 수천 명 대회의 psych sheet 문제 (유아 사진 대체)
+      problem: 'assets/img/svc-meet-venue.jpg',
       origin: 'content/builder/data-to-ai/cover.jpg',
     },
   },

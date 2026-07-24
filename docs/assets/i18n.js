@@ -7,11 +7,24 @@
  * ============================================================ */
 window.I18N = {
   ui: {
-    brandStrong: { en: 'AI · DATA · YOUTH SPORTS', ko: 'AI · 데이터 · 유스 스포츠' },
-    brandSmall: { en: 'Engineering data, raising athletes.', ko: '데이터를 만들고, 선수를 키웁니다.' },
-    back: { en: '← Back', ko: '← 돌아가기' },
+    brandStrong: { en: 'AramLens', ko: 'AramLens' },
+    brandSmall: { en: 'AI · DATA · YOUTH SPORTS', ko: 'AI · 데이터 · 유스 스포츠' },
+    back: { en: 'Back', ko: '돌아가기' },
+    mapBtn: { en: 'Map', ko: '전체 지도' },
     homeTrack: { en: 'Home — Service stories', ko: '홈 — 서비스 이야기' },
-    newsletterTrack: { en: '📮 Newsletter', ko: '📮 뉴스레터' },
+    overviewTrack: { en: 'The whole map', ko: '전체 지도' },
+    newsletterTrack: { en: 'Newsletter', ko: '뉴스레터' },
+
+    overviewKicker: { en: 'THE WHOLE MAP', ko: '전체 지도' },
+    overviewTitle: { en: 'Series became<br/>stories — stories<br/>became services.', ko: '시리즈가 이야기로,<br/>이야기가<br/>서비스가 되었다.' },
+    overviewLead: { en: 'Left: the story series I lived. Right: the services they grew into. Hover a service to light up the stories that built it — click a story to read it.', ko: '왼쪽은 내가 겪은 이야기 시리즈, 오른쪽은 그 이야기가 자라 만들어진 서비스. 서비스에 마우스를 올리면 그것을 키운 이야기 실선이 켜집니다 — 이야기를 클릭하면 그 글로.' },
+    overviewHubNode: { en: 'Origin stories', ko: '태어난 이야기' },
+    mapHint: { en: 'Hover a service to trace its stories · click to dive in · Esc for the map', ko: '서비스에 마우스를 올려 이야기 추적 · 클릭해 들어가기 · Esc로 지도' },
+    relatedService: { en: 'Also lives in', ko: '이 이야기가 닿는 다른 서비스' },
+    mapColSeries: { en: 'STORY SERIES', ko: '이야기 시리즈' },
+    mapColServices: { en: 'SERVICES', ko: '서비스' },
+    mapStoriesLabel: { en: 'stories', ko: '이야기' },
+    mapHoverTip: { en: 'Hover a service →', ko: '서비스에 마우스를 올려보세요 →' },
 
     introKicker: { en: 'AI · DATA · YOUTH SPORTS', ko: 'AI · 데이터 · 유스 스포츠' },
     introTitle: {
@@ -27,10 +40,10 @@ window.I18N = {
     statStories: { en: 'stories', ko: '편의 이야기' },
 
     serviceKicker: { en: 'SERVICE', ko: 'SERVICE' },
-    badgeLive: { en: '🟢 Live now', ko: '🟢 지금 사용 가능' },
-    badgeBuilding: { en: '🛠 In open development on GitHub', ko: '🛠 GitHub에서 공개 개발 중' },
+    badgeLive: { en: 'Live now', ko: '지금 사용 가능' },
+    badgeBuilding: { en: 'In open development', ko: 'GitHub에서 공개 개발 중' },
     intoStory: { en: 'Step into the story', ko: '서비스 이야기 속으로' },
-    artHint: { en: 'Click to go deeper →', ko: '클릭하면 더 깊이 →' },
+    artHint: { en: 'Click to go deeper', ko: '클릭하면 더 깊이' },
 
     hubKicker: { en: 'ORIGIN STORIES', ko: 'ORIGIN STORIES' },
     hubTitle: { en: 'Every feature<br/>has a <em>story</em>.', ko: '모든 기능에는<br/><em>이야기</em>가 있습니다.' },
@@ -54,15 +67,43 @@ window.I18N = {
     ch1Title: { en: 'Every service began<br/>with a frustration.', ko: '모든 서비스는<br/>불편에서 시작됐습니다.' },
     ch2Kicker: { en: 'CHAPTER 2 — THE ORIGIN', ko: 'CHAPTER 2 — 기원' },
     ch2Title: { en: 'Who built this,<br/>and why?', ko: '누가, 왜<br/>만들었을까요?' },
+    /* 서비스별 챕터 제목·부연 — 세 서비스가 같은 문장을 쓰지 않도록 각자 맞춤.
+     * lead는 문제/기원 본문 위에 얹는 한 줄 부연. app.js가 chapter()로 조회한다. */
+    chapters: {
+      swimvault: {
+        ch1Kicker: { en: 'CHAPTER 1 — THE PROBLEM', ko: 'CHAPTER 1 — 문제' },
+        ch1Title: { en: 'Records that vanish<br/>the moment you cross a border.', ko: '국경을 넘는 순간<br/>사라지는 기록들.' },
+        ch1Lead: { en: 'Every league keeps its own results. The growth curve breaks at every edge.', ko: '리그마다 기록이 따로 논다. 성장 곡선은 경계마다 끊긴다.' },
+        ch2Kicker: { en: 'CHAPTER 2 — THE ORIGIN', ko: 'CHAPTER 2 — 기원' },
+        ch2Title: { en: 'A dad watched two kids’<br/>records scatter across a border.', ko: '두 아이의 기록이 국경을 넘어<br/>흩어지는 걸 지켜본 아빠.' },
+        ch2Lead: { en: 'From Gwacheon to Irvine — one archive that never forgets.', ko: '과천에서 어바인까지 — 잊지 않는 하나의 기록 보관소.' },
+      },
+      splitlane: {
+        ch1Kicker: { en: 'CHAPTER 1 — THE PROBLEM', ko: 'CHAPTER 1 — 문제' },
+        ch1Title: { en: 'The tenth of a second<br/>no app ever records.', ko: '어떤 앱도 담지 않는<br/>0.1초.' },
+        ch1Lead: { en: 'Meets show the result. The practice lane where it’s won stays invisible.', ko: '대회는 결과만 보여준다. 그 0.1초가 만들어지는 연습 레인은 안 보인다.' },
+        ch2Kicker: { en: 'CHAPTER 2 — THE ORIGIN', ko: 'CHAPTER 2 — 기원' },
+        ch2Title: { en: 'From a stopwatch in the stands<br/>to an AI coach.', ko: '관중석의 초시계에서<br/>AI 코치까지.' },
+        ch2Lead: { en: 'A dad clicked splits and kept race notes — now the data reads them back.', ko: '아빠가 누른 스플릿과 레이스 노트를, 이제 데이터가 되읽어 준다.' },
+      },
+      'swim-meets': {
+        ch1Kicker: { en: 'CHAPTER 1 — THE PROBLEM', ko: 'CHAPTER 1 — 문제' },
+        ch1Title: { en: 'Three minutes of racing,<br/>five hours of hunting.', ko: '경기 3분,<br/>검색 5시간.' },
+        ch1Lead: { en: 'One child, hidden in a psych sheet of thousands of names.', ko: '수천 명의 psych sheet 속에 숨어 있는 내 아이 하나.' },
+        ch2Kicker: { en: 'CHAPTER 2 — THE ORIGIN', ko: 'CHAPTER 2 — 기원' },
+        ch2Title: { en: 'Built from five hours<br/>with a highlighter.', ko: '형광펜으로 보낸<br/>다섯 시간에서 태어났다.' },
+        ch2Lead: { en: 'Register your swimmers, upload the PDF — the meet day plans itself.', ko: '관심 선수를 등록하고 PDF만 올리면 — 대회 날이 스스로 정리된다.' },
+      },
+    },
     featureKicker: { en: 'FEATURE', ko: 'FEATURE' },
     storyBehind: { en: 'The story behind this feature', ko: '이 기능이 태어난 이야기' },
     storyPreparing: { en: 'The story link is on its way.', ko: '연결된 이야기를 준비 중입니다.' },
     readStory: { en: 'Read the story →', ko: '이야기 읽기 →' },
     joinKicker: { en: 'JOIN THE STORY', ko: 'JOIN THE STORY' },
     joinTitle: { en: 'We\'d love to build this<br/>together with you.', ko: '이런 분들과 함께<br/>만들어가고 싶습니다.' },
-    ctaGithub: { en: '🐙 Build together on GitHub', ko: '🐙 GitHub에서 함께 만들기' },
-    ctaUse: { en: '🚀 Use the service', ko: '🚀 서비스 사용하기' },
-    ctaSoon: { en: '🛠 Launching soon — follow the newsletter', ko: '🛠 출시 준비 중 — 뉴스레터로 소식을 받아보세요' },
+    ctaGithub: { en: 'Build together on GitHub', ko: 'GitHub에서 함께 만들기' },
+    ctaUse: { en: 'Use the service', ko: '서비스 사용하기' },
+    ctaSoon: { en: 'Launching soon — follow the newsletter', ko: '출시 준비 중 — 뉴스레터로 소식을 받아보세요' },
 
     seriesKicker: { en: 'STORY SERIES', ko: 'STORY SERIES' },
     bornFrom: { en: 'Features born from this story', ko: '이 이야기에서 태어난 기능' },
