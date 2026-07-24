@@ -66,5 +66,12 @@
     "name": "바다 건너를 꿈꾸는 사람",
     "tagline": "해외에서 사는 삶은 어떻게 시작되는가?",
     "onboarding": "none"
+  },
+  {
+    "key": "writer",
+    "emoji": "✍️",
+    "name": "글 쓰는 아이의 곁",
+    "tagline": "AI는 아이의 글쓰기를 매일 어떻게 도울 수 있을까?",
+    "onboarding": "none"
   }
 ]

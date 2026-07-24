@@ -34,5 +34,12 @@ window.SITE_ART = {
       problem: 'assets/img/svc-meet-venue.jpg',
       origin: 'content/builder/data-to-ai/cover.jpg',
     },
+    // tutor.writing — 아직 전용 사진 없음. 엔지니어링·데이터 톤의 기존 커버를 재사용.
+    // (전용 사진이 생기면 assets/img/에 넣고 경로만 바꾸면 됨)
+    'tutor-writing': {
+      hero: 'content/builder/builder-origin/cover.jpg',
+      problem: 'content/builder/three-devs/cover.jpg',
+      origin: 'content/builder/data-to-ai/cover.jpg',
+    },
   },
 };

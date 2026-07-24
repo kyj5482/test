@@ -35,6 +35,7 @@
     vault: `<rect x="3" y="4" width="18" height="16" rx="2" ${P}/><circle cx="12" cy="12" r="4" ${P}/><path d="M12 8v1M12 15v1M8.5 12H9M15 12h.5" ${P}/>`,
     stopwatch: `<circle cx="12" cy="13" r="8" ${P}/><path d="M12 13V9M9 2h6M18.5 6.5l1.5-1.5" ${P}/>`,
     board: `<rect x="4" y="4" width="16" height="17" rx="2" ${P}/><path d="M9 3h6v3H9zM8 11h8M8 15h5" ${P}/>`,
+    pen: `<path d="M15 4l5 5L8 21H3v-5L15 4Z" ${P}/><path d="M13 6l5 5" ${P}/>`,
 
     // ── 독자 트랙 ──
     wave: `<path d="M3 9c2.2 0 2.2 2.2 4.5 2.2S9.7 9 12 9s2.2 2.2 4.5 2.2S18.8 9 21 9M3 15c2.2 0 2.2 2.2 4.5 2.2S9.7 15 12 15s2.2 2.2 4.5 2.2S18.8 15 21 15" ${P}/>`,
@@ -57,14 +58,15 @@
     return `<svg class="ic${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false">${inner}</svg>`;
   };
 
-  const PRODUCT = { swimvault: 'vault', splitlane: 'stopwatch', 'swim-meets': 'board' };
-  const TRACK = { swimmer: 'wave', parent: 'family', builder: 'code', dreamer: 'globe' };
+  const PRODUCT = { swimvault: 'vault', splitlane: 'stopwatch', 'swim-meets': 'board', 'tutor-writing': 'pen' };
+  const TRACK = { swimmer: 'wave', parent: 'family', builder: 'code', dreamer: 'globe', writer: 'pen' };
   const SERIES = {
     'first-lane': 'wave', 'race-craft': 'spark', 'american-lanes': 'flag',
     'olympic-ladder': 'ladder', 'champion-code': 'trophy',
     'parent-seasons': 'family', 'away-meets': 'bag',
     'three-devs': 'globe', 'data-to-ai': 'layers', 'builder-origin': 'chip',
     'athlete-data-platform': 'vault', 'pacific-bridge': 'bridge',
+    'writing-tutor': 'pen',
   };
 
   window.SITE_ICONS = {

@@ -5,39 +5,37 @@
     "emoji": "🗄️",
     "tagline": "흩어진 대회 기록을, 아이의 평생 기록부로.",
     "status": "building",
-    "repo": "https://github.com/kyj5482/swim.meet.portfolio",
-    "site": null,
-    "links": [
-      { "label": "타임캡슐 프로토타입 — swim.capsule", "url": "https://kyj5482.github.io/swim.capsule/" }
-    ],
-    "problem": "여름 리그, YMCA, 학교 대회, 그리고 한국에서의 기록 — USA Swimming 중앙 기록에 실리지 않는 기록이 너무 많다. 결과지는 휴대폰 사진첩 속에서 사라지고, 아이의 성장 곡선은 나라와 리그를 건널 때마다 끊긴다.",
-    "origin": "한국 과천에서 미국 어바인까지, 두 아이의 기록이 흩어지는 걸 지켜본 아빠가 시작했다. 처음에는 기록을 원본 그대로 보관하는 타임캡슐(swim.capsule)이었고, 지금은 결과지 사진 한 장이면 우리 아이 기록만 추출해 평생 기록부로 쌓아주는 서비스로 키우고 있다.",
+    "repo": "https://github.com/kyj5482/swim.capsule",
+    "site": "https://kyj5482.github.io/swim.capsule/",
+    "links": [],
+    "problem": "여름 리그, YMCA, 학교 대회, 그리고 한국에서의 기록 — USA Swimming 중앙 기록에 실리지 않는 기록이 너무 많다. 결과지는 휴대폰 사진첩 속에서 사라지고, 원본 사이트가 문을 닫으면 기록도 함께 사라진다. 아이의 성장 곡선은 나라와 리그를 건널 때마다 끊긴다.",
+    "origin": "한국 과천에서 미국 어바인까지, 두 아이의 기록이 흩어지는 걸 지켜본 아빠가 시작했다. 지금의 원천은 swim.capsule — 대회 결과·기사·영상·공식 기록을 원본 그대로, 연도별 캡슐에 보관하는 타임캡슐이다. 한국 기록은 해외 대학·코치가 볼 수 있게 영문으로도 함께 남긴다. 여기서 한 걸음 더, 결과지 사진 한 장이면 우리 아이 기록만 추출해 평생 기록부로 쌓아주는 서비스로 키우고 있다.",
     "forWho": [
       "여러 리그·나라를 오가며 뛰는 선수의 가정",
-      "아이의 기록을 대회 앱이 아니라 '우리 데이터'로 남기고 싶은 부모",
+      "원본이 사라져도 아이의 기록을 '우리 데이터'로 남기고 싶은 부모",
       "성장 곡선(진척·스플릿)을 근거로 다음 목표를 정하고 싶은 선수"
     ],
     "series": ["athlete-data-platform"],
     "features": [
       {
-        "name": "사진 한 장 기록 추출",
-        "desc": "어느 대회든 결과지를 찍어 올리면, 비전+LLM이 우리 아이 기록만 골라 구조화된 데이터로 만든다.",
-        "stories": ["builder-athlete-messy-data"]
+        "name": "원본 그대로, 연도별 타임캡슐",
+        "desc": "대회 결과·기사·영상·공식 기록을 원본 형태로 연도별 캡슐에 보관한다. 원본 사이트가 사라져도 기록은 남는다. 한국 기록은 영문으로도 함께 저장해 해외 대학·코치가 참고할 수 있다.",
+        "stories": ["builder-athlete-why-log", "builder-athlete-messy-data"]
       },
       {
-        "name": "평생 기록부 · 성장 대시보드",
-        "desc": "리그와 나라가 바뀌어도 끊기지 않는 하나의 성장 곡선. 종목별 베스트와 향상폭을 한눈에 본다.",
-        "stories": ["builder-athlete-why-log", "builder-athlete-dashboard", "swimmer-record-updown"]
+        "name": "자동 수집 · 중복 제거",
+        "desc": "뉴스, 대한수영연맹, 유튜브, USA Swimming Data Hub에서 기간을 정해 기록을 자동으로 모으고 중복을 걸러 캡슐에 채운다.",
+        "stories": ["builder-athlete-messy-data", "builder-data-quality"]
       },
       {
-        "name": "표준기록 비교",
-        "desc": "USA Swimming 기준(B→AAAA)과 대회 커트 대비 지금 어디쯤인지, 다음 등급까지 몇 초인지 보여준다.",
-        "stories": ["swimmer-read-time-standards", "swimmer-ladder-overview"]
+        "name": "사진 한 장 기록 추출 · 평생 기록부",
+        "desc": "어느 대회든 결과지를 찍어 올리면 우리 아이 기록만 골라 구조화한다. 리그와 나라가 바뀌어도 끊기지 않는 하나의 성장 곡선으로 쌓인다.",
+        "stories": ["builder-athlete-dashboard", "swimmer-record-updown"]
       },
       {
-        "name": "AI 성장 코칭",
-        "desc": "쌓인 기록 데이터에서 정체 구간과 강점 종목을 찾아, 다음 시즌의 포커스를 제안한다.",
-        "stories": ["builder-athlete-ai-coach", "builder-athlete-productize"]
+        "name": "표준기록 비교 · AI 성장 코칭",
+        "desc": "USA Swimming 기준(B→AAAA) 대비 지금 어디쯤인지, 다음 등급까지 몇 초인지 보여준다. 쌓인 데이터에서 정체 구간과 강점 종목을 찾아 다음 시즌의 포커스를 제안한다.",
+        "stories": ["swimmer-read-time-standards", "swimmer-ladder-overview", "builder-athlete-ai-coach", "builder-athlete-productize"]
       }
     ]
   },
@@ -45,15 +43,15 @@
     "key": "splitlane",
     "name": "SplitLane",
     "emoji": "⏱️",
-    "tagline": "1/100초 훈련 타이머 위에, AI 코치를 얹다.",
+    "tagline": "버튼 하나로, 여러 아이의 1/100초를 한 번에.",
     "status": "building",
-    "repo": "https://github.com/kyj5482/swim.meet.timer",
+    "repo": "https://github.com/kyj5482/swim.timer",
     "site": null,
     "links": [],
-    "problem": "대회 결과는 앱이 알려주지만, 매일의 훈련은 어디에도 남지 않는다. 0.1초를 줄이는 일은 대회장이 아니라 연습 레인에서 일어나는데, 그 과정을 기록하는 도구가 없다.",
-    "origin": "스타트의 0.1초, 턴과 잠영, 후반 페이스 — 관중석에서 초시계를 누르며 레이스 노트를 적던 아빠가, 그 디테일을 1/100초 단위로 기록하는 타이머를 만들었다. 그 위에 타겟 표준기록 대비 진행률과 향상 가속도를 읽어주는 AI 코치를 얹는 중이다.",
+    "problem": "대회 결과는 앱이 알려주지만, 매일의 훈련은 어디에도 남지 않는다. 게다가 여러 아이를 동시에 재려면 사람 수만큼 초시계가 필요하다. 0.1초를 줄이는 일은 대회장이 아니라 연습 레인에서 일어나는데, 그 과정을 기록하는 도구가 없다.",
+    "origin": "스타트의 0.1초, 턴과 잠영, 후반 페이스 — 관중석에서 초시계를 누르며 레이스 노트를 적던 아빠가, 그 디테일을 1/100초 단위로 기록하는 타이머를 만들었다. 일반 스톱워치처럼 Lap 버튼 하나만 누르면 여러 선수의 구간이 익명 슬롯에 쌓이고, 측정이 끝난 뒤 선수를 배정한다. 그 위에 훈련 데이터를 읽어 다음 훈련을 제안하는 코칭을 얹는 것이 다음 목표다.",
     "forWho": [
-      "연습에서 구간 기록을 직접 재고 싶은 선수와 코치",
+      "연습에서 여러 아이의 구간 기록을 한 번에 재고 싶은 코치와 부모",
       "타겟 기록(B→AAAA·Futures·Sectionals)까지의 거리를 과정으로 추적하고 싶은 가정",
       "정체가 왔을 때 데이터로 원인을 찾고 싶은 선수"
     ],
@@ -65,19 +63,19 @@
         "stories": ["swimmer-start-tenth", "swimmer-turn-underwater"]
       },
       {
+        "name": "버튼 하나로 여러 선수 동시 측정",
+        "desc": "Lap 버튼 하나만 누르면 랩이 익명 슬롯에 자동 배정되고, 측정 뒤 선수를 배정한다. 비슷한 기록은 '확인 필요'로 표시해 한 번에 바로잡는다.",
+        "stories": ["swimmer-coach-partnership"]
+      },
+      {
         "name": "구간(랩) 페이스 분석",
         "desc": "전반·후반 스플릿과 페이스 일관성을 기록해, '후반에 더 빨라지는 레이스'를 설계한다.",
         "stories": ["swimmer-pacing"]
       },
       {
-        "name": "타겟 표준기록 진행률",
-        "desc": "목표 기준기록을 고르면 현재 기록 대비 달성률과 남은 시간을 보여준다. 오르락내리락하는 기록을 추세로 읽는다.",
+        "name": "기록 자동 누적 · PB와 향상 추세",
+        "desc": "잰 기록이 선수별 기록부에 자동으로 쌓이고, 직전 대비 향상폭과 개인 최고기록을 보여준다. 오르락내리락하는 기록을 추세로 읽는다.",
         "stories": ["swimmer-record-updown", "swimmer-read-time-standards"]
-      },
-      {
-        "name": "AI 코치 — 향상 가속도와 다음 훈련 포커스",
-        "desc": "레이스 노트와 훈련 기록에서 개선 기울기의 변화를 읽고, 다음 연습에서 집중할 한 가지를 제안한다.",
-        "stories": ["swimmer-race-note", "swimmer-coach-partnership", "swimmer-season-design"]
       }
     ]
   },
@@ -118,6 +116,46 @@
         "name": "대회를 거듭한 기록 진척도",
         "desc": "대회마다 JSON으로 쌓인 결과에서 종목별 최고기록과 직전 대비 향상폭을 계산한다.",
         "stories": ["swimmer-record-updown", "swimmer-first-us-meet"]
+      }
+    ]
+  },
+  {
+    "key": "tutor-writing",
+    "name": "tutor.writing",
+    "emoji": "✍️",
+    "tagline": "읽은 책으로 매일 쓰는, 아이만의 AI 글쓰기 튜터.",
+    "status": "building",
+    "repo": "https://github.com/kyj5482/tutor.writing",
+    "site": null,
+    "links": [],
+    "problem": "아이는 매일 책을 읽지만, 매일 글을 쓰고 그때그때 눈높이 피드백을 받기는 어렵다. 부모가 영어 글쓰기를 매일 첨삭해 줄 수도 없고, 학원 피드백은 일관되지 않는다. 작은 실수는 몇 주씩 반복되는데 아무도 그걸 추적하지 않는다.",
+    "origin": "두 아이(미국 8학년·6학년)를 위해 Claude Code 위에 만든 '매일 글쓰기 튜터 에이전트'. /setup으로 아이 프로필을 만들고, /today로 매일 쓰고 피드백을 받고, /weekly로 성장 리포트를, /progress로 레벨을 본다. 수영 기록을 데이터로 남기던 것과 같은 본능 — 과정을 측정하고, 성장을 우리 데이터로 쌓는다 — 을 글쓰기로 옮겼다.",
+    "forWho": [
+      "매일 읽되 쓸 기회와 피드백이 부족한 아이의 가정",
+      "영어 글쓰기를 매일 봐주기 어려운 부모(주간 한글 요약을 받는다)",
+      "아이의 글쓰기 성장을 학기 단위로 데이터로 보고 싶은 부모"
+    ],
+    "series": ["writing-tutor"],
+    "features": [
+      {
+        "name": "매일 글쓰기 + 즉시 피드백",
+        "desc": "읽은 책을 바탕으로 매일 한 편을 쓰면, 눈높이 피드백을 바로 준다. /today 명령 하나로 오늘의 쓰기가 시작된다.",
+        "stories": ["writer-why-daily-writing", "writer-feedback-rubric"]
+      },
+      {
+        "name": "예시 먼저 — 빈 페이지의 두려움 없이",
+        "desc": "아이가 아는 책(6학년 Hatchet·8학년 The Giver 등)으로 만든 예시를 먼저 보여준 뒤 쓰게 한다. 10개 템플릿 × 3단계 난이도.",
+        "stories": ["writer-example-first"]
+      },
+      {
+        "name": "반복 실수 추적 (Watch List)",
+        "desc": "아이마다 반복되는 실수를 최대 2개까지 추적하고, 3번 연속 깨끗하면 '졸업'시킨다. 실수가 몇 주씩 방치되지 않게.",
+        "stories": ["writer-watch-list"]
+      },
+      {
+        "name": "성장 게임화 · 포트폴리오",
+        "desc": "XP·10단계 레벨·연속 기록·12개 배지로 동기를 만든다(XP는 절대 깎이지 않는다). 모든 기록은 마크다운으로 남아 학기 단위 성장 비교와 포트폴리오 사이트가 된다.",
+        "stories": ["writer-gamification", "writer-portfolio-growth"]
       }
     ]
   }
