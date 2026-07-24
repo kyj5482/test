@@ -16,8 +16,8 @@ window.SITE_ART = {
 
   /* 서비스별: hero(대표) · problem(문제 장면) · origin(기원 장면) */
   products: {
-    swimvault: {
-      // hero: 텅 빈 경기 레인 — '평생 기록부'의 차분한 여백 (군복 인물 사진 대체)
+    'swim-capsule': {
+      // hero: 텅 빈 경기 레인 — 원본을 담아두는 타임캡슐의 차분한 여백
       hero: 'assets/img/svc-comp-pool.jpg',
       problem: 'content/swimmer/first-lane/cover.jpg',
       origin: 'content/dreamer/pacific-bridge/cover.jpg',

@@ -70,13 +70,13 @@ window.I18N = {
     /* 서비스별 챕터 제목·부연 — 세 서비스가 같은 문장을 쓰지 않도록 각자 맞춤.
      * lead는 문제/기원 본문 위에 얹는 한 줄 부연. app.js가 chapter()로 조회한다. */
     chapters: {
-      swimvault: {
+      'swim-capsule': {
         ch1Kicker: { en: 'CHAPTER 1 — THE PROBLEM', ko: 'CHAPTER 1 — 문제' },
-        ch1Title: { en: 'Records that vanish<br/>the moment you cross a border.', ko: '국경을 넘는 순간<br/>사라지는 기록들.' },
-        ch1Lead: { en: 'Every league keeps its own results. The growth curve breaks at every edge.', ko: '리그마다 기록이 따로 논다. 성장 곡선은 경계마다 끊긴다.' },
+        ch1Title: { en: 'Records that vanish<br/>when the source shuts down.', ko: '출처가 사라지는 순간<br/>함께 사라지는 기록들.' },
+        ch1Lead: { en: 'Camera rolls forget, sites close, and the growth curve breaks at every border.', ko: '사진첩은 잊고, 사이트는 닫히고, 성장 곡선은 경계마다 끊긴다.' },
         ch2Kicker: { en: 'CHAPTER 2 — THE ORIGIN', ko: 'CHAPTER 2 — 기원' },
-        ch2Title: { en: 'A dad watched two kids’<br/>records scatter across a border.', ko: '두 아이의 기록이 국경을 넘어<br/>흩어지는 걸 지켜본 아빠.' },
-        ch2Lead: { en: 'From Gwacheon to Irvine — one archive that never forgets.', ko: '과천에서 어바인까지 — 잊지 않는 하나의 기록 보관소.' },
+        ch2Title: { en: 'A time capsule that keeps<br/>the record in its original form.', ko: '기록을 원본 그대로<br/>담아두는 타임캡슐.' },
+        ch2Lead: { en: 'From Gwacheon to Irvine — piloting with two kids, then opening it up.', ko: '과천에서 어바인까지 — 두 아이에게 먼저 적용하고, 이제 열어간다.' },
       },
       splitlane: {
         ch1Kicker: { en: 'CHAPTER 1 — THE PROBLEM', ko: 'CHAPTER 1 — 문제' },
@@ -134,20 +134,20 @@ window.I18N = {
 
   /* -------- products.json 영어 오버레이 -------- */
   products: {
-    swimvault: {
-      tagline: 'Scattered meet results, one lifelong record book.',
+    'swim-capsule': {
+      tagline: 'Your child\'s vanishing records, kept in their original form.',
       problem: 'Summer leagues, YMCA, school meets, meets back in Korea — so many results never reach the USA Swimming database. Result sheets fade away in camera rolls, and when the source site shuts down the record dies with it. A swimmer\'s growth curve breaks every time they cross a league or a border.',
-      origin: 'A dad watched his two kids\' records scatter between Gwacheon, Korea and Irvine, California. Its root today is swim.capsule — a time capsule that stores meet results, articles, videos, and official records in their original form, in year-based capsules. Korean records are kept in English too, so overseas colleges and coaches can reference them. From there it\'s growing one step further: one photo of any result sheet extracts your child\'s swims into a lifelong record book.',
+      origin: 'A dad watched his two kids\' records scatter between Gwacheon, Korea and Irvine, California. Swim Capsule stores meet results, articles, videos, and official records in their original form, in year-based capsules. Korean records are kept in English too, so overseas colleges and coaches can reference them. He\'s piloting it with his own two kids now — and plans to open the validated capsule up to other swim families.',
       forWho: [
         'Families whose swimmers race across leagues and countries',
         'Parents who want their child\'s records as their own data, even after the source disappears',
-        'Swimmers who want to set the next goal from a growth curve',
+        'Families who want Korean records shown to overseas colleges and coaches in English',
       ],
       features: [
-        { name: 'Originals preserved in year-based capsules', desc: 'Meet results, articles, videos, and official records archived in their original form, by year. Records survive even if the source site disappears. Korean records are kept in English too.' },
+        { name: 'Originals preserved in year-based capsules', desc: 'Meet results, articles, videos, and official records archived in their original form, by year. Records survive even if the source site disappears.' },
         { name: 'Automated collection & de-duplication', desc: 'Gathers records by date range from news, the Korea Swimming Federation, YouTube, and the USA Swimming Data Hub, de-duplicating as it fills each capsule.' },
-        { name: 'One-photo extraction & lifelong record book', desc: 'Snap any result sheet and it pulls out only your child\'s swims — building one growth curve that never breaks across leagues and countries.' },
-        { name: 'Time-standard comparison & AI growth coaching', desc: 'See where you stand against USA Swimming standards (B→AAAA) and how many seconds to the next level. Finds plateaus and strong events and suggests the next season\'s focus.' },
+        { name: 'Bilingual (KO/EN) & search-visible', desc: 'Keeps Korean records in English too for overseas colleges and coaches, and ships as static HTML with hreflang and structured data so it surfaces in search.' },
+        { name: '(Expansion) One-photo extraction & lifelong record book', desc: 'The next step, once proven with two kids — snap any result sheet to pull out only your child\'s swims, into a growth curve and AI coaching that never break across leagues and countries.' },
       ],
     },
     splitlane: {

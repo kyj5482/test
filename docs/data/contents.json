@@ -1945,20 +1945,20 @@
   ],
   "products": [
     {
-      "key": "swimvault",
-      "name": "SwimVault",
+      "key": "swim-capsule",
+      "name": "Swim Capsule",
       "emoji": "🗄️",
-      "tagline": "흩어진 대회 기록을, 아이의 평생 기록부로.",
+      "tagline": "사라지는 아이의 기록을, 원본 그대로 타임캡슐에.",
       "status": "building",
       "repo": "https://github.com/kyj5482/swim.capsule",
       "site": "https://kyj5482.github.io/swim.capsule/",
       "links": [],
       "problem": "여름 리그, YMCA, 학교 대회, 그리고 한국에서의 기록 — USA Swimming 중앙 기록에 실리지 않는 기록이 너무 많다. 결과지는 휴대폰 사진첩 속에서 사라지고, 원본 사이트가 문을 닫으면 기록도 함께 사라진다. 아이의 성장 곡선은 나라와 리그를 건널 때마다 끊긴다.",
-      "origin": "한국 과천에서 미국 어바인까지, 두 아이의 기록이 흩어지는 걸 지켜본 아빠가 시작했다. 지금의 원천은 swim.capsule — 대회 결과·기사·영상·공식 기록을 원본 그대로, 연도별 캡슐에 보관하는 타임캡슐이다. 한국 기록은 해외 대학·코치가 볼 수 있게 영문으로도 함께 남긴다. 여기서 한 걸음 더, 결과지 사진 한 장이면 우리 아이 기록만 추출해 평생 기록부로 쌓아주는 서비스로 키우고 있다.",
+      "origin": "한국 과천에서 미국 어바인까지, 두 아이의 기록이 흩어지는 걸 지켜본 아빠가 만들었다. Swim Capsule은 대회 결과·기사·영상·공식 기록을 원본 그대로, 연도별 캡슐에 담아두는 '기록의 타임캡슐'이다. 한국 기록은 해외 대학·코치가 볼 수 있게 영문으로도 함께 남긴다. 지금은 두 아이에게 직접 적용해보고 있고, 여기서 검증한 캡슐을 다른 선수 가정도 쓸 수 있게 확대 런칭하려 한다.",
       "forWho": [
         "여러 리그·나라를 오가며 뛰는 선수의 가정",
         "원본이 사라져도 아이의 기록을 '우리 데이터'로 남기고 싶은 부모",
-        "성장 곡선(진척·스플릿)을 근거로 다음 목표를 정하고 싶은 선수"
+        "한국 기록을 해외 대학·코치에게 영문으로 보여주고 싶은 가정"
       ],
       "series": [
         "athlete-data-platform"
@@ -1966,7 +1966,7 @@
       "features": [
         {
           "name": "원본 그대로, 연도별 타임캡슐",
-          "desc": "대회 결과·기사·영상·공식 기록을 원본 형태로 연도별 캡슐에 보관한다. 원본 사이트가 사라져도 기록은 남는다. 한국 기록은 영문으로도 함께 저장해 해외 대학·코치가 참고할 수 있다.",
+          "desc": "대회 결과·기사·영상·공식 기록을 원본 형태로 연도별 캡슐에 보관한다. 원본 사이트가 사라져도 캡슐 안의 기록은 남는다.",
           "stories": [
             "builder-athlete-why-log",
             "builder-athlete-messy-data"
@@ -1981,21 +1981,21 @@
           ]
         },
         {
-          "name": "사진 한 장 기록 추출 · 평생 기록부",
-          "desc": "어느 대회든 결과지를 찍어 올리면 우리 아이 기록만 골라 구조화한다. 리그와 나라가 바뀌어도 끊기지 않는 하나의 성장 곡선으로 쌓인다.",
+          "name": "한·영 이중언어 · 검색 노출",
+          "desc": "한국 기록을 영문으로도 함께 저장해 해외 대학·코치가 참고할 수 있게 한다. 정적 HTML·hreflang·구조화 데이터로 검색에도 그대로 노출된다.",
           "stories": [
-            "builder-athlete-dashboard",
-            "swimmer-record-updown"
+            "swimmer-read-time-standards",
+            "swimmer-first-us-meet"
           ]
         },
         {
-          "name": "표준기록 비교 · AI 성장 코칭",
-          "desc": "USA Swimming 기준(B→AAAA) 대비 지금 어디쯤인지, 다음 등급까지 몇 초인지 보여준다. 쌓인 데이터에서 정체 구간과 강점 종목을 찾아 다음 시즌의 포커스를 제안한다.",
+          "name": "(확대 런칭) 사진 한 장 기록 추출 · 평생 기록부",
+          "desc": "두 아이에게 검증한 다음 단계 — 결과지 사진 한 장이면 우리 아이 기록만 골라 구조화하고, 리그·나라가 바뀌어도 끊기지 않는 성장 곡선과 AI 성장 코칭으로 잇는다.",
           "stories": [
-            "swimmer-read-time-standards",
-            "swimmer-ladder-overview",
+            "builder-athlete-dashboard",
             "builder-athlete-ai-coach",
-            "builder-athlete-productize"
+            "builder-athlete-productize",
+            "swimmer-record-updown"
           ]
         }
       ]
@@ -2160,10 +2160,10 @@
   ],
   "newsletters": [
     {
-      "id": "nl-2026-08-swimvault-preview",
-      "title": "📮 흩어진 기록을 원본부터 지킨다 — SwimVault 프리뷰",
+      "id": "nl-2026-08-swimcapsule-preview",
+      "title": "📮 흩어진 기록을 원본부터 지킨다 — Swim Capsule 프리뷰",
       "date": "2026-07-24",
-      "product": "swimvault",
+      "product": "swim-capsule",
       "version": "preview",
       "stories": [
         "builder-athlete-why-log",
@@ -2171,7 +2171,7 @@
         "builder-athlete-dashboard",
         "builder-athlete-productize"
       ],
-      "file": "content/newsletters/2026-08-00-swimvault-preview.md"
+      "file": "content/newsletters/2026-08-00-swimcapsule-preview.md"
     },
     {
       "id": "nl-2026-07-tutor-writing",

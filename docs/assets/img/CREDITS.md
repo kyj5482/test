@@ -5,7 +5,7 @@ CC BY / CC BY-SA는 저작자 표시가 필요하므로 여기에 보존한다.
 
 | 파일 | 쓰임 | 저작자 | 라이선스 | 출처 |
 |---|---|---|---|---|
-| `svc-comp-pool.jpg` | SwimVault hero | Xander (Yellowknife, NT, Canada) | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Swimming_pool_with_lane_ropes_in_place.jpg |
+| `svc-comp-pool.jpg` | Swim Capsule hero | Xander (Yellowknife, NT, Canada) | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Swimming_pool_with_lane_ropes_in_place.jpg |
 | `svc-meet-venue.jpg` | swim.meets problem | Spatms | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Uytengsu_Aquatics_Center_Competition_Pool.jpg |
 | `svc-swimmer-wall.jpg` | SplitLane origin | Tanis Coralee Leonhardi | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Lillie_Nordmann,_2023_Pac-12_Championships,_200_yard_freestyle_preliminaries_post-race_-_24_February_2023.jpg |
 

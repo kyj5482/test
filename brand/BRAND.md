@@ -13,7 +13,7 @@
 관중석에서 마주친 질문과 문제를 이야기(퍼즐 스토리)로 쓰고, 그 이야기를
 앱의 기능으로 만든다. 글은 제품의 기원이고, 제품은 글의 답이다.
 
-- 브랜드 이름: **SoloStartup** — 네 서비스(SwimVault·SplitLane·swim.meets·tutor.writing)를 아우르는 상위 브랜드.
+- 브랜드 이름: **SoloStartup** — 네 서비스(Swim Capsule·SplitLane·swim.meets·tutor.writing)를 아우르는 상위 브랜드.
   기존의 *AI · DATA · YOUTH SPORTS*는 이름 아래 카테고리 설명 태그라인으로 유지한다.
   유스 스포츠(수영) 3종에 더해, AI × 교육(아이 글쓰기) 갈래로 tutor.writing이 합류했다.
 - 영문 태그라인: *Engineering Data, Raising Athletes.*
@@ -55,15 +55,16 @@
 
 | 브랜드 | 저장소 | 한 줄 | 뿌리가 된 이야기 |
 |---|---|---|---|
-| 🗄️ **SwimVault** | swim.capsule | 흩어진 대회 기록을 원본부터 보존해 아이의 평생 기록부로 | 선수 성장 데이터 플랫폼 시리즈 |
+| 🗄️ **Swim Capsule** | swim.capsule | 사라지는 아이의 기록을 원본 그대로 연도별 타임캡슐에 (한·영) | 선수 성장 데이터 플랫폼 시리즈 |
 | ⏱️ **SplitLane** | swim.timer | 버튼 하나로 여러 아이의 1/100초를 한 번에 재는 훈련 타이머 | 레이스는 디테일이다, 챔피언의 코드 |
 | 📋 **swim.meets** | swim.meets (서비스 중) | psych sheet PDF → 내 아이의 대회 일정·기록 조회 | 원정의 기술 |
 | ✍️ **tutor.writing** | tutor.writing | 읽은 책으로 매일 쓰는, 아이만의 AI 글쓰기 튜터 | 매일 쓰는 아이 (writing-tutor) |
 
-> **저장소 정합성 메모.** 제품 저장소는 실제 GitHub 저장소 이름과 일치한다: SwimVault=swim.capsule,
-> SplitLane=swim.timer, swim.meets, tutor.writing. SwimVault는 지금은 원본 보존 타임캡슐(swim.capsule)이
-> 원천이고, '평생 기록부'는 그 위에 얹는 장기 비전이다. SplitLane의 AI 코칭은 아직 로드맵(미출시)이라
-> 출시 기능이 아니라 기원 서사에서만 언급한다.
+> **저장소 정합성 메모.** 제품 저장소는 실제 GitHub 저장소 이름과 일치한다: Swim Capsule=swim.capsule,
+> SplitLane=swim.timer, swim.meets, tutor.writing. Swim Capsule은 원본 보존 타임캡슐이 실제 서비스이며,
+> 지금은 두 아이에게 직접 적용해 검증 중이고 이후 다른 선수 가정으로 확대 런칭한다. '사진 한 장 추출·평생
+> 기록부·AI 코칭'은 확대 단계에서 얹을 다음 비전이다. SplitLane의 AI 코칭도 아직 로드맵(미출시)이라
+> 출시 기능이 아니라 기원 서사에서만 언급한다. (내부 product key: `swim-capsule`)
 
 운영 원칙: **기능은 그냥 만들지 않는다.** 사용자 피드백이든 내 경험이든, 먼저
 "왜?"라는 질문과 문제를 퍼즐 스토리로 쓰고, 그 답으로 Feature를 만든다. 독자는
@@ -77,8 +78,8 @@
 
 ## 5b. 장기 로드맵 (비즈니스 연결)
 
-- ~2026: 콘텐츠 축적 (글/쇼츠) + 제품 공개 개발 (swim.meets 서비스 → SwimVault·SplitLane 출시,
-  AI × 교육 갈래로 tutor.writing)
+- ~2026: 콘텐츠 축적 (글/쇼츠) + 제품 공개 개발 (swim.meets 서비스 → Swim Capsule 두 아이 검증→확대
+  런칭 · SplitLane 출시, AI × 교육 갈래로 tutor.writing)
 - 2027: 북미권역 데이터 앱마켓 경험 → "선수 성장 데이터 플랫폼"으로 수영 3종 통합 확장
 - 이후: AI 시대에 사람이 가장 집중할 **건강과 운동**, 그리고 **교육** 영역에서, 기록→분석→코칭으로
   이어지는 서비스 사업화. tutor.writing은 "과정을 데이터로 남긴다"는 같은 원리를 교육으로 옮긴 첫 갈래다.

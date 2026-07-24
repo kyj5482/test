@@ -6,7 +6,7 @@
  * 통일해 "한 벌의 시스템"으로 읽히게 한다. (Linear·Stripe·Vercel 계열)
  *
  * 사용:  icon('arrow')                → <svg …>  문자열
- *        productIcon('swimvault')     → 제품별 대표 아이콘
+ *        productIcon('swim-capsule')  → 제품별 대표 아이콘
  *        trackIcon('swimmer')         → 독자 트랙 아이콘
  *        seriesIcon('first-lane')     → 시리즈(이야기 묶음) 아이콘
  * ============================================================ */
@@ -58,7 +58,7 @@
     return `<svg class="ic${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false">${inner}</svg>`;
   };
 
-  const PRODUCT = { swimvault: 'vault', splitlane: 'stopwatch', 'swim-meets': 'board', 'tutor-writing': 'pen' };
+  const PRODUCT = { 'swim-capsule': 'vault', splitlane: 'stopwatch', 'swim-meets': 'board', 'tutor-writing': 'pen' };
   const TRACK = { swimmer: 'wave', parent: 'family', builder: 'code', dreamer: 'globe', writer: 'pen' };
   const SERIES = {
     'first-lane': 'wave', 'race-craft': 'spark', 'american-lanes': 'flag',

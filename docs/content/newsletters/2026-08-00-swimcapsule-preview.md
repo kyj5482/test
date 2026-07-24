@@ -1,33 +1,33 @@
 ---
-id: nl-2026-08-swimvault-preview
+id: nl-2026-08-swimcapsule-preview
 date: 2026-07-24
-product: swimvault
+product: swim-capsule
 version: preview
 status: published
 stories: [builder-athlete-why-log, builder-athlete-messy-data, builder-athlete-dashboard, builder-athlete-productize]
 prompt: |
   선수 성장 데이터 플랫폼 퍼즐(athlete-data-platform)의 글들이 게시되면
-  그 요약과 함께 SwimVault 프리뷰를 알리는 호. SwimVault의 현재 원천이
-  원본 보존 타임캡슐(swim.capsule)임을 분명히 하고, '평생 기록부'는 그 위에
-  얹는 장기 비전으로 소개한다.
+  그 요약과 함께 Swim Capsule 프리뷰를 알리는 호. Swim Capsule이 원본 보존
+  타임캡슐이라는 실제 서비스임을 분명히 하고, 지금 두 아이에게 적용해 검증 중이며
+  '평생 기록부'는 확대 런칭에서 얹을 다음 단계임을 소개한다.
 ---
 
-# 📮 흩어진 기록을 원본부터 지킨다 — SwimVault 프리뷰
+# 📮 흩어진 기록을 원본부터 지킨다 — Swim Capsule 프리뷰
 
 리그가 바뀌고 나라를 건널 때마다, 아이의 기록은 조금씩 사라집니다.
 여름 리그·YMCA·학교 대회·한국 대회 — USA Swimming 중앙 기록에 실리지 않는
 기록이 너무 많고, 결과지는 사진첩 속에서, 원본 사이트는 문을 닫으며 잊힙니다.
 
-**SwimVault** 는 그 반대편에서 출발합니다. 지금의 원천은
-**[swim.capsule](https://kyj5482.github.io/swim.capsule/)** — 대회 결과·기사·영상·공식 기록을
-**원본 그대로, 연도별 캡슐**에 보관하는 타임캡슐입니다. 한국 기록은 해외 대학·코치가 볼 수 있게
-영문으로도 함께 남깁니다. 여기서 한 걸음 더 나아가, 결과지 사진 한 장이면 우리 아이 기록만
-추출해 **평생 기록부**로 잇는 것이 다음 목표입니다.
+**[Swim Capsule](https://kyj5482.github.io/swim.capsule/)** 은 그 반대편에서 출발합니다.
+대회 결과·기사·영상·공식 기록을 **원본 그대로, 연도별 캡슐**에 담아두는 '기록의 타임캡슐'입니다.
+한국 기록은 해외 대학·코치가 볼 수 있게 영문으로도 함께 남깁니다. 지금은 두 아이에게 직접
+적용해 검증하고 있고, 여기서 확인한 캡슐을 다른 선수 가정도 쓸 수 있게 **확대 런칭**하려 합니다.
+그 다음 단계로 결과지 사진 한 장이면 우리 아이 기록만 추출해 **평생 기록부**로 잇는 그림입니다.
 
 ## 이 호에서 읽을 퍼즐 스토리
 
 - **[내 아이의 기록을, 왜 직접 데이터로 남기기 시작했나?](01-why-log-my-kid.md)** — 중앙 DB가
-  놓치는 기록, 사진첩에서 사라지는 결과지, 경계마다 끊기는 성장 곡선. SwimVault가 태어난 문제.
+  놓치는 기록, 사진첩에서 사라지는 결과지, 경계마다 끊기는 성장 곡선. Swim Capsule이 태어난 문제.
 - **[흩어진 대회 기록을 어떻게 하나의 데이터로 모을까?](02-messy-meet-data.md)** — 원본을 그대로
   보존하고, 뉴스·연맹·유튜브·USA Swimming에서 자동으로 모아 중복을 걸러 캡슐에 채우는 방법.
 - **[성장 곡선을 한눈에 보는 대시보드는 어떻게 설계할까?](03-growth-dashboard.md)** — 오르락내리락하는

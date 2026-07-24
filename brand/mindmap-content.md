@@ -7,11 +7,11 @@
 
 홈 상단에서 소개하는 앱 4개. 각 기능은 아래 퍼즐의 질문(이야기)에서 태어났다
 (연결의 원천: `docs/content/products.json` — 글 하단 "이 이야기에서 태어난 기능"으로 역링크).
-저장소는 실제 GitHub 저장소와 일치한다(SwimVault=swim.capsule, SplitLane=swim.timer).
+저장소는 실제 GitHub 저장소와 일치한다(Swim Capsule=swim.capsule, SplitLane=swim.timer).
 
 | 브랜드 | 저장소 | 문제 | 뿌리 퍼즐 |
 |---|---|---|---|
-| 🗄️ **SwimVault** | swim.capsule | 리그·나라를 건널 때마다 끊기고, 원본 사이트가 닫히면 사라지는 기록 | 퍼즐11 선수 성장 데이터 플랫폼 |
+| 🗄️ **Swim Capsule** | swim.capsule | 리그·나라를 건널 때마다 끊기고, 원본 사이트가 닫히면 사라지는 기록 | 퍼즐11 선수 성장 데이터 플랫폼 |
 | ⏱️ **SplitLane** | swim.timer | 매일의 훈련이 안 남고, 여러 아이를 재려면 초시계가 사람 수만큼 | 퍼즐2 레이스는 디테일이다 · 퍼즐4b 챔피언의 코드 |
 | 📋 **swim.meets** | swim.meets | psych sheet 수천 명 속에서 내 아이 찾기, 대기 5시간 | 퍼즐6 원정의 기술 |
 | ✍️ **tutor.writing** | tutor.writing | 매일 읽지만 매일 쓰고 피드백받을 데가 없다 · 반복 실수 방치 | 퍼즐12 매일 쓰는 아이 |
@@ -113,7 +113,7 @@ mindmap
         Q: 오픈소스 커뮤니티 리뷰어로 산다는 것은?
         Q: 매년 논문 한 편, 엔지니어에게 왜 필요할까?
         Q: 연구소에서 자동차 회사로, 왜 옮겼을까?
-      퍼즐11["🏊‍♂️ 선수 성장 데이터 플랫폼 (data·ai) → SwimVault(swim.capsule)"]
+      퍼즐11["🏊‍♂️ 선수 성장 데이터 플랫폼 (data·ai) → Swim Capsule(swim.capsule)"]
         Q: 내 아이의 기록을, 왜 직접 데이터로 남기기 시작했나?
         Q: 흩어진 대회 기록을 어떻게 하나의 데이터로 모을까?
         Q: 성장 곡선을 한눈에 보는 대시보드는 어떻게 설계할까?
