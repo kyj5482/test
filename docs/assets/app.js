@@ -513,7 +513,7 @@ function buildHome(tr) {
 }
 
 /* ---------- 전체 지도(영향 흐름) ----------
- * 3단 흐름: [이야기 시리즈] → ◎ AramLens → [서비스]. 왼쪽은 내가 겪은 시리즈,
+ * 3단 흐름: [이야기 시리즈] → ◎ SoloStartup → [서비스]. 왼쪽은 내가 겪은 시리즈,
  * 오른쪽은 그 이야기가 자라 만들어진 서비스. 평소엔 은은한 실선만 이어져 있고,
  * 서비스에 마우스를 올리면 그것을 '태어나게 한' 시리즈 실선이 점등되고 관련
  * 이야기 칩이 떠오른다(점진적 공개). 칩·노드를 클릭하면 그 가지로 줌인한다. */
@@ -594,7 +594,7 @@ function buildOverview(tr) {
       ${seriesMarkup}
       ${nodeBtn(center, 'is-core', `
         <span class="map-core-mark">${IC.icon('lens')}</span>
-        <span class="map-core-title">AramLens</span>
+        <span class="map-core-title">SoloStartup</span>
         <span class="map-core-sub">AI · DATA · YOUTH SPORTS</span>`, 'data-core')}
       ${prodMarkup}
     </div>
@@ -992,9 +992,15 @@ stage.addEventListener('touchend', (e) => {
   const dy = touchY - e.changedTouches[0].clientY;
   const dx = touchX - e.changedTouches[0].clientX;
   touchY = touchX = null;
-  if (Math.abs(dx) > Math.abs(dy)) {
-    if (dx < -70) popTrack();       // → 스와이프: 뒤로
-    else if (dx > 70) goPrimary();  // ← 스와이프: 더 깊이
+  // 좌우 이동은 '의도적인 수평 스와이프'로만 — 수평이 수직을 뚜렷이 앞설 때.
+  // 글(리딩) 화면에선 특히 엄격히(수평이 수직의 2배+, 90px+): 세로로 읽어
+  // 내리다 살짝 기운 제스처로 씬이 넘어가지 않게 한다.
+  const reading = !!articleScroller();
+  const horiz = Math.abs(dx) > Math.abs(dy) * (reading ? 2 : 1.2)
+    && Math.abs(dx) > (reading ? 90 : 70);
+  if (horiz) {
+    if (dx < 0) popTrack();  // → 스와이프: 뒤로
+    else goPrimary();        // ← 스와이프: 더 깊이
     return;
   }
   if (Math.abs(dy) < 60) return;

@@ -7,7 +7,7 @@
  * ============================================================ */
 window.I18N = {
   ui: {
-    brandStrong: { en: 'AramLens', ko: 'AramLens' },
+    brandStrong: { en: 'SoloStartup', ko: 'SoloStartup' },
     brandSmall: { en: 'AI · DATA · YOUTH SPORTS', ko: 'AI · 데이터 · 유스 스포츠' },
     back: { en: 'Back', ko: '돌아가기' },
     mapBtn: { en: 'Map', ko: '전체 지도' },

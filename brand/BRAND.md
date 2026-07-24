@@ -13,7 +13,7 @@
 관중석에서 마주친 질문과 문제를 이야기(퍼즐 스토리)로 쓰고, 그 이야기를
 앱의 기능으로 만든다. 글은 제품의 기원이고, 제품은 글의 답이다.
 
-- 브랜드 이름: **AramLens** — 세 서비스(SwimVault·SplitLane·swim.meets)를 아우르는 상위 브랜드.
+- 브랜드 이름: **SoloStartup** — 세 서비스(SwimVault·SplitLane·swim.meets)를 아우르는 상위 브랜드.
   기존의 *AI · DATA · YOUTH SPORTS*는 이름 아래 카테고리 설명 태그라인으로 유지한다.
 - 영문 태그라인: *Engineering Data, Raising Athletes.*
 - 한글 태그라인: *데이터를 만들고, 선수를 키웁니다.*

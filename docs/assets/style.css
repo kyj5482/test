@@ -713,5 +713,9 @@ body {
   .hub-grid { grid-template-columns: 1fr; max-height: 44vh; }
   .stat { padding: 0 18px; }
   .stat b { font-size: 1.6rem; }
-  .hud-nav { right: 56px; }
+  /* 모바일: 전체 지도 버튼과 오른쪽 대시 레일(퀵링크)은 숨긴다.
+   * 레일이 사라진 만큼 언어 토글(EN)을 화면 오른쪽 끝 가까이로 붙인다. */
+  #nav-map { display: none; }
+  #rail { display: none; }
+  .hud-nav { right: 16px; }
 }
